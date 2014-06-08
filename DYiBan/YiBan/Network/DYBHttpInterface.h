@@ -480,7 +480,7 @@
 + (NSMutableDictionary *)shareBook_book_info_isbn:(NSString *)isbn;
 
 //book_upload
-+ (NSMutableDictionary *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id;
++ (NSMutableDictionary *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent;
 
 //book_reserve
 + (NSMutableDictionary *)shareBook_book_reserve_pub_id:(NSString *)pub_id content:(NSString *)content;

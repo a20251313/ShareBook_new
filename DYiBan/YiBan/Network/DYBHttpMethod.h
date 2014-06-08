@@ -458,7 +458,7 @@
 
 + (MagicRequest *)shareBook_book_info_isbn:(NSString *)isbn sAlert:(BOOL)isAlert receive:(id)receive;
 
-+ (MagicRequest *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id sAlert:(BOOL)isAlert receive:(id)receive;
++ (MagicRequest *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent sAlert:(BOOL)isAlert receive:(id)receive;
 + (MagicRequest *)shareBook_book_reserve_pub_id:(NSString *)pub_id content:(NSString *)content sAlert:(BOOL)isAlert receive:(id)receive;
 
 + (MagicRequest *)shareBook_book_commentlist_pub_id:(NSString *)pub_id page:(NSString *)page num:(NSString *)num sAlert:(BOOL)isAlert receive:(id)receive;

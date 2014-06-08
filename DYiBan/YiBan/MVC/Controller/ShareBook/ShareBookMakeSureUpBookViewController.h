@@ -10,6 +10,6 @@
 
 @interface ShareBookMakeSureUpBookViewController : DYBBaseViewController
 @property (nonatomic,retain)NSDictionary *dictInfo;
-@property (nonatomic,retain)NSDictionary *dictResult;
+@property (nonatomic,retain)NSMutableArray *arrayResult;
 @property (nonatomic,retain) UILabel *labelAutoQuan1;
 @end

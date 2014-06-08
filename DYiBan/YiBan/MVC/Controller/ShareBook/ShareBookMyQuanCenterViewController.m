@@ -140,6 +140,8 @@
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
+
+        
         RELEASE(tbDataBank11);
         
         int offset = 0;
@@ -286,6 +288,9 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLECELLFORROW]])/*cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
+        
+        
+       
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         UITableViewCell *cell = [[UITableViewCell alloc]init];
@@ -316,6 +321,7 @@ static NSString *cellName = @"cellName";
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         
         NSDictionary *dict = (NSDictionary *)[signal object];
+        
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
@@ -324,8 +330,8 @@ static NSString *cellName = @"cellName";
             NSDictionary *dict1 = [_arrayResult objectAtIndex:indexPath.row];
             
             [makesure.labelAutoQuan1 setText:[dict1 objectForKey:@"circle_name"]];
-            
-            makesure.dictResult = dict1;
+#warning need pass a array of IDS
+           // makesure.dictResult = dict1;
             [self.drNavigationController popViewControllerAnimated:YES];
             return;
         }

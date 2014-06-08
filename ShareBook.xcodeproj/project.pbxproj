@@ -112,6 +112,7 @@
 		18DE075C18D7289600EEAEDF /* ShareBookZhuan.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DE075B18D7289600EEAEDF /* ShareBookZhuan.m */; };
 		2878B115190E32E100C5B5B1 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2878B114190E32E100C5B5B1 /* libPushSDK.a */; };
 		2878B117190E338300C5B5B1 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2878B116190E338300C5B5B1 /* PushConfig.plist */; };
+		862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
 		B50D960818CEAF8900619B21 /* rightslide_foot.png in Resources */ = {isa = PBXBuildFile; fileRef = B50D960418CEAF8900619B21 /* rightslide_foot.png */; };
@@ -840,6 +841,8 @@
 		2878B113190E32E100C5B5B1 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		2878B114190E32E100C5B5B1 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		2878B116190E338300C5B5B1 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		862776571944915400792FE9 /* ShareBookChooseQuanCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookChooseQuanCenterViewController.h; sourceTree = "<group>"; };
+		862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookChooseQuanCenterViewController.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
 		B50D95FE18CEA45F00619B21 /* DYBDataBankShotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankShotView.h; sourceTree = "<group>"; };
 		B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankTopRightCornerView.h; sourceTree = "<group>"; };
@@ -3851,6 +3854,8 @@
 				B527907618BB45690062637C /* ShareAddQuanViewController.m */,
 				B5D5AEB718BC7B51005E4732 /* ShareBookMyQuanCenterViewController.h */,
 				B5D5AEB818BC7B51005E4732 /* ShareBookMyQuanCenterViewController.m */,
+				862776571944915400792FE9 /* ShareBookChooseQuanCenterViewController.h */,
+				862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */,
 				B5D5AEBA18BC830A005E4732 /* ShareBookMyCenterViewController.h */,
 				B5D5AEBB18BC830B005E4732 /* ShareBookMyCenterViewController.m */,
 				B5D5AEBD18BC8383005E4732 /* ShareBookOtherCenterViewController.h */,
@@ -4599,6 +4604,7 @@
 				B58CB17D1829CF6A00F73D66 /* guest_list.m in Sources */,
 				B58CB17E1829CF6A00F73D66 /* guest_list_all.m in Sources */,
 				B58CB17F1829CF6A00F73D66 /* JsonResponse.m in Sources */,
+				862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */,
 				B58CB1801829CF6A00F73D66 /* list.m in Sources */,
 				B58CB1811829CF6A00F73D66 /* ma.m in Sources */,
 				B58CB1821829CF6A00F73D66 /* mc.m in Sources */,

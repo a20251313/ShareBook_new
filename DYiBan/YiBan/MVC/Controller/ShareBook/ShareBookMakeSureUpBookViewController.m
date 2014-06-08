@@ -11,7 +11,7 @@
 #import "ShareBookMyQuanCenterViewController.h"
 #import "JSONKit.h"
 #import "JSON.h"
-
+#import "ShareBookChooseQuanCenterViewController.h"
 
 #define YDIMG(__name)  [UIImage imageNamed:__name]
 
@@ -24,7 +24,7 @@
 @end
 
 @implementation ShareBookMakeSureUpBookViewController
-@synthesize dictInfo = _dictInfo,dictResult,labelAutoQuan1;
+@synthesize dictInfo = _dictInfo,arrayResult,labelAutoQuan1;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -64,7 +64,7 @@
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
         [self.rightButton setHidden:YES];
-        dictResult = [[NSDictionary alloc]init];
+        arrayResult = [[NSMutableArray alloc]init];
         [self.view setBackgroundColor:[UIColor whiteColor]];
         
         viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
@@ -194,7 +194,7 @@
         
         UILabel *labelNumDou = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         [labelNumDou setBackgroundColor:[UIColor clearColor]];
-        [labelNumDou setText:@"10乐享斗"];
+        [labelNumDou setText:@"10乐享豆"];
         [viewBG addSubview:labelNumDou];
         RELEASE(labelNumDou);
         
@@ -266,7 +266,7 @@
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
-        if (labelAutoQuan1 && self.dictResult ) {
+        if (labelAutoQuan1 && self.arrayResult ) {
             
             
 //            [labelAutoQuan1 setText:[self.dictResult objectForKey:@"circle_name"]];
@@ -282,10 +282,9 @@
 
 -(void)doQuan{
 
-    ShareBookMyQuanCenterViewController *my = [[ShareBookMyQuanCenterViewController alloc]init];
+    ShareBookChooseQuanCenterViewController *my = [[ShareBookChooseQuanCenterViewController alloc] init];
     my.makesure = self;
     my.bEnter = NO;
-    my.bselct = YES;
     [self.drNavigationController pushViewController:my animated:YES];
     RELEASE(my);
 
@@ -368,13 +367,16 @@
 
 -(void)doChoose{
 
-    if (![self.dictResult objectForKey:@"circle_id"]) {
+    if (!self.arrayResult.count) {
         
         [DYBShareinstaceDelegate popViewText:@"请选择圈子" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
     }
     
+    NSString    *cirleIDs = [self.arrayResult componentsJoinedByString:@","];
+    
+    DLogInfo(@"doChoose cirleIDs:%@",cirleIDs);
     NSDictionary *dict = [_dictInfo objectForKey:@"book"];
-    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:@"1" deposit_type:@"1" deposit:@"20" loan_period:@"20" public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:[NSString stringWithFormat:@"6,5"] sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:@"1" deposit_type:@"1" deposit:@"20" loan_period:@"20" public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"20" sAlert:YES receive:self];
     [request setTag:2];
 
 
@@ -397,7 +399,7 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+                    //JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                     
                     //                    SHARED.sessionID = response.sessID;
                     //
