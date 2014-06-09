@@ -19,6 +19,10 @@
 
 
     UIImageView *viewBG;
+    
+    int          lent_way;  //借出方式
+    int           m_ideposit;  //押金
+    int           m_iperiod;    //loan_period
 }
 
 @end
@@ -151,6 +155,8 @@
         
         
         YDSlider *_slider3 = [[YDSlider alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelBorrowMeyon.frame) + CGRectGetWidth(labelBorrowMeyon.frame) + 5, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100, 20)];
+        _slider3.tag = 1001;
+        [_slider3 addTarget:self action:@selector(sliderValueChange:) forControlEvents:UIControlEventValueChanged];
         
         [viewBG addSubview:_slider3];
         RELEASE(_slider3);
@@ -180,6 +186,8 @@
         YDSlider *_slider4 = [[YDSlider alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelBorrowMeyon.frame) + CGRectGetWidth(labelBorrowMeyon.frame) + 5, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100, 20)];
         
         [viewBG addSubview:_slider4];
+        _slider4.tag = 1002;
+        [_slider4 addTarget:self action:@selector(sliderValueChange:) forControlEvents:UIControlEventValueChanged];
         RELEASE(_slider4);
         
         
@@ -195,6 +203,7 @@
         UILabel *labelNumDou = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         [labelNumDou setBackgroundColor:[UIColor clearColor]];
         [labelNumDou setText:@"10乐享豆"];
+        labelNumDou.tag = 1003;
         [viewBG addSubview:labelNumDou];
         RELEASE(labelNumDou);
         
@@ -205,6 +214,7 @@
         UILabel *labelNumTime = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100.0f, 20.0f)];
         [labelNumTime setBackgroundColor:[UIColor clearColor]];
         [labelNumTime setText:@"30天"];
+          labelNumTime.tag = 1004;
         [viewBG addSubview:labelNumTime];
         RELEASE(labelNumTime);
         
@@ -239,6 +249,9 @@
         [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
         [viewBG addSubview:labelAutoLogin];
         RELEASE(labelAutoLogin);
+        
+        m_iperiod = 10;
+        m_ideposit = 10;
         
 //        UIButton *btnAutoLogin = [[UIButton alloc]initWithFrame:CGRectMake(200.0f, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 20.0f, 20.0f)];
 //        [btnAutoLogin setBackgroundColor:[UIColor clearColor]];
@@ -305,6 +318,24 @@
 }
 
 
+
+-(void)sliderValueChange:(YDSlider*)slider
+{
+    if (slider.tag == 1001)
+    {
+        m_ideposit = slider.value*30;
+        UILabel *labelDou = (UILabel*)[viewBG viewWithTag:1003];
+        [labelDou setText:[NSString stringWithFormat:@"%d乐享豆",m_ideposit]];
+        
+        
+    }else
+    {
+        m_iperiod = slider.value*30;
+        UILabel *labelDou = (UILabel*)[viewBG viewWithTag:1004];
+        [labelDou setText:[NSString stringWithFormat:@"%d天",m_iperiod]];
+    }
+}
+
 -(void)doChoose1:(id)sender{
     
     UIButton *btn = (UIButton *)sender;
@@ -320,6 +351,8 @@
         
             [btn setSelected:YES];
             [btn104 setSelected:NO];
+            
+            lent_way = 1;
         }
     }else {
         
@@ -333,6 +366,7 @@
             
             [btn setSelected:YES];
             [btn103 setSelected:NO];
+            lent_way = 2;
         }
 
         
@@ -376,7 +410,7 @@
     
     DLogInfo(@"doChoose cirleIDs:%@",cirleIDs);
     NSDictionary *dict = [_dictInfo objectForKey:@"book"];
-    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:@"1" deposit_type:@"1" deposit:@"20" loan_period:@"20" public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"20" sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:[NSString stringWithFormat:@"%d",lent_way] deposit_type:@"1" deposit:[NSString stringWithFormat:@"%d",m_ideposit]  loan_period:[NSString stringWithFormat:@"%d",m_iperiod]  public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"20" sAlert:YES receive:self];
     [request setTag:2];
 
 

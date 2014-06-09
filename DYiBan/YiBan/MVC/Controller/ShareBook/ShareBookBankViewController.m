@@ -70,7 +70,7 @@
       
         [self.view setBackgroundColor:[UIColor whiteColor]];
         
-   [self.leftButton setHidden:YES];
+        [self.leftButton setHidden:YES];
         
         UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight , 320.0f, self.view.frame.size.height - self.headHeight)];
         [viewBG setBackgroundColor:[UIColor whiteColor]];

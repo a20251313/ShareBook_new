@@ -75,7 +75,7 @@
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
 //        SHARED.userId
         
-        NSString *strid = [dictInfo objectForKey:@"user_id"];
+      //  NSString *strid = [dictInfo objectForKey:@"user_id"];
         
         if (_mi) {
         
@@ -826,7 +826,7 @@ static NSString *cellName = @"cellName";
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:2.0f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                     
                 }

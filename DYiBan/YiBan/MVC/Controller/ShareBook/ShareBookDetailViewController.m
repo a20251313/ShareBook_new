@@ -285,7 +285,7 @@
     [labelMon release];
     
     UILabel *labelMon1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelMon.frame) + CGRectGetWidth(labelMon.frame)+ 15, CGRectGetHeight(labelTime.frame) + CGRectGetMinY(labelTime.frame) - 1, 200, 20)];
-    [labelMon1 setText:[NSString stringWithFormat:@"租 金：20乐享豆"]];
+    [labelMon1 setText:[NSString stringWithFormat:@"租 金：%@",[dict objectForKey:@"rent"]]];
     [labelMon1 setFont:[UIFont systemFontOfSize:13]];
     [self.view addSubview:labelMon1];
     [labelMon1 release];
@@ -421,7 +421,7 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+                   // JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                     [self creatDetailView:[[dict objectForKey:@"data"] objectForKey:@"book_detail"]];
                     //                    SHARED.sessionID = response.sessID;
                     //
