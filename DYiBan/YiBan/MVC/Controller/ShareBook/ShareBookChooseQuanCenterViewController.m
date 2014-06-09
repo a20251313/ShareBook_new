@@ -74,10 +74,12 @@
             
         }else{
             
-            [self setButtonImage:self.rightButton setImage:@"icon_map"];
+           // [self setButtonImage:self.rightButton setImage:@"icon_map"];
         }
         
         
+        
+            [self.rightButton setHidden:YES];
         //选中cell的集合
         if (!m_selectSet)
         {
@@ -107,30 +109,8 @@
         
         
         
-        
-        UISearchBar *searchView = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f,self.headHeight, 320, 44) ];
-        /*backgroundColor:[UIColor clearColor] placeholder:@"文件名" isHideOutBackImg:NO isHideLeftView:NO];*/
-        for (UIView *subview in [searchView subviews]) {
-            if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
-            {
-                [subview removeFromSuperview];
-            }else if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-                [(UITextField *)subview setBackground:[UIImage imageNamed:@"bg_search"]];
-                
-            }else if ([subview isKindOfClass:[UIButton class]]){
-                
-                
-            }
-        }
-        
-        [searchView setPlaceholder:@"圈子的名称"];
-        [searchView setBackgroundColor:[UIColor colorWithRed:248/255.0f green:248/255.0f blue:248/255.0f alpha:1.0f]];
-        [searchView setUserInteractionEnabled:YES];
-        [self.view addSubview:searchView];
-        RELEASE(searchView)
-        
-        
-        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10,self.headHeight + 44 + 20 , 300.0f , self.view.frame.size.height -self.headHeight - 44 - 50 - 20 - 30  )];
+    
+        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10,self.headHeight + 20 , 300.0f , self.view.frame.size.height -self.headHeight - 50 - 20 - 30  )];
         
         [viewBGTableView setBackgroundColor:[UIColor whiteColor]];
         [viewBGTableView.layer setBorderWidth:1];
@@ -140,12 +120,8 @@
         RELEASE(viewBGTableView);
         
 
-        
-        
-        UIImage *image = [UIImage imageNamed:@"menu_inactive"];
-        
-        
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20,self.headHeight + 44 + 20, 280.0f , self.view.frame.size.height -self.headHeight - 44 - 50 - 20 - 30 ) isNeedUpdate:YES];
+    
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20,self.headHeight + 20, 280.0f , self.view.frame.size.height -self.headHeight - 50 - 20 - 30 ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -159,20 +135,8 @@
             offset = 20;
         }
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(180.0f, CGRectGetHeight(self.view.frame) - 50 - offset, 120.0f, 40.0f)];
-        [btnOK setTag:102];
-        [btnOK setImage:image1 forState:UIControlStateNormal];
-        //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btnOK];
-        RELEASE(btnOK);
-        
-        [self addlabel_title:@"创建乐享圈" frame:btnOK.frame view:btnOK];
-        
-        
-        
  
-        UIButton *btnFinish = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 50 - offset, 120.0f, 40.0f)];
+        UIButton *btnFinish = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 50 - offset, 280.0f, 40.0f)];
         [btnFinish setTag:102];
         [btnFinish setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
