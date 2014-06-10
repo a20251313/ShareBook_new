@@ -144,10 +144,13 @@
         
         if([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         }
         else{
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
+             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         };
+        
         if (!_mi) {
             
             
@@ -682,8 +685,8 @@ static NSString *cellName = @"cellName";
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+       // NSDictionary *dict = (NSDictionary *)[signal object];
+      //  NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
         
@@ -702,19 +705,35 @@ static NSString *cellName = @"cellName";
     
 }
 
+
+
+-(void)keyboardWillHide:(NSNotification*)note
+{
+    UIView *viewBg = [self.view viewWithTag:201];
+    UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
+    //        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
+    [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
+    
+}
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-    static CGFloat normalKeyboardHeight = 216.0f;
+   // static CGFloat normalKeyboardHeight = 216.0f;
     
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
-    CGFloat distanceToMove = kbSize.height - normalKeyboardHeight;
+    
+   // DLogInfo(@"*********keyboardWillChangeFrame info:%@",info);
+   // CGFloat distanceToMove = kbSize.height - normalKeyboardHeight;
     
   
     UIView *viewBg = [self.view viewWithTag:201];
-    CGRect rect = viewBg.frame;
+ //   CGRect rect = viewBg.frame;
     
+    
+    UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
+      [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2-kbSize.height, 320.0f, imageBG.size.height/2)];
+    /*
     if (self.view.frame.size.height - rect.origin.y < 100) {
         
         rect.size.height = rect.size.height - kbSize.height  - 60 ;
@@ -725,7 +744,7 @@ static NSString *cellName = @"cellName";
 //        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
         [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
     
-    }
+    }*/
     
     
     //自适应代码
@@ -748,8 +767,7 @@ static NSString *cellName = @"cellName";
         [filed resignFirstResponder];
         
         UIView *viewBg = [self.view viewWithTag:201];
-        CGRect rect = viewBg.frame;
-        
+       // CGRect rect = viewBg.frame;
         
             UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
             //        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
@@ -805,7 +823,8 @@ static NSString *cellName = @"cellName";
                     
                 }
             }
-        }else if(request.tag == 3){
+        }else if(request.tag == 3)
+        {
             
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -824,6 +843,11 @@ static NSString *cellName = @"cellName";
  
                 }
                 else{
+                    NSString    *strOrder = [[NSString alloc]initWithString: [[dict objectForKey:@"data"] objectForKey:@"order_id"]];
+                    if (strOrder && [strOrder length])
+                    {
+                        order_id = strOrder;
+                    }
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:2.0f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
@@ -832,8 +856,7 @@ static NSString *cellName = @"cellName";
                 }
             }
             
-        }
-    }else if (request.tag == 4){
+        }else if (request.tag == 4){
         
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -855,15 +878,19 @@ static NSString *cellName = @"cellName";
                 }
             }
             
-        } else{
+        }else if(request.tag == 2)
+        {
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             
             [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+        }else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
             
-            
-
-    
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+    }
+        
     }
 }
 
