@@ -10,13 +10,15 @@
 #import "ShareBookCell.h"
 #import "ShareBookDetailViewController.h"
 #import "UITableView+property.h"
-
+#import "JSONKit.h"
+#import "JSON.h"
 
 
 @interface ShareBookListViewController (){
 
 
     DYBUITableView * tbDataBank11 ;
+    NSMutableArray  *m_dataArray;
 
 }
 
@@ -95,6 +97,15 @@
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
         
+        
+        if (!m_dataArray)
+        {
+            m_dataArray = [[NSMutableArray alloc] init];
+        }
+        MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:[NSString stringWithFormat:@"%d",self.type] sAlert:YES receive:self];
+        [request setTag:1];
+        
+        
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
         DLogInfo(@"rrr");
@@ -106,7 +117,7 @@
 
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
+//static NSString *cellName = @"cellName";
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
@@ -118,7 +129,7 @@ static NSString *cellName = @"cellName";
         NSNumber *s;
         
         //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:10];
+        s = [NSNumber numberWithInteger:m_dataArray.count];
         //        }else{
         //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
         //        }
@@ -151,7 +162,7 @@ static NSString *cellName = @"cellName";
         cell.tb  = tbDataBank11;
         cell.type = _type;
         cell.indexPath = indexPath;
-        [cell creatCell:nil];
+        [cell creatCell:m_dataArray[indexPath.row]];
         //        NSDictionary *dictInfoFood = nil;
         //        [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
@@ -163,9 +174,10 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+       NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         ShareBookDetailViewController *bookDetail = [[ShareBookDetailViewController alloc]init];
+        bookDetail.dictInfo = m_dataArray[indexPath.row];
         [self.drNavigationController pushViewController:bookDetail animated:YES];
         RELEASE(bookDetail);
         
@@ -182,6 +194,42 @@ static NSString *cellName = @"cellName";
     
     
     
+}
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    
+    if ([request succeed])
+    {
+        //        JsonResponse *response = (JsonResponse *)receiveObj;
+        if (request.tag == 1) {
+            
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
+                    
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]]];
+                   
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }
+    }
 }
 
 

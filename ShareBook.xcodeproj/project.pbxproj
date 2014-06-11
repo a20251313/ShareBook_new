@@ -3966,11 +3966,7 @@
 			isa = PBXGroup;
 			children = (
 				B529F0B2187B996C00F9060D /* Default-568h@2x.png */,
-				B5A2B354186A8A7100774D94 /* CoreLocation.framework */,
 				B535D0DC1864227900285D0B /* Default@2x.png */,
-				B5D9DC931834AFB0002B1C74 /* AudioToolbox.framework */,
-				B5D9DC911834AFA4002B1C74 /* CoreAudio.framework */,
-				B58FAFB3182762AC00B01560 /* AssetsLibrary.framework */,
 				C942205E17A89E430054E5BC /* ShareBook */,
 				C942205717A89E430054E5BC /* Frameworks */,
 				C942205617A89E430054E5BC /* Products */,
@@ -3990,6 +3986,10 @@
 			children = (
 				1872EA1018F5A11200EF3BF4 /* libz.1.1.3.dylib */,
 				1872EA0E18F5A10700EF3BF4 /* libstdc++.dylib */,
+				B5A2B354186A8A7100774D94 /* CoreLocation.framework */,
+				B5D9DC931834AFB0002B1C74 /* AudioToolbox.framework */,
+				B5D9DC911834AFA4002B1C74 /* CoreAudio.framework */,
+				B58FAFB3182762AC00B01560 /* AssetsLibrary.framework */,
 				B527904418BB14040062637C /* Security.framework */,
 				C925F7E717BC646C00035D05 /* Accelerate.framework */,
 				C942220217A8A1D70054E5BC /* CoreVideo.framework */,

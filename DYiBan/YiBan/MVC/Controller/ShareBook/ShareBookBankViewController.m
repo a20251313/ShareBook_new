@@ -82,7 +82,7 @@
         
         UIImage *image = [UIImage imageNamed:@"options_bg"];
         DLogInfo(@"dddd %@",SHARED.userId);
-        MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:SHARED.userId sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil sAlert:YES receive:self];
         [request setTag:2];
         
         

@@ -2004,6 +2004,10 @@
 
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
 //    [dict setValue:tag_id  forKey:@"tag_id"];
+    if (tag_id && [tag_id intValue] < 10)
+    {
+        [dict setObject:tag_id forKey:@"tag_id"];
+    }
     [dict setValue:@"book_list" forKey:INTERFACEDOACTION];
     return dict;
 
