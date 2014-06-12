@@ -60,6 +60,47 @@
 
 
 
+-(void)setAgreeViewShow
+{
+    
+    BOOL bhide = ([[[dictRR objectForKey:@"order"] objectForKey:@"order_status"] intValue] != 1);
+    
+    if (bhide) {
+        UIView *view = [self.headview viewWithTag:100];
+        view.hidden = YES;
+    }else
+    {
+        
+        UIView *view = [self.headview viewWithTag:100];
+        if (view)
+        {
+              view.hidden = NO;
+        }else
+        {
+            view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
+            [view setTag:100];
+            [view setBackgroundColor:[UIColor redColor]];
+            [self.headview addSubview:view];
+            //                RELEASE(view);
+            
+            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
+            [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
+            [btn1 setTitle:@"同意" forState:UIControlStateNormal];
+            [view addSubview:btn1];
+            RELEASE(btn1);
+            
+            UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
+            [btn2 addTarget:self action:@selector(tongyi1) forControlEvents:UIControlEventTouchUpInside];
+            [btn2 setTitle:@"不" forState:UIControlStateNormal];
+            [view addSubview:btn2];
+            RELEASE(btn2);
+            
+        }
+      
+    }
+    
+}
+
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
@@ -79,30 +120,7 @@
         
         if (_mi) {
         
-            UIView *tt = [self.headview viewWithTag:100];
-            if (!tt) {
-                UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
-                [view setTag:100];
-                [view setBackgroundColor:[UIColor redColor]];
-                [self.headview addSubview:view];
-//                RELEASE(view);
-                
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
-                [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"同意" forState:UIControlStateNormal];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-                
-                UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
-                [btn2 addTarget:self action:@selector(tongyi1) forControlEvents:UIControlEventTouchUpInside];
-                [btn2 setTitle:@"不" forState:UIControlStateNormal];
-                [view addSubview:btn2];
-                RELEASE(btn2);
-                
-        
-                
-
-            }
+            [self setAgreeViewShow];
         
         }else{
 //
@@ -838,6 +856,11 @@ static NSString *cellName = @"cellName";
                     if (_mi) {
                         dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
                         order_id = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"order_id"] ];
+                        
+                        if ([[[dictRR objectForKey:@"order"] objectForKey:@"order_status"] intValue] != 1)
+                        {
+                            [self setAgreeViewShow];
+                        }
                         [self creatView:dictRR];
                     }else{
                     

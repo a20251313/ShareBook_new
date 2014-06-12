@@ -310,7 +310,7 @@
     
     UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 30, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 , 100.0f, 20.0f)];
     [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
-    [labelAutoLogin setText:@"自动登陆"];
+    [labelAutoLogin setText:@"记住密码"];
     [viewLogin addSubview:labelAutoLogin];
     RELEASE(labelAutoLogin);
     
