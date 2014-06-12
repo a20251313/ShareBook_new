@@ -2217,7 +2217,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 +(NSMutableDictionary *)order_confirm_msg_id:(NSString *)msg_id type:(NSString *)type{
 
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
-    [dict setValue:msg_id forKey:@"msg_id"];
+    [dict setValue:msg_id forKey:@"order_id"];//msg_id
     [dict setValue:type forKey:@"type"];
     [dict setValue:@"order_confirm" forKey:INTERFACEDOACTION];
     return dict;

@@ -17,16 +17,16 @@
 #import "UIImageView+WebCache.h"
 
 @implementation ShareBookCell{
-
+    
     UIView *swipView;
     CGPoint ptBegin;
     CGPoint currentCenter; //cell当前的中心
     BOOL isOpen;
     MagicUILabel *labelFrom;
     
-//    DYBDataBankSelectBtn* btnBottom;
+    //    DYBDataBankSelectBtn* btnBottom;
     MagicUIImageView *swipIcan;
-
+    
 }
 
 @synthesize cellBackground = _cellBackground,tb = _tb,indexPath = _indexPath;
@@ -47,7 +47,7 @@ DEF_SIGNAL(FINISHSWIP)
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization codsee;
-//        [self creatCell];
+        //        [self creatCell];
     }
     return self;
 }
@@ -55,19 +55,19 @@ DEF_SIGNAL(FINISHSWIP)
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
 -(void)creatCell:(NSDictionary *)dict{
-
+    
     UIButton *bgBtn = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
     [bgBtn setBackgroundColor:[UIColor clearColor]];
     [bgBtn addTarget:self action:@selector(justPinB) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:bgBtn];
     RELEASE(bgBtn);
     
-   
+    
     
     
     
@@ -92,71 +92,96 @@ DEF_SIGNAL(FINISHSWIP)
     
     
     
-     [swipView addSignal:[UIView TAP] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil] target:self];
+    NSDictionary    *dicInfo = [dict objectForKey:@"book"];
+    NSString    *strImageKey = @"image";
+    NSString    *strauthorKey = @"author";
+    NSString    *strPublisherKey = @"publisher";
+    NSString    *strLentWay = @"lent_way";
+    NSString    *strNameKey = @"title";
+    if ([dicInfo count])
+    {
+        strImageKey = @"book_image";
+        strauthorKey = @"book_author";
+        strPublisherKey = @"publisher";
+        strLentWay = @"loan_way";
+        strNameKey = @"book_name";
+        
+    }else
+    {
+        dicInfo = dict;
+    }
+    
+    
+    
+    
+    
+    [swipView addSignal:[UIView TAP] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil] target:self];
     
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
     [imageBook setBackgroundColor:[UIColor redColor]];
-//    [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
-    [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dict objectForKey:@"image"]] placeholderImage:imageIcon];
+    //    [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
+    [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
     [imageBook release];
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5, 250, 20)];
     [labelName setBackgroundColor:[UIColor clearColor]];
-    [labelName setText:[dict objectForKey:@"title"]];
+    [labelName setText:[dicInfo objectForKey:strNameKey]];
     [swipView addSubview:labelName];
     [labelName release];
     
     UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 20)];
-    [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dict objectForKey:@"author"]]];
+    [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicInfo objectForKey:strauthorKey]]];
     [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelAuther setBackgroundColor:[UIColor clearColor]];
-
+    
     [labelAuther setFont:[UIFont systemFontOfSize:15]];
     [swipView addSubview:labelAuther];
     [labelAuther release];
     
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dict objectForKey:@"publisher"]]];
+    [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
     [labelPublic setBackgroundColor:[UIColor clearColor]];
-
+    
     [swipView addSubview:labelPublic];
     [labelPublic setFont:[UIFont systemFontOfSize:14]];
     [labelPublic release];
     
     UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
-    [labelAddr setText:@"长宁区娄山管路2董"];
+    [labelAddr setText:[dict objectForKey:@"address"]];
     [swipView addSubview:labelAddr];
     [labelAddr setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelAddr setBackgroundColor:[UIColor clearColor]];
-
+    
     [labelAddr setFont:[UIFont systemFontOfSize:12]];
     [labelAddr sizeToFit];
     [labelAddr release];
     
-    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelAddr.frame) + CGRectGetMinX(labelAddr.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
-    [labelModel setText:[dict objectForKey:@"lent_way"]];
+   // UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelAddr.frame) + CGRectGetMinX(labelAddr.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
+    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(200, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
+    [labelModel setText:[dict objectForKey:strLentWay]];
     [labelModel setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelModel setBackgroundColor:[UIColor clearColor]];
-
+    
     [swipView addSubview:labelModel];
     [labelModel setFont:[UIFont systemFontOfSize:12]];
     [labelModel sizeToFit];
     [labelModel release];
-//6.5 * 100 =
+    //6.5 * 100 =
     
     UIImage *imageTitle = [UIImage imageNamed:@"title_bg"];
-    UIImageView *imageViewLabel = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, imageTitle.size.width/2, imageTitle.size.height/2)];
+  //  UIImageView *imageViewLabel = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, imageTitle.size.width/2, imageTitle.size.height/2)];
+    UIImageView *imageViewLabel = [[UIImageView alloc]initWithFrame:CGRectMake(240, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, imageTitle.size.width/2, imageTitle.size.height/2)];
     [imageViewLabel setImage:[UIImage imageNamed:@"title_bg"]];
     [swipView addSubview:imageViewLabel];
     RELEASE(imageViewLabel);
     
     
     UILabel *labelMon = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 200, 20)];
-   ;
-    [labelMon setText: [NSString stringWithFormat:@"%@d豆押金",[dict objectForKey:@"deposit"]]];
+    ;
+    [labelMon setText: [NSString stringWithFormat:@"%@豆押金",[dicInfo objectForKey:@"deposit"]]];
     [imageViewLabel addSubview:labelMon];
     [labelMon setTextColor:[UIColor whiteColor]];
     [labelMon setBackgroundColor:[UIColor clearColor]];
@@ -164,11 +189,12 @@ DEF_SIGNAL(FINISHSWIP)
     [labelMon sizeToFit];
     [labelMon release];
     [labelMon setBackgroundColor:[UIColor clearColor]];
-
     
-    UIImage *imageTitle1 = [UIImage imageNamed:@"title_bg"];
-    UIImageView *imageViewLabel1 = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3 - 40, imageTitle.size.width/2, imageTitle.size.height/2)];
-    [imageViewLabel1 setImage:[UIImage imageNamed:@"title_bg"]];
+    
+
+   // UIImageView *imageViewLabel1 = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3 - 40, imageTitle.size.width/2, imageTitle.size.height/2)];
+    UIImageView *imageViewLabel1 = [[UIImageView alloc]initWithFrame:CGRectMake(240,CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3 - 40, imageTitle.size.width/2, imageTitle.size.height/2)];
+    [imageViewLabel1 setImage:imageTitle];
     [swipView addSubview:imageViewLabel1];
     RELEASE(imageViewLabel1);
     
@@ -181,9 +207,9 @@ DEF_SIGNAL(FINISHSWIP)
     [labelMon1 setFont:[UIFont systemFontOfSize:12]];
     [labelMon1 sizeToFit];
     [labelMon1 release];
-
+    
     [swipView setBackgroundColor:[UIColor colorWithRed:246.0f/255 green:246.0f/255 blue:246.0f/255 alpha:1.0f]];
-
+    
     UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 90-1, 320.0f, 1)];
     [imageLine setImage:[UIImage imageNamed:@"line3"]];
     [swipView addSubview:imageLine];
@@ -214,15 +240,15 @@ DEF_SIGNAL(FINISHSWIP)
                         //恢复swip view frame
                         [swipView setFrame:CGRectMake(0.0f, 0, swipView.frame.size.width, swipView.frame.size.height)];
                         
-//                        DragonViewController *con=(DragonViewController *)[self superCon];
-//                        if ([con isKindOfClass:[DYBDataBankChildrenListViewController class]])
-//                        {
-//                            [con.drNavigationController handleSwitchView:recognizer];
-//                        }else
-//                        {
-//                            DYBUITabbarViewController *tabbar=[DYBUITabbarViewController sharedInstace];
-//                            [[tabbar getThreeview] oneViewSwipe:panRecognizer];
-//                        }
+                        //                        DragonViewController *con=(DragonViewController *)[self superCon];
+                        //                        if ([con isKindOfClass:[DYBDataBankChildrenListViewController class]])
+                        //                        {
+                        //                            [con.drNavigationController handleSwitchView:recognizer];
+                        //                        }else
+                        //                        {
+                        //                            DYBUITabbarViewController *tabbar=[DYBUITabbarViewController sharedInstace];
+                        //                            [[tabbar getThreeview] oneViewSwipe:panRecognizer];
+                        //                        }
                         
                         return;
                     }
@@ -312,9 +338,9 @@ DEF_SIGNAL(FINISHSWIP)
 }
 
 -(void)justPinB{
-
-
-
+    
+    
+    
 }
 
 
@@ -345,7 +371,7 @@ DEF_SIGNAL(FINISHSWIP)
         [swipIcan setFrame:CGRectMake(320  - SWIPICAN_WIDTH - (25 - SWIPICAN_WIDTH), (84 - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
         
         //发送信号到上层页面
-//        [self sendViewSignal:[DYBDataBankListCell FINISHSWIP] withObject:nil from:self target:_sendMegTarget];
+        //        [self sendViewSignal:[DYBDataBankListCell FINISHSWIP] withObject:nil from:self target:_sendMegTarget];
         isOpen = YES;
         
         [UIView animateWithDuration:0.3 animations:^{
@@ -386,7 +412,7 @@ DEF_SIGNAL(FINISHSWIP)
                 
                 [tbv set_selectIndex_now:nil];
                 
-            }        
+            }
             
         }];
     }
@@ -406,11 +432,11 @@ DEF_SIGNAL(FINISHSWIP)
 }
 -(void)cellRemoveTapView{
     
-//    UIView * view = [swipView viewWithTag:TAPVIEWTAG];
-//    if (view) {
-//        [view removeFromSuperview];
-//        
-//    }
+    //    UIView * view = [swipView viewWithTag:TAPVIEWTAG];
+    //    if (view) {
+    //        [view removeFromSuperview];
+    //
+    //    }
     [swipIcan setImage:[UIImage imageNamed:@"slide_more"]];
     [swipIcan setFrame:CGRectMake(320 - SWIPICAN_WIDTH, (84 - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
 }

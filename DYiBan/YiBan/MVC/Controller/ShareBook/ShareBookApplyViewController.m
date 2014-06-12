@@ -135,7 +135,7 @@
        
         
         
-         arrayDate = [[NSMutableArray alloc]init];
+        arrayDate = [[NSMutableArray alloc]init];
 //        [self.rightButton setHidden:YES];
         bKeyShow = NO;
         [self.view setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
@@ -258,7 +258,10 @@
 
 -(void)tongyi{
 
-    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] type:@"1" sAlert:YES receive:self];
+    
+    
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
+    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
     [request setTag:4];
     
 
@@ -829,8 +832,8 @@ static NSString *cellName = @"cellName";
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
-                if (result) {
+                int statusCode = [[dict objectForKey:@"response"] intValue];
+                if (statusCode == 100) {
                     
                     if (_mi) {
                         dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
@@ -843,10 +846,10 @@ static NSString *cellName = @"cellName";
  
                 }
                 else{
-                    NSString    *strOrder = [[NSString alloc]initWithString: [[dict objectForKey:@"data"] objectForKey:@"order_id"]];
+                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
                     if (strOrder && [strOrder length])
                     {
-                        order_id = strOrder;
+                        order_id = [strOrder retain];
                     }
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
@@ -860,12 +863,12 @@ static NSString *cellName = @"cellName";
         
             NSDictionary *dict = [request.responseString JSONValue];
             
+              int statusCode = [[dict objectForKey:@"response"] intValue];
             if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
-                if (!result) {
+                if (statusCode == 100) {
                     
                     
-//                    [DYBShareinstaceDelegate popViewText:@"" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                  [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
 
                 }

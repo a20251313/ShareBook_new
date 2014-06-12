@@ -136,6 +136,9 @@
 }
 
 -(void)addOK{
+    
+    [self.drNavigationController popToRootViewControllerAnimated:YES];
+    return;
     MagicRequest *request = [DYBHttpMethod shareBook_security_logout_sAlert:YES receive:self];
     [request setTag:2];
 
@@ -279,7 +282,7 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+                    //JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                     
 //                    SHARED.sessionID = response.sessID;
 //                    

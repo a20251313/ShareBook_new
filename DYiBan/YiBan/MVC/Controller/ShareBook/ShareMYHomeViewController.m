@@ -163,7 +163,8 @@ static NSString *cellName = @"cellName";
         
         ShareBookApplyViewController *apple = [[ShareBookApplyViewController alloc]init];
         
-        apple.mi = [[arrayResult objectAtIndex:indexPath.row] objectForKey:@"order_id"];
+        NSString    *orderId = [arrayResult[indexPath.row] objectForKey:@"order_id"];
+        apple.mi = orderId;//[[arrayResult objectAtIndex:indexPath.row] objectForKey:@"order_id"];
         [self.drNavigationController pushViewController:apple animated:YES];
         
         
@@ -299,7 +300,7 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+                   // JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                   
                     arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"msg_list"]];
                     

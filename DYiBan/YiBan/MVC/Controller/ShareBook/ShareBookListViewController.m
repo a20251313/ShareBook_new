@@ -19,6 +19,9 @@
 
     DYBUITableView * tbDataBank11 ;
     NSMutableArray  *m_dataArray;
+    BOOL            m_bHasNext;
+    int             m_iCurrentPage;
+    int             m_ipageNum;
 
 }
 
@@ -102,8 +105,11 @@
         {
             m_dataArray = [[NSMutableArray alloc] init];
         }
-        MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:[NSString stringWithFormat:@"%d",self.type] sAlert:YES receive:self];
-        [request setTag:1];
+        
+        
+        
+        
+        [self requestOrderList];
         
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
@@ -115,6 +121,29 @@
     }
 }
 
+
+
+-(void)requestOrderList
+{
+    MagicRequest *request = nil;
+    switch (self.type)
+    {
+        case 0:
+            request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:@"1" num:@"20" sAlert:YES receive:self];
+            break;
+        case 1:
+            request = [DYBHttpMethod order_list_kind:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
+            break;
+        case 2:
+            request = [DYBHttpMethod order_list_kind:@"2" page:@"1" num:@"20" sAlert:YES receive:self];
+            break;
+            
+        default:
+            break;
+    }
+    
+    request.tag = self.type+1;
+}
 
 #pragma mark- 只接受UITableView信号
 //static NSString *cellName = @"cellName";
@@ -204,6 +233,8 @@
     if ([request succeed])
     {
         //        JsonResponse *response = (JsonResponse *)receiveObj;
+        
+        //用户图书列表
         if (request.tag == 1) {
             
             
@@ -216,8 +247,60 @@
                     
                     //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
                     
-                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]]];
+                    m_bHasNext = [[dict valueForKey:@"havenext"] boolValue];
+                    
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"book_list"]]];
                    
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 2)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
+                    
+                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
+                    
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if (request.tag == 3)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
+                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
+                    
                     [tbDataBank11 reloadData];
                     
                 }else{

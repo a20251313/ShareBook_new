@@ -36,20 +36,26 @@
     [self addSubview:imageIcon];
     [imageIcon release];
     
+    NSString    *strName = [[dict objectForKey:@"user"] objectForKey:@"username"];
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 10, 5, 100.0f, 20.0f)];
-    [labelName setText:@""];
+    [labelName setText:strName];
     [self addSubview:labelName];
     [labelName release];
     
-    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 10, 25, 200, 20)];
+    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 10, 25, 240, 20)];
     [labelMSG setText:[dict objectForKey:@"content"]];
     [labelMSG setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelMSG setFont:[UIFont systemFontOfSize:12]];
     [self addSubview:labelMSG];
     [labelMSG release];
     
-    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(240, 5,80 , 20)];
-    [labelTime setText:@"2014-02-09"];
+    
+    NSDate      *date = [NSDate dateWithTimeIntervalSince1970:[[dict objectForKey:@"time"] floatValue]];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"YYYY-MM-dd"];
+    
+    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(220, 5,100 , 20)];
+    [labelTime setText:[format stringFromDate:date]];
     [labelTime setFont:[UIFont systemFontOfSize:14.0f]];
     [self addSubview:labelTime];
     [labelTime release];
