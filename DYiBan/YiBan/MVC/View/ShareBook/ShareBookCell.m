@@ -21,7 +21,7 @@
 @interface ShareBookCell ()
 
 @property(nonatomic,retain)ShareBookCellBtnCenterView *centerView;
-@property(nonatomic,retain)NSDictionary *dicData;
+
 
 @end
 @implementation ShareBookCell{

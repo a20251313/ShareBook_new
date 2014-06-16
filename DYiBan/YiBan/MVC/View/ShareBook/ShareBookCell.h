@@ -30,6 +30,7 @@
 @property (nonatomic,retain) NSString *strTag; //cell 设置Tag
 
 @property (nonatomic,assign) NSInteger type;
+@property (nonatomic,retain)NSDictionary   *dicData;
 
 AS_SIGNAL(FINISHSWIP)
 AS_SIGNAL(CANCEL)

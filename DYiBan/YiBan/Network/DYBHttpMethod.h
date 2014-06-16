@@ -508,4 +508,17 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_order_pub_id:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive;
 
+
++(MagicRequest *)book_order_launchbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_order_confirmationbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_order_comment:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_order_modify:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_order_receiptbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point sAlert:(BOOL)isAlert receive:(id)receive;
+
 @end

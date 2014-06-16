@@ -55,11 +55,91 @@
 
 
 
+
+-(NSDictionary*)getDataFromsignal:(MagicViewSignal*)signal
+{
+    if (!signal)
+    {
+        return nil;
+    }
+    
+    if ([[signal source] isKindOfClass:[UIView class]])
+    {
+        UIView  *subView = [signal source];
+        while (subView.superview)
+        {
+            if ([subView.superview isKindOfClass:[ShareBookCell class]])
+            {
+                ShareBookCell   *cell = (ShareBookCell*)subView.superview;
+                return cell.dicData;
+            }else
+            {
+                subView = subView.superview;
+            }
+            
+        }
+    }
+    
+    return nil;
+}
+
+
+
+//order_receiptbook
 - (void)handleViewSignal:(MagicViewSignal *)signal
 {
+    NSDictionary    *dicData = [self getDataFromsignal:signal];
+    
+    DLogInfo(@"%@ handleViewSignal:signal signal object:%@//%@",[signal object],signal,dicData);
+    
     if ([signal is:[ShareBookCellBtnCenterView CLICKREUPLOAD]])
     {
-        DLogInfo(@"handleViewSignal:signal signal object:%@",signal,[signal object]);
+      
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKBORROWHIS]])
+    {
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKDROP]])
+    {
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBOOK]])
+    {
+        MagicRequest    *request = [DYBHttpMethod book_book_comment:[dicData valueForKey:@"pub_id"] content:@"很好啊" points:@"5" sAlert:YES receive:self];
+        request.tag = 2000;
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBROWWER]])
+    {
+        MagicRequest    *request = [DYBHttpMethod book_order_comment:[dicData valueForKey:@"order_id"] sAlert:YES receive:self];
+        request.tag = 3000;
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKMAKESURERETURN]])
+    {
+        MagicRequest    *request = [DYBHttpMethod book_order_confirmationbook:[dicData valueForKey:@"order_id"] sAlert:YES receive:self];
+        request.tag = 4000;
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKNOTICERETURN]])
+    {
+       
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKRETURNBOOK]])
+    {
+        
+        //order_launchbook
+        
+        int orderstatus = [[dicData valueForKey:@"order_status"] intValue];
+        if (orderstatus == 2 || orderstatus == 3)
+        {
+            MagicRequest    *request = [DYBHttpMethod book_order_receiptbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
+            request.tag = 1000;
+            
+        }else if(orderstatus == 4)
+        {
+            MagicRequest    *request = [DYBHttpMethod book_order_launchbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
+            request.tag = 1000;
+        }
+  
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKSHARE]])
+    {
+        
     }
 }
 
@@ -321,7 +401,45 @@
                     
                 }
             }
+        }else if (request.tag == 1000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 4000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+    
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
         }
+        
     }
 }
 
