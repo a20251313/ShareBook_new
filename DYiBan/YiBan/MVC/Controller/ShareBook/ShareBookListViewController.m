@@ -13,7 +13,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "ShareBookCellBtnCenterView.h"
-
+#import "ShareBookApplyViewController.h"
 
 @interface ShareBookListViewController (){
 
@@ -30,6 +30,7 @@
 
 @implementation ShareBookListViewController
 @synthesize  type = _type;
+@synthesize headTitle;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -151,6 +152,10 @@
     {
         //        [self.rightButton setHidden:YES];
         [self.headview setTitle:@"图书"];
+        if (self.headTitle)
+        {
+            [self.headview setTitle:self.headTitle];
+        }
         
         
         //        [self.leftButton setHidden:YES];
@@ -291,14 +296,29 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
         
-    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-       NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/
+    {
         
-        ShareBookDetailViewController *bookDetail = [[ShareBookDetailViewController alloc]init];
-        bookDetail.dictInfo = m_dataArray[indexPath.row];
-        [self.drNavigationController pushViewController:bookDetail animated:YES];
-        RELEASE(bookDetail);
+        NSDictionary *dict = (NSDictionary *)[signal object];
+        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+        if (_type == 0)
+        {
+            ShareBookDetailViewController *bookDetail = [[ShareBookDetailViewController alloc]init];
+            bookDetail.dictInfo = m_dataArray[indexPath.row];
+            [self.drNavigationController pushViewController:bookDetail animated:YES];
+            RELEASE(bookDetail);
+            
+        }else
+        {
+            ShareBookApplyViewController *bookApply = [[ShareBookApplyViewController alloc]init];
+            bookApply.mi = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
+            [self.drNavigationController pushViewController:bookApply animated:YES];
+            RELEASE(bookApply);
+            
+        }
+  
+        
+
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{

@@ -191,12 +191,10 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
-    
+
     ShareBookListViewController *list = [[ShareBookListViewController alloc]init];
     list.type = indexPath.row;
+    list.headTitle = arraySouce[indexPath.row];
     [self.drNavigationController pushViewController:list animated:YES];
     RELEASE(list);
 
