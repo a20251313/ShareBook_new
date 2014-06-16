@@ -16,6 +16,14 @@
 #import "ShareBookListViewController.h"
 #import "UIImageView+WebCache.h"
 
+
+
+@interface ShareBookCell ()
+
+@property(nonatomic,retain)ShareBookCellBtnCenterView *centerView;
+@property(nonatomic,retain)NSDictionary *dicData;
+
+@end
 @implementation ShareBookCell{
     
     UIView *swipView;
@@ -35,7 +43,7 @@
 @synthesize btnType = _btnType,labelGood = _labelGood,type = _type;
 @synthesize labelName = _labelName,labelBad = _labelBad,strTag = _strTag;
 @synthesize  beginOrPause = _beginOrPause,imageViewDown = _imageViewDown;
-
+@synthesize dicData,centerView;
 
 DEF_SIGNAL(CANCEL)
 DEF_SIGNAL(FINISHSWIP)
@@ -61,6 +69,8 @@ DEF_SIGNAL(FINISHSWIP)
 
 -(void)creatCell:(NSDictionary *)dict{
     
+    
+    self.dicData = dict;
     UIButton *bgBtn = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
     [bgBtn setBackgroundColor:[UIColor clearColor]];
     [bgBtn addTarget:self action:@selector(justPinB) forControlEvents:UIControlEventTouchUpInside];
@@ -78,6 +88,8 @@ DEF_SIGNAL(FINISHSWIP)
         ShareBookCellBtnCenterView *btnView = [[ShareBookCellBtnCenterView alloc]init];
         [btnView setViewBG:self];
         [btnView addBtnView:_type];
+        [btnView setDicInfo:dict];
+        self.centerView = btnView;
         
         
         
@@ -142,7 +154,14 @@ DEF_SIGNAL(FINISHSWIP)
     
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
+    if ([dicInfo valueForKey:strPublisherKey])
+    {
+       [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
+    }else
+    {
+        [labelPublic setText:@""];
+    }
+ 
     [labelPublic setBackgroundColor:[UIColor clearColor]];
     
     [swipView addSubview:labelPublic];
@@ -226,6 +245,7 @@ DEF_SIGNAL(FINISHSWIP)
         
         {
             
+            [self.centerView setDicInfo:self.dicData];
             if ([recognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
                 UIPanGestureRecognizer *panRecognizer = (UIPanGestureRecognizer *)recognizer;
                 
@@ -239,6 +259,7 @@ DEF_SIGNAL(FINISHSWIP)
                         
                         //恢复swip view frame
                         [swipView setFrame:CGRectMake(0.0f, 0, swipView.frame.size.width, swipView.frame.size.height)];
+                 
                         
                         //                        DragonViewController *con=(DragonViewController *)[self superCon];
                         //                        if ([con isKindOfClass:[DYBDataBankChildrenListViewController class]])
@@ -349,8 +370,8 @@ DEF_SIGNAL(FINISHSWIP)
     
 }
 -(void)judgeSlideRange_Point:(CGPoint )point parameter:(float)param{
-    
-    
+   
+    [self.centerView setDicInfo:self.dicData];
     if (point.x > param) {
         
         [swipIcan setImage:[UIImage imageNamed:@"slide_more"]];
@@ -362,6 +383,7 @@ DEF_SIGNAL(FINISHSWIP)
         [UIView animateWithDuration:0.3 animations:^{
             
             [swipView setFrame:CGRectMake(0.0f, 0, swipView.frame.size.width, swipView.frame.size.height)];
+            
         }];
         
     }else{

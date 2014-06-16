@@ -10,6 +10,9 @@
 
 @implementation ShareBookCellBtnCenterView
 @synthesize viewBG;
+@synthesize dicInfo;
+
+DEF_SIGNAL(CLICKREUPLOAD)
 //- (id)initWithFrame:(CGRect)frame
 //{
 //    self = [super initWithFrame:frame];
@@ -58,6 +61,7 @@
     
     MagicUIButton *btnBookSecond = [[MagicUIButton alloc]initWithFrame:CGRectMake(30.0f + 10, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
     [btnBookSecond setImage:[UIImage imageNamed:@"btn_added"] forState:UIControlStateNormal];
+    [btnBookSecond addSignal:[ShareBookCellBtnCenterView CLICKREUPLOAD] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
     [viewCell addSubview:btnBookSecond ];
     RELEASE(btnBookSecond);
     

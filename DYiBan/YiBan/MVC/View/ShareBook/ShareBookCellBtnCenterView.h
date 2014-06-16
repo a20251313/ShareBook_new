@@ -11,5 +11,7 @@
 @interface ShareBookCellBtnCenterView : NSObject
 
 @property(nonatomic,retain) UIView *viewBG;
+@property(nonatomic,retain) NSDictionary *dicInfo;
+AS_SIGNAL(CLICKREUPLOAD)
 -(void)addBtnView:(int)type;
 @end

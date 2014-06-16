@@ -12,6 +12,7 @@
 #import "UITableView+property.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "ShareBookCellBtnCenterView.h"
 
 
 @interface ShareBookListViewController (){
@@ -52,6 +53,15 @@
 }
 
 
+
+
+- (void)handleViewSignal:(MagicViewSignal *)signal
+{
+    if ([signal is:[ShareBookCellBtnCenterView CLICKREUPLOAD]])
+    {
+        DLogInfo(@"handleViewSignal:signal signal object:%@",signal,[signal object]);
+    }
+}
 
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
