@@ -83,7 +83,7 @@
         RELEASE(viewBG);
         
         
-        UIImage *image = [UIImage imageNamed:@"menu_inactive"];
+    //    UIImage *image = [UIImage imageNamed:@"menu_inactive"];
         
         
        tbDataBank1 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight, 320.0f , self.view.frame.size.height - self.headHeight  ) isNeedUpdate:YES];

@@ -535,7 +535,7 @@
 
 //order_list
 
-+(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num;
++(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType;
 
 //order_detail
 +(NSMutableDictionary *)order_detail_order_id:(NSString *)order_id;
@@ -545,8 +545,23 @@
 
 +(NSMutableDictionary *)book_order_pub_id:(NSString *)pub_id;
 
-//order_confirm
-//+(NSMutableDictionary *)order_confirm_msg_id:(NSString *)msg_id type:(NSString *)type;
+
+//order_launchbook
++(NSMutableDictionary *)book_order_launchbook:(NSString *)orederID;
+//order_confirmationbook
++(NSMutableDictionary *)book_order_confirmationbook:(NSString *)orederID;
+
+// order_comment
++(NSMutableDictionary *)book_order_comment:(NSString *)orederID;
+
+//order_modify
++(NSMutableDictionary *)book_order_modify:(NSString *)orederID;
+
+//order_receiptbook
++(NSMutableDictionary *)book_order_receiptbook:(NSString *)orederID;
+
+//book_comment
++(NSMutableDictionary *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point;
 
 
 @end

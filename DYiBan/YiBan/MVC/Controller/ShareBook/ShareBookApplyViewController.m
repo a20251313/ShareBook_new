@@ -15,6 +15,7 @@
 #import "NSDate+Helpers.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "UIImageView+WebCache.h"
 
 
 @interface ShareBookApplyViewController (){
@@ -30,6 +31,10 @@
     
     NSDictionary *dictRR;
     NSString *order_id;
+    
+    int      order_status;
+    int      fromUserID;
+    int      toUserID;
 }
 
 @end
@@ -109,23 +114,7 @@
     {
         //        [self.rightButton setHidden:YES];
         [self.headview setTitle:@"申请借阅"];
-        
-       
-        
-        //        [self.leftButton setHidden:YES];
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
-//        SHARED.userId
-        
-      //  NSString *strid = [dictInfo objectForKey:@"user_id"];
-        
-        if (_mi) {
-        
-            [self setAgreeViewShow];
-        
-        }else{
-//
-            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认"];
-        }
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
         
@@ -133,6 +122,8 @@
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
 //        book_loan_pub_id
+        
+        
         
         order_id = [[NSString alloc]init];
         
@@ -146,7 +137,7 @@
         }else {
         
             MagicRequest *request = [DYBHttpMethod book_order_pub_id:[dictInfo objectForKey:@"pub_id"] sAlert:YES receive:self];
-            [request setTag:3];
+            [request setTag:100];
         
         
         }
@@ -180,18 +171,35 @@
             
             UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
             UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f + self.headHeight, imageIcon.size.width/2, imageIcon.size.height/2)];
+        
             [imageBook setBackgroundColor:[UIColor clearColor]];
             [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
+            
+            if ([dictInfo valueForKey:@"image"])
+            {
+                [imageBook setImageWithURL:[NSURL URLWithString:[dictInfo valueForKey:@"image"]]];
+            }
             [viewBG addSubview:imageBook];
             [imageBook release];
             
-            UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + self.headHeight, 200, 20)];
+            UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + self.headHeight, 240, 20)];
+
             [labelName setText:@"三生三室枕上书"];
+            
+            if ([dictInfo valueForKey:@"title"])
+            {
+                [labelName setText:[dictInfo valueForKey:@"title"]];
+            }
             [viewBG addSubview:labelName];
             [labelName release];
             
             UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 20)];
-            [labelAuther setText:[ NSString stringWithFormat:@"作者：曾新"]];
+            
+            if ([dictInfo valueForKey:@"author"])
+            {
+                [labelAuther setText:[NSString stringWithFormat:@"作者：%@",[dictInfo valueForKey:@"author"]]];
+            }
+         
             [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
             
             [labelAuther setFont:[UIFont systemFontOfSize:15]];
@@ -200,7 +208,11 @@
             
             UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
             [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelPublic setText:[NSString stringWithFormat:@"出版社：中国民族艺术出版社"]];
+            if ([dictInfo valueForKey:@"publisher"])
+            {
+                [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dictInfo valueForKey:@"publisher"]]];
+            }
+          
             [viewBG addSubview:labelPublic];
             [labelPublic setFont:[UIFont systemFontOfSize:14]];
             [labelPublic release];
@@ -208,7 +220,7 @@
             
             UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
             [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime setText:[NSString stringWithFormat:@"借阅时间："]];
+            [labelTime setText:[NSString stringWithFormat:@"借阅时间：%@天",[dictInfo objectForKey:@"loan_period"]]];
             [viewBG addSubview:labelTime];
             [labelTime setFont:[UIFont systemFontOfSize:14]];
             [labelTime release];
@@ -306,11 +318,12 @@
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f , imageIcon.size.width/2, imageIcon.size.height/2)];
     [imageBook setBackgroundColor:[UIColor clearColor]];
     [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
+    [imageBook setImageWithURL:[NSURL URLWithString:[dicttt valueForKey:@"book_image"]]];
     [viewBG addSubview:imageBook];
     [imageBook release];
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + 0, 200, 20)];
-    [labelName setText:[dicttt objectForKey:@"bood_name"]];
+    [labelName setText:[dicttt objectForKey:@"book_name"]];
     [viewBG addSubview:labelName];
     [labelName release];
     
@@ -324,7 +337,7 @@
     
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicttt objectForKey:@"book_author"]]];
+    [labelPublic setText:[NSString stringWithFormat:@"出版社:"]];
     [viewBG addSubview:labelPublic];
     [labelPublic setFont:[UIFont systemFontOfSize:14]];
     [labelPublic release];
@@ -332,7 +345,7 @@
     
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelTime setText:[NSString stringWithFormat:@"借阅时间："]];
+    [labelTime setText:[NSString stringWithFormat:@"借阅时间：%@",[[dict objectForKey:@"order"] objectForKey:@"loan_time"]]];
     [viewBG addSubview:labelTime];
     [labelTime setFont:[UIFont systemFontOfSize:14]];
     [labelTime release];
@@ -852,21 +865,16 @@ static NSString *cellName = @"cellName";
             if (dict) {
                 int statusCode = [[dict objectForKey:@"response"] intValue];
                 if (statusCode == 100) {
+
+                    dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
+                    order_id = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"order_id"] ];
                     
-                    if (_mi) {
-                        dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
-                        order_id = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"order_id"] ];
-                        
-                        if ([[[dictRR objectForKey:@"order"] objectForKey:@"order_status"] intValue] != 1)
-                        {
-                            [self setAgreeViewShow];
-                        }
-                        [self creatView:dictRR];
-                    }else{
+
+                    fromUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
+                    toUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"to_userid"] intValue];
+                    [self setRightNavAccordStatus:[[[dictRR objectForKey:@"order"]objectForKey:@"order_status"] intValue]];
                     
-                        order_id = [[NSString alloc]initWithString: [[dict objectForKey:@"data"] objectForKey:@"order_id"]];
-                    }
- 
+                    [self creatView:dictRR];
                 }
                 else{
                     NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
@@ -906,10 +914,97 @@ static NSString *cellName = @"cellName";
             
         }else if(request.tag == 2)
         {
+            
+            
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             
             [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+        }else if(request.tag == 100)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            int statusCode = [[dict objectForKey:@"response"] intValue];
+            if (dict) {
+                if (statusCode == 100) {
+                    
+                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
+                if (strOrder && [strOrder length])
+                {
+                    order_id = [strOrder retain];
+                }
+                    [self setRightNavAccordStatus:0];
+                    
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if(request.tag == 200)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            int statusCode = [[dict objectForKey:@"response"] intValue];
+            if (dict) {
+                if (statusCode == 100) {
+                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self setRightNavAccordStatus:4];
+                    
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if(request.tag == 400)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            int statusCode = [[dict objectForKey:@"response"] intValue];
+            if (dict) {
+                if (statusCode == 100) {
+                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self setRightNavAccordStatus:5];
+                    
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if(request.tag == 500)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            int statusCode = [[dict objectForKey:@"response"] intValue];
+            if (dict) {
+                if (statusCode == 100) {
+                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self setRightNavAccordStatus:6];
+                    
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
         }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
@@ -931,13 +1026,112 @@ static NSString *cellName = @"cellName";
         
         
     
-        MagicRequest *request = [DYBHttpMethod book_loan_order_id:order_id content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
-        [request setTag:2];
+        if (order_status == 0)
+        {
+            MagicRequest *request = [DYBHttpMethod book_loan_order_id:order_id content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
+            [request setTag:2];
+        }else if(order_status == 2)
+        {
+            MagicRequest *request = [DYBHttpMethod book_order_receiptbook:order_id sAlert:YES receive:self];
+            [request setTag:200];
+            
+        }else if(order_status == 4)
+        {
+            MagicRequest *request = [DYBHttpMethod book_order_launchbook:order_id sAlert:YES receive:self];
+            [request setTag:400];
+            
+        }else if(order_status == 5)
+        {
+            MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:order_id sAlert:YES receive:self];
+            [request setTag:500];
+            
+        }
+        
+      
         
 
     }
 }
 
+
+
+-(void)setRightNavAccordStatus:(int)orderStatus
+{
+    
+    order_status = orderStatus;
+    DLogInfo(@"orderStatus:%dmyuserID:%@",orderStatus,SHARED.userId);
+    if (orderStatus == 1 )
+    {
+        
+        if (toUserID  != [SHARED.userId intValue])
+        {
+            [self.rightButton setHidden:YES];
+            return;
+        }
+        UIView *tt = [self.headview viewWithTag:100];
+        if (!tt) {
+            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
+            [view setTag:100];
+            [view setBackgroundColor:[UIColor redColor]];
+            [self.headview addSubview:view];
+            //                RELEASE(view);
+            
+            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
+            [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
+            [btn1 setTitle:@"同意" forState:UIControlStateNormal];
+            [view addSubview:btn1];
+            RELEASE(btn1);
+            
+            UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
+            [btn2 addTarget:self action:@selector(tongyi1) forControlEvents:UIControlEventTouchUpInside];
+            [btn2 setTitle:@"不" forState:UIControlStateNormal];
+            [view addSubview:btn2];
+            RELEASE(btn2);
+            
+            
+            
+            
+        }
+        
+    }else if (orderStatus == 0)
+    {
+        [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认"];
+        
+    }else if(orderStatus == 2)
+    {
+        if (fromUserID == [SHARED.userId intValue])
+        {
+            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认收到书"];
+        }else
+        {
+            [self.rightButton setHidden:YES];
+        }
+ 
+    }else if(orderStatus == 4)
+    {
+        
+        if (fromUserID == [SHARED.userId intValue])
+        {
+            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"还书"];
+        }else
+        {
+            [self.rightButton setHidden:YES];
+        }
+    }else if(orderStatus == 5)
+    {
+        
+        if (toUserID == [SHARED.userId intValue])
+        {
+            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认归还"];
+        }else
+        {
+            [self.rightButton setHidden:YES];
+        }
+    }else
+    {
+            [self.rightButton setHidden:YES];
+    }
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
 
     if ([textField isEqual:[_phoneInputNameRSend nameField]]) {
@@ -945,6 +1139,8 @@ static NSString *cellName = @"cellName";
         
         [self doSend];
     }
+    
+    return YES;
 }
 
 @end

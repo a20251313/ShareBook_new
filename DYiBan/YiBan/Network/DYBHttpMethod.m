@@ -1801,9 +1801,9 @@
 }
 
 
-+(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num sAlert:(BOOL)isAlert receive:(id)receive{
++(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString *)orderType sAlert:(BOOL)isAlert receive:(id)receive{
 
-    NSMutableDictionary *dict = [DYBHttpInterface order_list_kind:kind page:page num:num];
+    NSMutableDictionary *dict = [DYBHttpInterface order_list_kind:kind page:page num:num orderType:orderType];
     DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;
@@ -1836,6 +1836,75 @@
     return dre;
 
 }
+
++(MagicRequest *)book_order_launchbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_launchbook:orderID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
+
++(MagicRequest *)book_order_confirmationbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_confirmationbook:orderID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
+
++(MagicRequest *)book_order_comment:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_comment:orderID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
++(MagicRequest *)book_order_modify:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_modify:orderID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
++(MagicRequest *)book_order_receiptbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_receiptbook:orderID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
++(MagicRequest *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface book_book_comment:pubID content:content points:point];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
+
+
+/*
++(NSMutableDictionary *)book_order_launchbook:(NSString *)orederID;
+//order_confirmationbook
++(NSMutableDictionary *)book_order_confirmationbook:(NSString *)orederID;
+
+// order_comment
++(NSMutableDictionary *)book_order_comment:(NSString *)orederID;
+
+//order_modify
++(NSMutableDictionary *)book_order_modify:(NSString *)orederID;
+
+//order_receiptbook
++(NSMutableDictionary *)book_order_receiptbook:(NSString *)orederID;
+
+//book_comment
++(NSMutableDictionary *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point;*/
 @end
 
 

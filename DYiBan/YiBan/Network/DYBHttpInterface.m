@@ -2236,13 +2236,14 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 
 }
 
-+(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num{
++(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType{
 
 
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
     [dict setValue:kind forKey:@"kind"];
     [dict setValue:num forKey:@"num"];
     [dict setValue:page forKey:@"page"];
+    [dict setValue:orderType forKey:@"order_type"];
 //    [dict setValue:content forKey:@"content"];
     [dict setValue:@"order_list" forKey:INTERFACEDOACTION];
     return dict;
@@ -2284,6 +2285,78 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     [dict setValue:@"book_order" forKey:INTERFACEDOACTION];
     return dict;
 
+}
+
++(NSMutableDictionary *)book_order_launchbook:(NSString *)orederID
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:orederID forKey:@"order_id"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"order_launchbook" forKey:INTERFACEDOACTION];
+    return dict;
+    
+}
++(NSMutableDictionary *)book_order_confirmationbook:(NSString *)orederID
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:orederID forKey:@"order_id"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"order_confirmationbook" forKey:INTERFACEDOACTION];
+    return dict;
+    
+}
+
+// order_modify
++(NSMutableDictionary *)book_order_comment:(NSString *)orederID
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:orederID forKey:@"order_id"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"order_comment" forKey:INTERFACEDOACTION];
+    return dict;
+    
+}
+
++(NSMutableDictionary *)book_order_modify:(NSString *)orederID
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:orederID forKey:@"order_id"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"order_modify" forKey:INTERFACEDOACTION];
+    return dict;
+    
+}
++(NSMutableDictionary *)book_order_receiptbook:(NSString *)orederID
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:orederID forKey:@"order_id"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"order_receiptbook" forKey:INTERFACEDOACTION];
+    return dict;
+    
+}
+
+
++(NSMutableDictionary *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point
+{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:pubID forKey:@"pub_id"];
+    [dict setValue:content forKey:@"content"];
+    [dict setValue:point forKey:@"points"];
+    [dict setValue:@"book_comment" forKey:INTERFACEDOACTION];
+    return dict;
+    
 }
 
 

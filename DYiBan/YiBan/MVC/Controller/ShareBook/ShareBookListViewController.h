@@ -10,4 +10,5 @@
 
 @interface ShareBookListViewController : DYBBaseViewController
 @property (nonatomic,assign)NSInteger type;
+@property (nonatomic,retain)NSString  *headTitle;
 @end
