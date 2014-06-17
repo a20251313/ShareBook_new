@@ -20,9 +20,11 @@
 
     DYBUITableView * tbDataBank11 ;
     NSMutableArray  *m_dataArray;
+    
     BOOL            m_bHasNext;
     int             m_iCurrentPage;
     int             m_ipageNum;
+    BOOL            m_bIsLoading;
 
 }
 
@@ -126,7 +128,7 @@
         //order_launchbook
         
         int orderstatus = [[dicData valueForKey:@"order_status"] intValue];
-        if (orderstatus == 2 || orderstatus == 3)
+        if (orderstatus == 2 )
         {
             MagicRequest    *request = [DYBHttpMethod book_order_receiptbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
             request.tag = 1000;
@@ -134,7 +136,7 @@
         }else if(orderstatus == 4)
         {
             MagicRequest    *request = [DYBHttpMethod book_order_launchbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
-            request.tag = 1000;
+            request.tag = 5000;
         }
   
         
@@ -203,7 +205,9 @@
         
         
         
-        
+        m_ipageNum = 20;
+        m_iCurrentPage = 1;
+        [m_dataArray removeAllObjects];
         [self requestOrderList];
         
         
@@ -220,17 +224,18 @@
 
 -(void)requestOrderList
 {
+    m_bIsLoading = YES;
     MagicRequest *request = nil;
     switch (self.type)
     {
         case 0:
-            request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:@"1" num:@"20" sAlert:YES receive:self];
+            request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
             break;
         case 1:
-            request = [DYBHttpMethod order_list_kind:@"1" page:@"1" num:@"20" orderType:@"2" sAlert:YES receive:self];
+            request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
             break;
         case 2:
-            request = [DYBHttpMethod order_list_kind:@"2" page:@"1" num:@"20" orderType:@"2" sAlert:YES receive:self];
+            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description]sAlert:YES receive:self];
             break;
             
         default:
@@ -322,6 +327,26 @@
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        {
+            if (!m_bIsLoading && m_bHasNext)
+            {
+                [self requestOrderList];
+            }
+            
+        }
+        
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        
+        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        {
+            if (!m_bIsLoading && m_bHasNext)
+            {
+                [self requestOrderList];
+            }
+            
+        }
+        
         
     }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
         
@@ -335,6 +360,21 @@
     
 }
 
+
+
+/*if (scrollView.contentOffset.y+(scrollView.frame.size.height) > scrollView.contentSize.height+REFRESH_REGION_HEIGHT  && !_loading) {
+
+if ([_delegate respondsToSelector:@selector(egoRefreshTableDidTriggerRefresh:)]) {
+    [_delegate egoRefreshTableDidTriggerRefresh:EGORefreshFooter];
+}
+
+[self setState:EGOOPullRefreshLoading];
+[UIView beginAnimations:nil context:NULL];
+[UIView setAnimationDuration:0.2];
+scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.0f);
+[UIView commitAnimations];
+
+}*/
 
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
@@ -357,8 +397,12 @@
                     
                     //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
                     
-                    m_bHasNext = [[dict valueForKey:@"havenext"] boolValue];
-                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    m_bIsLoading = NO;
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                    }
                     [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"book_list"]]];
                    
                     [tbDataBank11 reloadData];
@@ -384,6 +428,11 @@
                     
                     
                     m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    m_bIsLoading = NO;
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                    }
                     [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
                     
                     [tbDataBank11 reloadData];
@@ -409,6 +458,11 @@
                     //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
                     
                     m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    m_bIsLoading = NO;
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                    }
                     [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
                     
                     [tbDataBank11 reloadData];
@@ -428,9 +482,7 @@
             if (dict) {
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    
-                    
-                
+                  [DYBShareinstaceDelegate popViewText:@"确认收到书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -447,8 +499,41 @@
             if (dict) {
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [DYBShareinstaceDelegate popViewText:@"确认归还图书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
-    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 2000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                          [DYBShareinstaceDelegate popViewText:@"评论成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 3000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [DYBShareinstaceDelegate popViewText:@"评论借书人成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -459,6 +544,25 @@
                 }
             }
         }
+        else if (request.tag == 3000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [DYBShareinstaceDelegate popViewText:@"还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }
+
         
     }
 }

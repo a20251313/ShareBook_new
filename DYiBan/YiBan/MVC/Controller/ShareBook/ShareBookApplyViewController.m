@@ -286,22 +286,6 @@
 }
 
 
--(void)tongyi{
-
-    
-    
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
-    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
-    [request setTag:4];
-    
-
-}
--(void)tongyi1{
-
-    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:[[[dictRR objectForKey:@"charts"]objectAtIndex:0] objectForKey:@"id"] type:@"2" sAlert:YES receive:self];
-    [request setTag:4];
-
-}
 
 
 -(void)creatView:(NSDictionary *)dict{
@@ -1022,42 +1006,141 @@ static NSString *cellName = @"cellName";
     {
         [self.drNavigationController popViewControllerAnimated:YES];
         
-    }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
-        
-        
-    
-        if (order_status == 0)
-        {
-            MagicRequest *request = [DYBHttpMethod book_loan_order_id:order_id content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
-            [request setTag:2];
-        }else if(order_status == 2)
-        {
-            MagicRequest *request = [DYBHttpMethod book_order_receiptbook:order_id sAlert:YES receive:self];
-            [request setTag:200];
-            
-        }else if(order_status == 4)
-        {
-            MagicRequest *request = [DYBHttpMethod book_order_launchbook:order_id sAlert:YES receive:self];
-            [request setTag:400];
-            
-        }else if(order_status == 5)
-        {
-            MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:order_id sAlert:YES receive:self];
-            [request setTag:500];
-            
-        }
-        
-      
-        
-
     }
 }
 
+
+#pragma mark actions
+-(void)tongyi:(id)sender
+{
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
+    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
+    [request setTag:4];
+}
+-(void)clickNoAgree:(id)sender
+{
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
+    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"2" sAlert:YES receive:self];
+    [request setTag:4];
+    
+}
+-(void)MakeSureBorrowBook:(id)sender
+{
+    MagicRequest *request = [DYBHttpMethod book_loan_order_id:order_id content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
+    [request setTag:2];
+    
+}
+-(void)MakeSureReceiveBook:(id)sender
+{
+    MagicRequest *request = [DYBHttpMethod book_order_receiptbook:order_id sAlert:YES receive:self];
+    [request setTag:200];
+    
+}
+-(void)returnBook:(id)sender
+{
+    MagicRequest *request = [DYBHttpMethod book_order_launchbook:order_id sAlert:YES receive:self];
+    [request setTag:400];
+    
+}
+-(void)MakeSureReturn:(id)sender
+{
+    MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:order_id sAlert:YES receive:self];
+    [request setTag:500];
+    
+}
+
+
+-(void)createBtnAccordStatus:(int)orderstatus
+{
+    
+    self.rightButton.hidden = YES;
+    UIView *tt = [self.headview viewWithTag:100];
+    if (!tt) {
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
+        [view setTag:100];
+        [view setBackgroundColor:[UIColor clearColor]];
+        [self.headview addSubview:view];
+        
+        
+        switch (orderstatus)
+        {
+            case 1:
+            {
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
+                [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
+                [btn1 setTitle:@"同意" forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [view addSubview:btn1];
+                RELEASE(btn1);
+                
+                UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
+                [btn2 addTarget:self action:@selector(clickNoAgree:) forControlEvents:UIControlEventTouchUpInside];
+                [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [btn2 setTitle:@"不" forState:UIControlStateNormal];
+                [view addSubview:btn2];
+                RELEASE(btn2);
+            }
+                break;
+            case 0:
+            {
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 40,  40.0f,44.0f)];
+                [btn1 addTarget:self action:@selector(MakeSureBorrowBook:) forControlEvents:UIControlEventTouchUpInside];
+                [btn1 setTitle:@"确认" forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [view addSubview:btn1];
+                RELEASE(btn1);
+            }
+                break;//
+                
+            case 2:
+            {
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 10,  90.0f,44.0f)];
+                [btn1 addTarget:self action:@selector(MakeSureReceiveBook:) forControlEvents:UIControlEventTouchUpInside];
+                [btn1 setTitle:@"确认收到书" forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [view addSubview:btn1];
+                RELEASE(btn1);
+            }
+                break;//确认收到书
+            case 4:
+            {
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 40,  40.0f,44.0f)];
+                [btn1 addTarget:self action:@selector(returnBook:) forControlEvents:UIControlEventTouchUpInside];
+                [btn1 setTitle:@"还书" forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [view addSubview:btn1];
+                RELEASE(btn1);
+            }
+                break;
+            case 5:
+            {
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 10,  90.0f,44.0f)];
+                [btn1 addTarget:self action:@selector(MakeSureReturn:) forControlEvents:UIControlEventTouchUpInside];
+                [btn1 setTitle:@"确认归还" forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
+                [view addSubview:btn1];
+                RELEASE(btn1);
+            }
+                break;//确认收到书确认归还
+                
+            default:
+                break;
+        }
+    }
+    
+}
 
 
 -(void)setRightNavAccordStatus:(int)orderStatus
 {
     
+    UIView *tt = [self.headview viewWithTag:100];
     order_status = orderStatus;
     DLogInfo(@"orderStatus:%dmyuserID:%@",orderStatus,SHARED.userId);
     if (orderStatus == 1 )
@@ -1065,43 +1148,23 @@ static NSString *cellName = @"cellName";
         
         if (toUserID  != [SHARED.userId intValue])
         {
-            [self.rightButton setHidden:YES];
+            tt.hidden = YES;
             return;
         }
-        UIView *tt = [self.headview viewWithTag:100];
-        if (!tt) {
-            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
-            [view setTag:100];
-            [view setBackgroundColor:[UIColor redColor]];
-            [self.headview addSubview:view];
-            //                RELEASE(view);
-            
-            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
-            [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
-            [btn1 setTitle:@"同意" forState:UIControlStateNormal];
-            [view addSubview:btn1];
-            RELEASE(btn1);
-            
-            UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
-            [btn2 addTarget:self action:@selector(tongyi1) forControlEvents:UIControlEventTouchUpInside];
-            [btn2 setTitle:@"不" forState:UIControlStateNormal];
-            [view addSubview:btn2];
-            RELEASE(btn2);
-            
-            
-            
-            
-        }
+        [self createBtnAccordStatus:order_status];
+       
         
     }else if (orderStatus == 0)
     {
-        [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认"];
+     
+        [self createBtnAccordStatus:order_status];
         
     }else if(orderStatus == 2)
     {
         if (fromUserID == [SHARED.userId intValue])
         {
-            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认收到书"];
+        
+            [self createBtnAccordStatus:order_status];
         }else
         {
             [self.rightButton setHidden:YES];
@@ -1112,7 +1175,7 @@ static NSString *cellName = @"cellName";
         
         if (fromUserID == [SHARED.userId intValue])
         {
-            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"还书"];
+            [self createBtnAccordStatus:order_status];
         }else
         {
             [self.rightButton setHidden:YES];
@@ -1122,14 +1185,16 @@ static NSString *cellName = @"cellName";
         
         if (toUserID == [SHARED.userId intValue])
         {
-            [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"确认归还"];
+   
+            [self createBtnAccordStatus:order_status];
         }else
         {
             [self.rightButton setHidden:YES];
         }
     }else
     {
-            [self.rightButton setHidden:YES];
+            UIView  *view = [self.headview viewWithTag:100];
+            view.hidden = YES;
     }
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
