@@ -499,7 +499,7 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)message_send_userid:(NSString *)userid content:(NSString *)content type:(NSString *)type mid:(NSString *)mid orderid:(NSString *)orderid sAlert:(BOOL)isAlert receive:(id)receive;
 
-+(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString *)orderType sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString *)orderType orderStatus:(NSString*)ordet_satus sAlert:(BOOL)isAlert receive:(id)receive;
 
 
 +(MagicRequest *)order_detail_order_id:(NSString *)order_id sAlert:(BOOL)isAlert receive:(id)receive;
@@ -513,7 +513,7 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_order_confirmationbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
 
-+(MagicRequest *)book_order_comment:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_order_comment:(NSString *)orderID comment:(NSString*)content point:(NSString*)point sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_order_modify:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
 

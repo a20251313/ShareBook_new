@@ -178,7 +178,7 @@
                 
                 NSString *mi = [userInfo objectForKey:@"mi"];
                 ShareBookApplyViewController * apply = [[ShareBookApplyViewController alloc]init];
-                apply.mi = mi;
+                apply.orderID = mi;
                 [self.navi pushViewController:apply animated:YES];
                 
 //                MagicRequest *request = [DYBHttpMethod user_detail:[apsDict objectForKey:@"ui"] isAlert:YES receive:self];

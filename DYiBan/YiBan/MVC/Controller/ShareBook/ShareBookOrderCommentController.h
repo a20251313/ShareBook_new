@@ -8,7 +8,6 @@
 
 #import "DYBBaseViewController.h"
 
-@interface ShareBookApplyViewController : DYBBaseViewController<UITextFieldDelegate>
-@property (nonatomic,retain)NSDictionary *dictInfo;
+@interface ShareBookOrderCommentController : DYBBaseViewController<UITextFieldDelegate>
 @property (nonatomic,retain)NSString *orderID;
 @end

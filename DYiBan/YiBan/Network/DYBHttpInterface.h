@@ -535,7 +535,7 @@
 
 //order_list
 
-+(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType;
++(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType orderStatus:(NSString*)ordet_satus;
 
 //order_detail
 +(NSMutableDictionary *)order_detail_order_id:(NSString *)order_id;
@@ -552,7 +552,7 @@
 +(NSMutableDictionary *)book_order_confirmationbook:(NSString *)orederID;
 
 // order_comment
-+(NSMutableDictionary *)book_order_comment:(NSString *)orederID;
++(NSMutableDictionary *)book_order_comment:(NSString *)orederID comment:(NSString*)cotent point:(NSString*)point;
 
 //order_modify
 +(NSMutableDictionary *)book_order_modify:(NSString *)orederID;

@@ -1801,9 +1801,9 @@
 }
 
 
-+(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString *)orderType sAlert:(BOOL)isAlert receive:(id)receive{
++(MagicRequest *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString *)orderType orderStatus:(NSString*)ordet_satus sAlert:(BOOL)isAlert receive:(id)receive{
 
-    NSMutableDictionary *dict = [DYBHttpInterface order_list_kind:kind page:page num:num orderType:orderType];
+    NSMutableDictionary *dict = [DYBHttpInterface order_list_kind:kind page:page num:num orderType:orderType orderStatus:ordet_satus];
     DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;
@@ -1855,9 +1855,9 @@
     
 }
 
-+(MagicRequest *)book_order_comment:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive{
++(MagicRequest *)book_order_comment:(NSString *)orderID comment:(NSString*)content point:(NSString*)point sAlert:(BOOL)isAlert receive:(id)receive{
     
-    NSMutableDictionary *dict = [DYBHttpInterface book_order_comment:orderID];
+    NSMutableDictionary *dict = [DYBHttpInterface book_order_comment:orderID comment:content point:point];
     DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;

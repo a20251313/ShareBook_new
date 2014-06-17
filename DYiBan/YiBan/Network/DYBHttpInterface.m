@@ -2236,7 +2236,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 
 }
 
-+(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType{
++(NSMutableDictionary *)order_list_kind:(NSString *)kind page:(NSString *)page num:(NSString *)num orderType:(NSString*)orderType orderStatus:(NSString*)ordet_satus{
 
 
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
@@ -2244,6 +2244,12 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     [dict setValue:num forKey:@"num"];
     [dict setValue:page forKey:@"page"];
     [dict setValue:orderType forKey:@"order_type"];
+    
+    if (ordet_satus && [ordet_satus intValue] > 0)
+    {
+          [dict setValue:ordet_satus forKeyPath:@"order_status"];
+    }
+  
 //    [dict setValue:content forKey:@"content"];
     [dict setValue:@"order_list" forKey:INTERFACEDOACTION];
     return dict;
@@ -2310,14 +2316,15 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     
 }
 
-// order_modify
-+(NSMutableDictionary *)book_order_comment:(NSString *)orederID
+
++(NSMutableDictionary *)book_order_comment:(NSString *)orederID comment:(NSString*)cotent point:(NSString*)point
 {
     
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
     [dict setValue:orederID forKey:@"order_id"];
     //    [dict setValue:page forKey:@"page"];
-    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:point forKey:@"points"];
+    [dict setValue:cotent forKey:@"content"];
     [dict setValue:@"order_comment" forKey:INTERFACEDOACTION];
     return dict;
     

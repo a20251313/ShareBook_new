@@ -164,7 +164,7 @@ static NSString *cellName = @"cellName";
         ShareBookApplyViewController *apple = [[ShareBookApplyViewController alloc]init];
         
         NSString    *orderId = [arrayResult[indexPath.row] objectForKey:@"order_id"];
-        apple.mi = orderId;//[[arrayResult objectAtIndex:indexPath.row] objectForKey:@"order_id"];
+        apple.orderID = orderId;//[[arrayResult objectAtIndex:indexPath.row] objectForKey:@"order_id"];
         [self.drNavigationController pushViewController:apple animated:YES];
         
         

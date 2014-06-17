@@ -113,6 +113,8 @@
 		2878B115190E32E100C5B5B1 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2878B114190E32E100C5B5B1 /* libPushSDK.a */; };
 		2878B117190E338300C5B5B1 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2878B116190E338300C5B5B1 /* PushConfig.plist */; };
 		862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */; };
+		863342221950787100DD090E /* ShareBookCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 863342211950787100DD090E /* ShareBookCommentController.m */; };
+		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
 		B50D960818CEAF8900619B21 /* rightslide_foot.png in Resources */ = {isa = PBXBuildFile; fileRef = B50D960418CEAF8900619B21 /* rightslide_foot.png */; };
@@ -843,6 +845,10 @@
 		2878B116190E338300C5B5B1 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		862776571944915400792FE9 /* ShareBookChooseQuanCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookChooseQuanCenterViewController.h; sourceTree = "<group>"; };
 		862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookChooseQuanCenterViewController.m; sourceTree = "<group>"; };
+		863342201950787100DD090E /* ShareBookCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookCommentController.h; sourceTree = "<group>"; };
+		863342211950787100DD090E /* ShareBookCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookCommentController.m; sourceTree = "<group>"; };
+		8633422319508DF300DD090E /* ShareBookOrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderCommentController.h; sourceTree = "<group>"; };
+		8633422419508DF300DD090E /* ShareBookOrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderCommentController.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
 		B50D95FE18CEA45F00619B21 /* DYBDataBankShotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankShotView.h; sourceTree = "<group>"; };
 		B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankTopRightCornerView.h; sourceTree = "<group>"; };
@@ -3844,6 +3850,10 @@
 				B521EB0118AE17EB00C8599A /* ShareDouSendViewController.m */,
 				B5CE2AB618B45C70008E4E44 /* ShareBookApplyViewController.h */,
 				B5CE2AB718B45C71008E4E44 /* ShareBookApplyViewController.m */,
+				863342201950787100DD090E /* ShareBookCommentController.h */,
+				863342211950787100DD090E /* ShareBookCommentController.m */,
+				8633422319508DF300DD090E /* ShareBookOrderCommentController.h */,
+				8633422419508DF300DD090E /* ShareBookOrderCommentController.m */,
 				B5CE2ABC18B47F21008E4E44 /* ShareBookCenterViewController.h */,
 				B5CE2ABD18B47F22008E4E44 /* ShareBookCenterViewController.m */,
 				B5CE2ABF18B4845B008E4E44 /* ShareBookListViewController.h */,
@@ -4600,6 +4610,7 @@
 				B58CB1791829CF6A00F73D66 /* friends.m in Sources */,
 				B58CB17A1829CF6A00F73D66 /* friends_list.m in Sources */,
 				B58CB17B1829CF6A00F73D66 /* good_num_info.m in Sources */,
+				863342221950787100DD090E /* ShareBookCommentController.m in Sources */,
 				B58CB17C1829CF6A00F73D66 /* GTMBase64.m in Sources */,
 				B58CB17D1829CF6A00F73D66 /* guest_list.m in Sources */,
 				B58CB17E1829CF6A00F73D66 /* guest_list_all.m in Sources */,
@@ -4784,6 +4795,7 @@
 				B598F442184EC6A3009F283D /* SGFocusImageItem.m in Sources */,
 				B598F49F184EF34A009F283D /* WOSGoodFoodDownView.m in Sources */,
 				B598F4A2184F080A009F283D /* WOSGoodFoodCell.m in Sources */,
+				8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */,
 				B598F4A5184F0BC3009F283D /* WOSDownViewCell.m in Sources */,
 				B51A12241855BC85006D8F71 /* WOSGoodFoodListCell.m in Sources */,
 				B5A288461862D682008C4ED5 /* WOSStarView.m in Sources */,

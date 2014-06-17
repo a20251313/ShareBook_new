@@ -85,11 +85,15 @@ DEF_SIGNAL(FINISHSWIP)
         [self addSignal:[UIView PAN] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil]];
         
         
-        ShareBookCellBtnCenterView *btnView = [[ShareBookCellBtnCenterView alloc]init];
-        [btnView setViewBG:self];
-        [btnView addBtnView:_type];
-        [btnView setDicInfo:dict];
-        self.centerView = btnView;
+        if (_type != ShareBookListTypeJieYueHis)
+        {
+            ShareBookCellBtnCenterView *btnView = [[ShareBookCellBtnCenterView alloc]init];
+            [btnView setViewBG:self];
+            [btnView addBtnView:_type];
+            [btnView setDicInfo:dict];
+            self.centerView = btnView;
+        }
+      
         
         
         

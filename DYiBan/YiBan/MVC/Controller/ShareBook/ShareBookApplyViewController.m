@@ -30,7 +30,7 @@
     NSMutableArray *arrayDate;
     
     NSDictionary *dictRR;
-    NSString *order_id;
+
     
     int      order_status;
     int      fromUserID;
@@ -40,7 +40,7 @@
 @end
 
 @implementation ShareBookApplyViewController
-@synthesize dictInfo,mi = _mi;
+@synthesize dictInfo,orderID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -120,18 +120,11 @@
         
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
+
         
-//        book_loan_pub_id
-        
-        
-        
-        order_id = [[NSString alloc]init];
-        
-//        order_detail_order_id
-        
-        if (_mi) {
+        if (self.orderID) {
             
-            MagicRequest *request = [DYBHttpMethod order_detail_order_id:_mi sAlert:YES receive:self];
+            MagicRequest *request = [DYBHttpMethod order_detail_order_id:self.orderID sAlert:YES receive:self];
             [request setTag:3];
 
         }else {
@@ -160,7 +153,7 @@
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         };
         
-        if (!_mi) {
+        if (!self.orderID) {
             
             
             UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
@@ -625,7 +618,7 @@
 
 -(void)doSend{
     
-    if (_mi) {
+    if (self.orderID) {
         NSDictionary *dictTime = [dictRR objectForKey:@"order"];
         NSString *strDate = [dictTime objectForKey:@"from_userid"];
         
@@ -636,12 +629,11 @@
         
         }
         
-        MagicRequest *request = [DYBHttpMethod message_send_userid:strDate content:_phoneInputNameRSend.nameField.text type:@"2" mid:order_id orderid:order_id sAlert:YES receive:self];
-        //    MagicRequest *request = [DYBHttpMethod book_loan_pub_id:[dictInfo objectForKey:@"pub_id"] content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod message_send_userid:strDate content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
+
         [request setTag:1];
     }else{
-        MagicRequest *request = [DYBHttpMethod message_send_userid:[dictInfo objectForKey:@"user_id"] content:_phoneInputNameRSend.nameField.text type:@"2" mid:order_id orderid:order_id sAlert:YES receive:self];
-//    MagicRequest *request = [DYBHttpMethod book_loan_pub_id:[dictInfo objectForKey:@"pub_id"] content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod message_send_userid:[dictInfo objectForKey:@"user_id"] content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
     [request setTag:1];
     }
     
@@ -851,7 +843,7 @@ static NSString *cellName = @"cellName";
                 if (statusCode == 100) {
 
                     dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
-                    order_id = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"order_id"] ];
+                    self.orderID = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"self.orderID"] ];
                     
 
                     fromUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
@@ -861,10 +853,10 @@ static NSString *cellName = @"cellName";
                     [self creatView:dictRR];
                 }
                 else{
-                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
+                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"self.orderID"] description];
                     if (strOrder && [strOrder length])
                     {
-                        order_id = [strOrder retain];
+                        self.orderID = [strOrder retain];
                     }
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
@@ -912,10 +904,10 @@ static NSString *cellName = @"cellName";
             if (dict) {
                 if (statusCode == 100) {
                     
-                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
+                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"self.orderID"] description];
                 if (strOrder && [strOrder length])
                 {
-                    order_id = [strOrder retain];
+                    self.orderID = [strOrder retain];
                 }
                     [self setRightNavAccordStatus:0];
                     
@@ -1013,38 +1005,38 @@ static NSString *cellName = @"cellName";
 #pragma mark actions
 -(void)tongyi:(id)sender
 {
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"self.orderID"] description];
     MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
     [request setTag:4];
 }
 -(void)clickNoAgree:(id)sender
 {
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"self.orderID"] description];
     MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"2" sAlert:YES receive:self];
     [request setTag:4];
     
 }
 -(void)MakeSureBorrowBook:(id)sender
 {
-    MagicRequest *request = [DYBHttpMethod book_loan_order_id:order_id content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod book_loan_order_id:self.orderID content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
     [request setTag:2];
     
 }
 -(void)MakeSureReceiveBook:(id)sender
 {
-    MagicRequest *request = [DYBHttpMethod book_order_receiptbook:order_id sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod book_order_receiptbook:self.orderID sAlert:YES receive:self];
     [request setTag:200];
     
 }
 -(void)returnBook:(id)sender
 {
-    MagicRequest *request = [DYBHttpMethod book_order_launchbook:order_id sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod book_order_launchbook:self.orderID sAlert:YES receive:self];
     [request setTag:400];
     
 }
 -(void)MakeSureReturn:(id)sender
 {
-    MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:order_id sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:self.orderID sAlert:YES receive:self];
     [request setTag:500];
     
 }

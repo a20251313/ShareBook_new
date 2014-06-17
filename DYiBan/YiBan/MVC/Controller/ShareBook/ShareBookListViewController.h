@@ -8,7 +8,18 @@
 
 #import "DYBBaseViewController.h"
 
+
+typedef enum
+{
+    ShareBookListTypeJiashangTushu = 0,
+    ShareBookListTypeJieRuBook = 1,
+    ShareBookListTypeJieChuBook = 2,
+     ShareBookListTypeJieYueHis= 7,
+    
+}ShareBookListType;
+
+
 @interface ShareBookListViewController : DYBBaseViewController
-@property (nonatomic,assign)NSInteger type;
+@property (nonatomic,assign)ShareBookListType type;
 @property (nonatomic,retain)NSString  *headTitle;
 @end

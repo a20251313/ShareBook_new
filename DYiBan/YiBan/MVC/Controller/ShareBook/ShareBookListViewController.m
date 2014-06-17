@@ -14,6 +14,8 @@
 #import "JSON.h"
 #import "ShareBookCellBtnCenterView.h"
 #import "ShareBookApplyViewController.h"
+#import "ShareBookCommentController.h"
+#import "ShareBookOrderCommentController.h"
 
 @interface ShareBookListViewController (){
 
@@ -88,7 +90,6 @@
 
 
 
-//order_receiptbook
 - (void)handleViewSignal:(MagicViewSignal *)signal
 {
     NSDictionary    *dicData = [self getDataFromsignal:signal];
@@ -100,19 +101,27 @@
       
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKBORROWHIS]])
     {
+        ShareBookListViewController *controller = [[ShareBookListViewController alloc] init];
+        controller.type = ShareBookListTypeJieYueHis;
+        [self.drNavigationController pushViewController:controller animated:YES];
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKDROP]])
     {
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBOOK]])
     {
-        MagicRequest    *request = [DYBHttpMethod book_book_comment:[dicData valueForKey:@"pub_id"] content:@"很好啊" points:@"5" sAlert:YES receive:self];
-        request.tag = 2000;
-        
+      
+        ShareBookCommentController  *controller = [[ShareBookCommentController alloc] init];
+        controller.pubID = [[dicData valueForKey:@"book"] valueForKey:@"pub_id"];
+        [self.drNavigationController pushViewController:controller animated:YES];
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBROWWER]])
     {
-        MagicRequest    *request = [DYBHttpMethod book_order_comment:[dicData valueForKey:@"order_id"] sAlert:YES receive:self];
-        request.tag = 3000;
+        
+        ShareBookOrderCommentController *controller = [[ShareBookOrderCommentController  alloc] init];
+        controller.orderID = [dicData valueForKeyPath:@"order_id"];
+        [self.drNavigationController pushViewController:controller animated:YES];
+//        MagicRequest    *request = [DYBHttpMethod book_book_comment:[dicData valueForKey:@"pub_id"] content:@"很好啊" points:@"5" sAlert:YES receive:self];
+//        request.tag = 2000;
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKMAKESURERETURN]])
     {
@@ -137,6 +146,10 @@
         {
             MagicRequest    *request = [DYBHttpMethod book_order_launchbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
             request.tag = 5000;
+        }else
+        {
+              [DYBShareinstaceDelegate popViewText:@"当前订单不存在或者不能够执行此操作！" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
         }
   
         
@@ -232,10 +245,13 @@
             request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
             break;
         case 1:
-            request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
+            request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"0" sAlert:YES receive:self];
             break;
         case 2:
-            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description]sAlert:YES receive:self];
+            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"0" sAlert:YES receive:self];
+            break;
+        case 7:
+            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
             break;
             
         default:
@@ -316,7 +332,7 @@
         }else
         {
             ShareBookApplyViewController *bookApply = [[ShareBookApplyViewController alloc]init];
-            bookApply.mi = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
+            bookApply.orderID = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
             [self.drNavigationController pushViewController:bookApply animated:YES];
             RELEASE(bookApply);
             
@@ -447,6 +463,35 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             }
             
         }else if (request.tag == 3)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
+                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    m_bIsLoading = NO;
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                    }
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
+                    
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 8)
         {
             NSDictionary *dict = [request.responseString JSONValue];
             
