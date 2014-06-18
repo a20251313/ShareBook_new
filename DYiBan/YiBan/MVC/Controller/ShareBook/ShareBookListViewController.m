@@ -261,6 +261,8 @@
             request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"0" sAlert:YES receive:self];
             break;
         case 7:
+        case 3:
+            self.type = 7;
             request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
             break;
             

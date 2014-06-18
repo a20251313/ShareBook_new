@@ -67,7 +67,8 @@
         
         [self.view setBackgroundColor:[UIColor whiteColor]];
         
-        arraySouce = [[NSMutableArray alloc]initWithObjects:@"架上图书",@"借入图书",@"借出图书",@"漂流中的图书",@"预借中的图书", nil];
+//        arraySouce = [[NSMutableArray alloc]initWithObjects:@"架上图书",@"借入图书",@"借出图书",@"漂流中的图书",@"预借中的图书", nil];
+         arraySouce = [[NSMutableArray alloc]initWithObjects:@"架上图书",@"借入图书",@"借出图书",@"已完成订单", nil];
         
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
         [viewBG setBackgroundColor:[UIColor whiteColor]];

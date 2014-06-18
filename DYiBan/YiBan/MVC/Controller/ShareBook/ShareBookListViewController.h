@@ -14,6 +14,7 @@ typedef enum
     ShareBookListTypeJiashangTushu = 0,
     ShareBookListTypeJieRuBook = 1,
     ShareBookListTypeJieChuBook = 2,
+    ShareBookListTypeFinishOrder = 3,
      ShareBookListTypeJieYueHis= 7,
     
 }ShareBookListType;
