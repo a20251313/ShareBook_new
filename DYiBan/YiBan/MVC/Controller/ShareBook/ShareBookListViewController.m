@@ -94,7 +94,7 @@
 {
     NSDictionary    *dicData = [self getDataFromsignal:signal];
     
-    DLogInfo(@"userID:%@ %@ handleViewSignal:signal signal object:%@//%@",SHARED.userId,[signal object],signal,dicData);
+    DLogInfo(@"%@ handleViewSignal:signal signal object:%@//%@",[signal object],signal,dicData);
     
     if ([signal is:[ShareBookCellBtnCenterView CLICKREUPLOAD]])
     {
@@ -111,17 +111,21 @@
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBOOK]])
     {
       
+        ShareBookOrderCommentController *controller = [[ShareBookOrderCommentController  alloc] init];
+        controller.orderID = [dicData valueForKey:@"order_id"];
+        controller.bookOwner = [[dicData valueForKey:@"book"] valueForKey:@"username"];
+        controller.bookName = [[dicData valueForKey:@"book"] valueForKey:@"book_name"];
+        [self.drNavigationController pushViewController:controller animated:YES];
+        /*
         ShareBookCommentController  *controller = [[ShareBookCommentController alloc] init];
         controller.pubID = [[dicData valueForKey:@"book"] valueForKey:@"pub_id"];
-        [self.drNavigationController pushViewController:controller animated:YES];
+        [self.drNavigationController pushViewController:controller animated:YES];*/
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBROWWER]])
     {
         
         ShareBookOrderCommentController *controller = [[ShareBookOrderCommentController  alloc] init];
-        controller.orderID = [dicData valueForKeyPath:@"order_id"];
+        controller.orderID = [dicData valueForKey:@"order_id"];
         [self.drNavigationController pushViewController:controller animated:YES];
-//        MagicRequest    *request = [DYBHttpMethod book_book_comment:[dicData valueForKey:@"pub_id"] content:@"很好啊" points:@"5" sAlert:YES receive:self];
-//        request.tag = 2000;
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKMAKESURERETURN]])
     {
@@ -129,13 +133,19 @@
         request.tag = 4000;
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKNOTICERETURN]])
     {
-       
+       /* int status = [[dicData valueForKey:@"order_status"] intValue];
+        if (status ) {
+            <#statements#>
+        }*/
+        NSString    *userID = [dicData valueForKey:@"from_userid"];
+        NSString    *orderID = [dicData valueForKey:@"order_id"];
+        MagicRequest *request = [DYBHttpMethod message_send_userid:userID content:@"该还书了吧" type:@"2" mid:@"0" orderid:orderID sAlert:YES receive:self];
+        [request setTag:6000];
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKRETURNBOOK]])
     {
         
         //order_launchbook
-        
         int orderstatus = [[dicData valueForKey:@"order_status"] intValue];
         if (orderstatus == 2 )
         {
@@ -597,6 +607,23 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 6000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [DYBShareinstaceDelegate popViewText:@"提醒还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];

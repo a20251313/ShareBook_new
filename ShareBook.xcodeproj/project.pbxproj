@@ -115,6 +115,9 @@
 		862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */; };
 		863342221950787100DD090E /* ShareBookCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 863342211950787100DD090E /* ShareBookCommentController.m */; };
 		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
+		8FB557A7195155AD00ADB016 /* star_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A5195155AD00ADB016 /* star_gray.png */; };
+		8FB557A8195155AD00ADB016 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A6195155AD00ADB016 /* star.png */; };
+		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
 		B50D960818CEAF8900619B21 /* rightslide_foot.png in Resources */ = {isa = PBXBuildFile; fileRef = B50D960418CEAF8900619B21 /* rightslide_foot.png */; };
@@ -849,6 +852,10 @@
 		863342211950787100DD090E /* ShareBookCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookCommentController.m; sourceTree = "<group>"; };
 		8633422319508DF300DD090E /* ShareBookOrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderCommentController.h; sourceTree = "<group>"; };
 		8633422419508DF300DD090E /* ShareBookOrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderCommentController.m; sourceTree = "<group>"; };
+		8FB557A5195155AD00ADB016 /* star_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_gray.png; sourceTree = "<group>"; };
+		8FB557A6195155AD00ADB016 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
+		8FB557AA195164F300ADB016 /* JFSegmentControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFSegmentControlView.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
 		B50D95FE18CEA45F00619B21 /* DYBDataBankShotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankShotView.h; sourceTree = "<group>"; };
 		B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankTopRightCornerView.h; sourceTree = "<group>"; };
@@ -2161,6 +2168,8 @@
 		1893F9E118A87EC400DF758C /* 图书 */ = {
 			isa = PBXGroup;
 			children = (
+				8FB557A5195155AD00ADB016 /* star_gray.png */,
+				8FB557A6195155AD00ADB016 /* star.png */,
 				1893F9E218A87EC400DF758C /* add_bt.png */,
 				1893F9E318A87EC400DF758C /* book_frame.png */,
 				1893F9E418A87EC400DF758C /* book_frame_big.png */,
@@ -2244,6 +2253,8 @@
 				B513F13D18A9B44C00EDF09C /* ShareBookCell.h */,
 				B513F13E18A9B44C00EDF09C /* ShareBookCell.m */,
 				B5122BC018AB20E1006ECE62 /* ShareBookDetailCell.h */,
+				8FB557A9195164F300ADB016 /* JFSegmentControlView.h */,
+				8FB557AA195164F300ADB016 /* JFSegmentControlView.m */,
 				B5122BC118AB20E2006ECE62 /* ShareBookDetailCell.m */,
 				B5186D1818ACA69200CC2E36 /* ShareBookDouCell.h */,
 				B5186D1918ACA69200CC2E36 /* ShareBookDouCell.m */,
@@ -4171,6 +4182,7 @@
 				B58CB0F21829CF6A00F73D66 /* sr_refresh@2X.png in Resources */,
 				B58CB4641829CF7F00F73D66 /* Default-568h in Resources */,
 				B58CB4661829CF7F00F73D66 /* Default.png in Resources */,
+				8FB557A8195155AD00ADB016 /* star.png in Resources */,
 				B50D961118CEB3CF00619B21 /* laser.png in Resources */,
 				B58CB4671829CF7F00F73D66 /* Default@2.png in Resources */,
 				B5CE2AE018B4AF4C008E4E44 /* icon_book 2.png in Resources */,
@@ -4250,6 +4262,7 @@
 				B5D5AE9218BC365F005E4732 /* btn_share.png in Resources */,
 				1893FA1D18A87EC400DF758C /* icon_book.png in Resources */,
 				B521EAE918ADB27B00C8599A /* SelectionCell.xib in Resources */,
+				8FB557A7195155AD00ADB016 /* star_gray.png in Resources */,
 				B50D961E18CEDDCA00619B21 /* player-progress-loading@2x.png in Resources */,
 				B50E71A118C8210200A68FB7 /* icon_down.png in Resources */,
 				18DE074618D5F5CB00EEAEDF /* KeyboardBackgroundTextured@2x.png in Resources */,
@@ -4555,6 +4568,7 @@
 				B58CB1461829CF6A00F73D66 /* DYBSettingNotesViewController.m in Sources */,
 				B58CB1471829CF6A00F73D66 /* DYBSettingSendMessViewController.m in Sources */,
 				B58CB1481829CF6A00F73D66 /* DYBSettingViewController.m in Sources */,
+				8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */,
 				B58CB1491829CF6A00F73D66 /* DYBSNS_Controller_webViewController.m in Sources */,
 				B58CB14A1829CF6A00F73D66 /* DYBSynchroViewController.m in Sources */,
 				B58CB14B1829CF6A00F73D66 /* DYBUseBootstrapViewController.m in Sources */,

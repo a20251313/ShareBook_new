@@ -132,26 +132,26 @@ DEF_SIGNAL(CLICKRETURNBOOK)
     UIImage *image = [UIImage imageNamed:@"btn_added"];
 
     
-    MagicUIButton *btnBookSecond = [[MagicUIButton alloc]initWithFrame:CGRectMake(30.0f + 10, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    MagicUIButton *btnBookSecond = [[MagicUIButton alloc]initWithFrame:CGRectMake(30.0f + 10 + 20, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
 
     [btnBookSecond addSignal:[ShareBookCellBtnCenterView CLICKMAKESURERETURN] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
     [btnBookSecond setImage:[UIImage imageNamed:@"btn_con"] forState:UIControlStateNormal];
     [viewCell addSubview:btnBookSecond ];
     RELEASE(btnBookSecond);
     
-    MagicUIButton *btnBookDown = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4+ 30,  (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    MagicUIButton *btnBookDown = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4+ 30 + 30,  (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
     [btnBookDown addSignal:[ShareBookCellBtnCenterView CLICKNOTICERETURN] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
     [btnBookDown setImage:[UIImage imageNamed:@"btn_remind"] forState:UIControlStateNormal];
     [viewCell addSubview:btnBookDown ];
     RELEASE(btnBookDown);
     
-    
+    /*
     MagicUIButton *btnBookShare = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4 * 2 + 20, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
 
-    [btnBookShare addSignal:[ShareBookCellBtnCenterView CLICKEVULUATEBROWWER] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
+    [btnBookShare addSignal:[ShareBookCellBtnCenterView CLICKSHARE] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
     [btnBookShare setImage:[UIImage imageNamed:@"btn_evaluate_people"] forState:UIControlStateNormal];
     [viewCell addSubview:btnBookShare ];
-    RELEASE(btnBookShare);
+    RELEASE(btnBookShare);*/
     
     MagicUIButton *btnBookHistory = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4 * 3, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
     

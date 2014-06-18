@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ShareBookDetailCell : UITableViewCell
-
+@property(nonatomic,retain)NSDictionary *dicInfo;
+-(void)creatCell:(NSDictionary*)dicInfo;
 @end

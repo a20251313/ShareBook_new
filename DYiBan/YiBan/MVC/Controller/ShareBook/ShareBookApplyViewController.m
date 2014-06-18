@@ -620,16 +620,16 @@
     
     if (self.orderID) {
         NSDictionary *dictTime = [dictRR objectForKey:@"order"];
-        NSString *userID = [dictTime objectForKey:@"from_userid"];
+        NSString *strDate = [dictTime objectForKey:@"from_userid"];
         
-        if ([SHARED.userId isEqualToString:userID]) {
-            userID = [dictTime objectForKey:@"to_userid"];
+        if ([SHARED.userId isEqualToString:strDate]) {
+            strDate = [dictTime objectForKey:@"to_userid"];
         }else{
         
         
         }
         
-        MagicRequest *request = [DYBHttpMethod message_send_userid:userID content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod message_send_userid:strDate content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
 
         [request setTag:1];
     }else{
@@ -843,7 +843,7 @@ static NSString *cellName = @"cellName";
                 if (statusCode == 100) {
 
                     dictRR = [[NSDictionary alloc]initWithDictionary:[dict objectForKey:@"data"]];
-                    self.orderID = [[NSString alloc]initWithString:[[dictRR objectForKey:@"order"]objectForKey:@"self.orderID"] ];
+                    self.orderID = [[dictRR objectForKey:@"order"]objectForKey:@"order_id"];
                     
 
                     fromUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
@@ -853,7 +853,7 @@ static NSString *cellName = @"cellName";
                     [self creatView:dictRR];
                 }
                 else{
-                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"self.orderID"] description];
+                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
                     if (strOrder && [strOrder length])
                     {
                         self.orderID = [strOrder retain];
@@ -904,7 +904,7 @@ static NSString *cellName = @"cellName";
             if (dict) {
                 if (statusCode == 100) {
                     
-                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"self.orderID"] description];
+                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
                 if (strOrder && [strOrder length])
                 {
                     self.orderID = [strOrder retain];
@@ -1005,13 +1005,13 @@ static NSString *cellName = @"cellName";
 #pragma mark actions
 -(void)tongyi:(id)sender
 {
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"self.orderID"] description];
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
     MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
     [request setTag:4];
 }
 -(void)clickNoAgree:(id)sender
 {
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"self.orderID"] description];
+    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
     MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"2" sAlert:YES receive:self];
     [request setTag:4];
     
@@ -1048,7 +1048,7 @@ static NSString *cellName = @"cellName";
     self.rightButton.hidden = YES;
     UIView *tt = [self.headview viewWithTag:100];
     if (!tt) {
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20, 100.0f, 44.0f)];
         [view setTag:100];
         [view setBackgroundColor:[UIColor clearColor]];
         [self.headview addSubview:view];
@@ -1058,15 +1058,15 @@ static NSString *cellName = @"cellName";
         {
             case 1:
             {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
-                [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 5,  40.0f,35.0f)];
+                [btn1 addTarget:self action:@selector(tongyi:) forControlEvents:UIControlEventTouchUpInside];
                 [btn1 setTitle:@"同意" forState:UIControlStateNormal];
                 [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
                 [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
                 [view addSubview:btn1];
                 RELEASE(btn1);
                 
-                UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
+                UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 5,  40.0f,35.0f)];
                 [btn2 addTarget:self action:@selector(clickNoAgree:) forControlEvents:UIControlEventTouchUpInside];
                 [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
                 [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
@@ -1077,7 +1077,7 @@ static NSString *cellName = @"cellName";
                 break;
             case 0:
             {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 40,  40.0f,44.0f)];
+                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(40.0f, 5,  50.0f,35.0f)];
                 [btn1 addTarget:self action:@selector(MakeSureBorrowBook:) forControlEvents:UIControlEventTouchUpInside];
                 [btn1 setTitle:@"确认" forState:UIControlStateNormal];
                 [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
@@ -1086,7 +1086,7 @@ static NSString *cellName = @"cellName";
                 RELEASE(btn1);
             }
                 break;//
-                
+            /*
             case 2:
             {
                 UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 10,  90.0f,44.0f)];
@@ -1119,9 +1119,10 @@ static NSString *cellName = @"cellName";
                 [view addSubview:btn1];
                 RELEASE(btn1);
             }
-                break;//确认收到书确认归还
+                break;//确认收到书确认归还*/
                 
             default:
+                tt.hidden = YES;
                 break;
         }
     }

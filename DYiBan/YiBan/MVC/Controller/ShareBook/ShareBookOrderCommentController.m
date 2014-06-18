@@ -16,17 +16,21 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "UIImageView+WebCache.h"
+#import "JFSegmentControlView.h"
 
 
-@interface ShareBookOrderCommentController ()<UITextViewDelegate>{
+@interface ShareBookOrderCommentController ()<UITextFieldDelegate,JFSegmentControlViewDelegate>{
 
 
     
-    UITextView *_commentInput;
+    UITextField *_commentInput;
+    UIView      *bgTopView;
     
     int      order_status;
     int      fromUserID;
     int      toUserID;
+    
+    int      m_nowIndex;
     
     int      point;
 }
@@ -35,6 +39,8 @@
 
 @implementation ShareBookOrderCommentController
 @synthesize orderID;
+@synthesize bookName;
+@synthesize bookOwner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,24 +78,82 @@
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
         
-        
+          [self.view setBackgroundColor:COLOR_RGB(236, 236, 236)];
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
 
         
+        CGFloat fypoint = self.headHeight;
         
         
+        UIImage *imageStar = [UIImage imageNamed:@"icon_star.png"];
+        
+        bgTopView = [[UIView alloc] initWithFrame:CGRectMake(0, fypoint, self.view.frame.size.width, 50)];
+        bgTopView.backgroundColor = COLOR_RGB(215, 215, 215);
+        CGFloat fwidth = imageStar.size.width;
+        CGFloat fsep = 10;
+        CGFloat fxpoint = (bgTopView.frame.size.width-fwidth*5-fsep*4)/2;
         
         
-        _commentInput = [[UITextView alloc] initWithFrame:CGRectMake(10, self.headHeight+10, self.view.frame.size.width-20, 100)];
+      
+        for (int i = 0; i < 5; i++)
+        {
+            UIButton   *btnStar = [[UIButton alloc] initWithFrame:CGRectMake(fxpoint, (bgTopView.frame.size.height-imageStar.size.height)/2, imageStar.size.width, imageStar.size.height)];
+            [btnStar setImage:[UIImage imageNamed:@"icon_star.png"] forState:UIControlStateNormal];
+             [btnStar setImage:[UIImage imageNamed:@"icon_star2.png"] forState:UIControlStateSelected];
+            [btnStar addTarget:self action:@selector(clickStar:) forControlEvents:UIControlEventTouchUpInside];
+            btnStar.tag = i+10;
+            [bgTopView addSubview:btnStar];
+            [btnStar release];
+            fxpoint += imageStar.size.width+fsep;
+        }
+        
+        [self.view addSubview:bgTopView];
+
+        
+        fypoint += fsep+50;
+        
+        
+        UILabel *labelBookName = [[UILabel alloc] initWithFrame:CGRectMake(10, fypoint, self.view.frame.size.width, 30)];
+        [labelBookName setBackgroundColor:[UIColor clearColor]];
+        [labelBookName setText:[NSString stringWithFormat:@"书  名：%@",self.bookName]];
+        [labelBookName setTextColor:[UIColor blackColor]];
+        [self.view addSubview:labelBookName];
+        [labelBookName release];
+        
+        fypoint += fsep+30;
+        UILabel *labelBookOwner = [[UILabel alloc] initWithFrame:CGRectMake(10, fypoint, self.view.frame.size.width, 30)];
+        [labelBookOwner setBackgroundColor:[UIColor clearColor]];
+        [labelBookOwner setText:[NSString stringWithFormat:@"书  主：%@",self.bookOwner]];
+        [labelBookOwner setTextColor:[UIColor blackColor]];
+        [self.view addSubview:labelBookOwner];
+        [labelBookOwner release];
+        
+        fypoint += fsep+30;
+        UILabel *labelXinyong = [[UILabel alloc] initWithFrame:CGRectMake(10, fypoint,80, 30)];
+        [labelXinyong setBackgroundColor:[UIColor clearColor]];
+        [labelXinyong setText:[NSString stringWithFormat:@"信用评价:"]];
+        [labelXinyong setTextColor:[UIColor blackColor]];
+        [self.view addSubview:labelXinyong];
+        [labelXinyong release];
+        
+        
+        JFSegmentControlView    *controll = [[JFSegmentControlView alloc] initWithFrame:CGRectMake(100, fypoint, 140, 30) withitems:@[@"好评",@"差评"]];
+       // controll.btnBgColor = [UIColor whiteColor];
+        [self.view addSubview:controll];
+        controll.delegate = self;
+        [controll release];
+        
+        
+        fypoint += 30;
+        _commentInput = [[UITextField alloc] initWithFrame:CGRectMake(10,     fypoint += fsep+30, self.view.frame.size.width-20, 40)];
         _commentInput.delegate = self;
         _commentInput.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _commentInput.layer.borderWidth = 1;
-        
         [self.view addSubview:_commentInput];
         
         
-        CGFloat fypoint = _commentInput.frame.origin.y + _commentInput.frame.size.height+10;
+        fypoint = _commentInput.frame.origin.y + _commentInput.frame.size.height+10;
         UIImage *btnImage = [UIImage imageNamed:@"bt01_click"];
         UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(((self.view.frame.size.width-btnImage.size.width/2))/2,fypoint, btnImage.size.width/2, btnImage.size.height/2)];
         [btnBorrow setTag:102];
@@ -99,6 +163,7 @@
         [btnBorrow addTarget:self action:@selector(clickCommit:) forControlEvents:UIControlEventTouchUpInside];
         [self addlabel_title:@"提交评论" frame:btnBorrow.frame view:btnBorrow textColor:[UIColor whiteColor]];
         [self.view addSubview:btnBorrow];
+        RELEASE(btnBorrow);
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
         DLogInfo(@"rrr");
@@ -109,14 +174,42 @@
 }
 
 
+
+-(void)clickStar:(UIButton*)sender
+{
+    [sender setSelected:YES];
+    int index = sender.tag - 10+1;
+    for (int i = 0; i < 5; i++)
+    {
+        UIButton *btn = (UIButton*)[sender.superview viewWithTag:10+i];
+        if (i < index)
+        {
+            [btn setSelected:YES];
+        }else
+        {
+            [btn setSelected:NO];
+        }
+        
+    }
+    if (1)
+    {
+        point =  index;
+    }else
+    {
+        point = 0;
+    }
+    
+}
 -(void)clickCommit:(id)sender
 {
     if ([_commentInput.text length] < 1)
     {
          [DYBShareinstaceDelegate popViewText:@"评论不能为空" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-    }else
+    }else if(point < 1)
     {
-        point = 5;
+        [DYBShareinstaceDelegate popViewText:@"评分不能为0" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+        
+    }else{
         MagicRequest    *request = [DYBHttpMethod book_order_comment:self.orderID comment:_commentInput.text point:[@(point) description] sAlert:YES receive:self];
         request.tag = 100;
     }
@@ -185,16 +278,26 @@
 }
 
 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+
+
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    return YES;
 }
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textView resignFirstResponder];
+    [textField resignFirstResponder];
+    [self clickCommit:nil];
     return YES;
 }
 
+#pragma mark JFSegmentControlViewDelegate
+-(void)segIndexChanged:(NSInteger)Nowindex
+{
+    m_nowIndex = Nowindex;
+
+}
 
 
 @end

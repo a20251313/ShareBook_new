@@ -18,11 +18,23 @@
 #import "UIImageView+WebCache.h"
 
 @interface ShareBookDetailViewController ()
+{
+    UILabel         *labelNum;
+    NSMutableArray  *m_dataArray;
+    DYBUITableView * tbDataBank11;
+}
 
 @end
 
 @implementation ShareBookDetailViewController
 @synthesize dictInfo = _dictInfo;
+
+-(void)dealloc
+{
+    RELEASE(labelNum);
+    RELEASE(tbDataBank11);
+    [super dealloc];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -43,6 +55,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
@@ -120,21 +133,19 @@
         
         
         
-        UILabel *labelNum  = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 0, 320.0f, 40)];
+        labelNum  = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 0, 320.0f, 40)];
         [labelNum setText:@"本书评论（101）"];
         [imageNum addSubview:labelNum];
-        RELEASE(labelNum);
-        
-        
-        
-        
-        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, 5.0f + self.headHeight + 210 + 40, 320.0f, self.view.frame.size.height -44-100  ) isNeedUpdate:YES];
+    
+
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, 5.0f + self.headHeight + 210 + 40, 320.0f, self.view.frame.size.height -44-100-52) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-        RELEASE(tbDataBank11);
+
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
+        [self requestBookComment];
         [self creatDownBar];
         
         
@@ -242,6 +253,7 @@
 
 
 
+
 -(void)creatDetailView :(NSDictionary *)dict{
 
     UIImage *image = [UIImage imageNamed:@"defualt_book"];
@@ -309,6 +321,14 @@
 
 }
 
+
+#pragma mark request comment
+-(void)requestBookComment
+{
+    MagicRequest    *request = [DYBHttpMethod shareBook_book_commentlist_pub_id:[_dictInfo valueForKey:@"pub_id"] page:@"1" num:@"20" sAlert:YES receive:self];
+    request.tag = 100;
+}
+
 #pragma mark- 只接受UITableView信号
 static NSString *cellName = @"cellName";
 
@@ -319,14 +339,7 @@ static NSString *cellName = @"cellName";
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
         //        NSDictionary *dict = (NSDictionary *)[signal object];
         //        NSNumber *_section = [dict objectForKey:@"section"];
-        NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:10];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
+        NSNumber *s = @(m_dataArray.count);
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -350,9 +363,7 @@ static NSString *cellName = @"cellName";
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         ShareBookDetailCell *cell = [[ShareBookDetailCell alloc]init];
-        
-//        NSDictionary *dictInfoFood = nil;
-//        [cell creatCell:dictInfoFood];
+        [cell creatCell:m_dataArray[indexPath.row]];
         DLogInfo(@"%d", indexPath.section);
         
         
@@ -367,8 +378,8 @@ static NSString *cellName = @"cellName";
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+      //  NSDictionary *dict = (NSDictionary *)[signal object];
+    //    NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
         
@@ -466,7 +477,37 @@ static NSString *cellName = @"cellName";
                 }
             }
             
-        } else{
+        } else if(request.tag == 100){ //获取评论列表
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+  
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
+                {
+                    if (!m_dataArray)
+                    {
+                        m_dataArray = [[NSMutableArray alloc] init];
+                    }
+                    
+                    NSArray *arrayData = [[dict valueForKey:@"data"] valueForKey:@"comment_list"];
+                    if (arrayData.count)
+                    {
+                        [m_dataArray addObjectsFromArray:arrayData];
+                    }
+                    [labelNum setText:[NSString stringWithFormat:@"本书评论(%d)",arrayData.count]];
+                    [tbDataBank11 reloadData:YES];
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             

@@ -10,4 +10,6 @@
 
 @interface ShareBookOrderCommentController : DYBBaseViewController<UITextFieldDelegate>
 @property (nonatomic,retain)NSString *orderID;
+@property (nonatomic,retain)NSString *bookName;
+@property (nonatomic,retain)NSString *bookOwner;
 @end

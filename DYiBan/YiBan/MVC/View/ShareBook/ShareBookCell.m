@@ -99,12 +99,14 @@ DEF_SIGNAL(FINISHSWIP)
         
     }
     
+
+        swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
+        swipView.tag = 100;
+        [swipView setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:swipView];
+        RELEASE(swipView);
     
-    swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
-    swipView.tag = 100;
-    [swipView setBackgroundColor:[UIColor clearColor]];
-    [self addSubview:swipView];
-    RELEASE(swipView);
+
     
     
     
@@ -244,6 +246,10 @@ DEF_SIGNAL(FINISHSWIP)
 - (void)handleViewSignal_UIView:(MagicViewSignal *)signal{
     //    DLogInfo(@"pan");
     if ([signal is:[UIView PAN]]) {//拖动信号
+        if (_type == ShareBookListTypeJieYueHis)
+        {
+            return;
+        }
         NSDictionary *d=(NSDictionary *)signal.object;
         UIPanGestureRecognizer *recognizer=[d objectForKey:@"sender"];
         
