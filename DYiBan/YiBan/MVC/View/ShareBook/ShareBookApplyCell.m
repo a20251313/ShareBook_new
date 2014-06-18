@@ -26,52 +26,80 @@
     // Configure the view for the selected state
 }
 
+-(NSString*)getDateString:(NSString*)dataInter
+{
+    NSDate  *date = [NSDate dateWithTimeIntervalSince1970:[dataInter floatValue]];
+    NSDateFormatter *formater = [[NSDateFormatter alloc] init];
+    [formater setTimeZone:[NSTimeZone localTimeZone]];
+    [formater setLocale:[NSLocale currentLocale]];
+    [formater setDateFormat:@"YYYY-MM-dd HH:MM:SS"];
+    NSString    *strDate = [formater stringFromDate:date];
+    [formater release];
+    return strDate;
+    
+}
+
+
+
+-(UIView*)getViewAccordContent:(NSString*)content isLeft:(BOOL)isleft
+{
+    UIImageView  *view = [[UIImageView alloc] initWithFrame:CGRectMake(10, 23, 300, 45)];
+    CGFloat  fheight = [content sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(300, 4999) lineBreakMode:NSLineBreakByWordWrapping].height;
+    if (fheight > 45)
+    {
+        fheight = 45;
+    }
+    NSLog(@"fheight:%f content:%@",fheight,content);
+    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,300, fheight)];
+    [labelMSG setText:content];
+    [labelMSG setFont:[UIFont systemFontOfSize:15]];
+    [labelMSG setNumberOfLines:0];
+    [labelMSG setBackgroundColor:[UIColor clearColor]];
+    [view addSubview:labelMSG];
+    if (isleft)
+    {
+        
+        UIImage *image = [UIImage imageNamed:@"discussbg_01"];
+        image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height/2+1, image.size.width/2+1, image.size.height/2-1, image.size.width/2-1)];
+         view.image = image;
+    }else
+    {
+        UIImage *image = [UIImage imageNamed:@"discussbg_02"];
+       // image = [image stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+        image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height/2+1, image.size.width/2+1, image.size.height/2-1, image.size.width/2-1)];
+        view.image = image;
+    }
+   
+    RELEASE(labelMSG);
+    
+    return [view autorelease];
+    
+}
+
 -(void)creatCell:(NSDictionary *) dict{
 
     NSInteger itype = [[dict objectForKey:@"index"] intValue];
-    if (itype%2 == 0) {
-        
-    
-        UIImageView *imageBG = [[UIImageView alloc]initWithFrame:CGRectMake(10.0f, 20.0f, 120.0f, 40.0f)];
-        [imageBG setImage:[UIImage imageNamed:@"discussbg_01"]];
-        [imageBG setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:imageBG];
-        RELEASE(imageBG);
-        
-        
-    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 20.0f, 200.0f, 40.0f)];
-    [labelMSG setText:[dict objectForKey:@"content"]];
-    [labelMSG setBackgroundColor:[UIColor clearColor]];
-    [self addSubview:labelMSG];
-    RELEASE(labelMSG);
-    
-    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelMSG.frame) + CGRectGetMinX(labelMSG.frame) - 30, 10.0f+ 5, 150.0f, 40.0f)];
-        [labelTime setBackgroundColor:[UIColor clearColor]];
-    [labelTime setText:[dict objectForKey:@"date"]];
-        [labelTime setFont:[UIFont systemFontOfSize:13.0f]];
+    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(0,5, 320, 21.0f)];
+    [labelTime setBackgroundColor:[UIColor clearColor]];
+    [labelTime setText:[self getDateString:[dict objectForKey:@"date"]]];
+    [labelTime setFont:[UIFont systemFontOfSize:13.0f]];
+    [labelTime setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:labelTime];
     [labelTime release];
+    if (itype%2 == 0) {
+        
+        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:YES];
+        [self addSubview:contentView];
+        
+
+    
+ 
     }else{
     
        
 
-        UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 20.0f - 5, 200.0f, 40.0f)];
-        [labelMSG setText:[dict objectForKey:@"date"]];
-        [labelMSG setFont:[UIFont systemFontOfSize:13.0f]];
-        [labelMSG setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:labelMSG];
-        RELEASE(labelMSG);
-        
-        UIImageView *imageBG = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelMSG.frame) + CGRectGetMinX(labelMSG.frame) - 50, 10.0f, 150.0f, 40.0f)];
-        [imageBG setImage:[UIImage imageNamed:@"discussbg_02"]];
-        [self addSubview:imageBG];
-        RELEASE(imageBG);
-        
-        UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelMSG.frame)-50 + CGRectGetMinX(labelMSG.frame), 10.0f, 100.0f, 40.0f)];
-        [labelTime setText:[dict objectForKey:@"content"]];
-        [self addSubview:labelTime];
-        [labelTime release];
-        [labelTime setBackgroundColor:[UIColor clearColor]];
+        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:NO];
+        [self addSubview:contentView];
     
     }
 

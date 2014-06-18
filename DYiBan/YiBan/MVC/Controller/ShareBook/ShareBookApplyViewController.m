@@ -177,7 +177,7 @@
             
             UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + self.headHeight, 240, 20)];
 
-            [labelName setText:@"三生三室枕上书"];
+            [labelName setText:@""];
             
             if ([dictInfo valueForKey:@"title"])
             {
@@ -213,14 +213,14 @@
             
             UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
             [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime setText:[NSString stringWithFormat:@"借阅时间：%@天",[dictInfo objectForKey:@"loan_period"]]];
+            [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
             [viewBG addSubview:labelTime];
             [labelTime setFont:[UIFont systemFontOfSize:14]];
             [labelTime release];
             
             labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
             [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime1 setText:[NSString stringWithFormat:@"2014-02-20 15：30"]];
+            [labelTime1 setText:[NSString stringWithFormat:@"2014-06-20 15：30"]];
             [viewBG addSubview:labelTime1];
             [labelTime1 setFont:[UIFont systemFontOfSize:14]];
             [labelTime1 release];
@@ -252,13 +252,14 @@
             RELEASE(btnMoreAddr);
             [self addlabel_title:@"选地址" frame:btnMoreAddr.frame view:btnMoreAddr];
             
-            tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10  ) isNeedUpdate:YES];
+            tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10-50) isNeedUpdate:YES];
             [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
             [self.view addSubview:tbDataBank11];
             [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-            RELEASE(tbDataBank11);
+         
             [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             
+            RELEASE(tbDataBank11);
             [self creatDownBar];
 
             
@@ -295,7 +296,12 @@
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f , imageIcon.size.width/2, imageIcon.size.height/2)];
     [imageBook setBackgroundColor:[UIColor clearColor]];
     [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
-    [imageBook setImageWithURL:[NSURL URLWithString:[dicttt valueForKey:@"book_image"]]];
+    
+    if ([[dicttt valueForKey:@"book_image"] isKindOfClass:[NSString class]])
+    {
+          [imageBook setImageWithURL:[NSURL URLWithString:[dicttt valueForKey:@"book_image"]]];
+    }
+ 
     [viewBG addSubview:imageBook];
     [imageBook release];
     
@@ -322,14 +328,14 @@
     
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelTime setText:[NSString stringWithFormat:@"借阅时间：%@",[[dict objectForKey:@"order"] objectForKey:@"loan_time"]]];
+    [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
     [viewBG addSubview:labelTime];
     [labelTime setFont:[UIFont systemFontOfSize:14]];
     [labelTime release];
     
     labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
     [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelTime1 setText:[NSString stringWithFormat:@"2014-02-20 15：30"]];
+    [labelTime1 setText:[NSString stringWithFormat:@"2014-06-20 15：30"]];
     [viewBG addSubview:labelTime1];
     [labelTime1 setFont:[UIFont systemFontOfSize:14]];
     [labelTime1 release];
@@ -381,7 +387,7 @@
     
     
     
-    tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10  ) isNeedUpdate:YES];
+    tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10 -100) isNeedUpdate:YES];
     [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:tbDataBank11];
     [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -440,7 +446,7 @@
     RELEASE(viewBG);
     
     
-    UIButton *btnCancel = [[UIButton alloc]initWithFrame:CGRectMake( 20 , CGRectGetHeight(self.view.frame) - 216 - 60, 50, 40)];
+   /* UIButton *btnCancel = [[UIButton alloc]initWithFrame:CGRectMake( 20 , CGRectGetHeight(self.view.frame) - 216 - 60, 50, 40)];
     [btnCancel setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
     [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
     [btnCancel addTarget:self action:@selector(doCancel) forControlEvents:UIControlEventTouchUpInside];
@@ -458,10 +464,25 @@
     [btnMakeSureTime setBackgroundColor:[UIColor clearColor]];
     [viewBG addSubview:btnMakeSureTime];
     RELEASE(btnMakeSureTime);
-    [self addlabel_title:@"确定" frame:btnMakeSureTime.frame view:btnMakeSureTime];
+    [self addlabel_title:@"确定" frame:btnMakeSureTime.frame view:btnMakeSureTime];*/
 
     
     
+    
+    UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 216-44, 320, 44)];
+    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doMakeSureTime)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(doCancel)];
+    toolBar.items = [NSArray arrayWithObjects:cancel,right,done,nil];
+    toolBar.barStyle = UIBarStyleBlack;
+   
+    
+    
+    [viewBG addSubview:toolBar];
+    [toolBar release];
+    [cancel release];
+    [right release];
+    [done release];
     datePicker = [[ UIDatePicker alloc] initWithFrame:CGRectMake(0.0,CGRectGetHeight(self.view.frame) - 216 ,0.0,0.0)];
 
     datePicker.datePickerMode  = UIDatePickerModeDateAndTime;
@@ -563,9 +584,18 @@
 
 }
 
+
+-(void)setAddress:(NSString*)address
+{
+    if (address)
+    {
+        [_phoneInputNameR.nameField setText:address];
+    }
+}
 -(void)doMoreAddr{
 
     ShareBookMoreAddrViewController *moreBook = [[ShareBookMoreAddrViewController alloc]init];
+    moreBook.applyController = self;
     [self.drNavigationController pushViewController:moreBook animated:YES];
     RELEASE(moreBook);
 
@@ -641,7 +671,7 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
+//static NSString *cellName = @"cellName";
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
@@ -666,7 +696,7 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:60];
+        NSNumber *s = [NSNumber numberWithInteger:80];
         [signal setReturnValue:s];
         
         

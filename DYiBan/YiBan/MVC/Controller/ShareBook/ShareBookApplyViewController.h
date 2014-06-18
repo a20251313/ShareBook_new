@@ -11,4 +11,7 @@
 @interface ShareBookApplyViewController : DYBBaseViewController<UITextFieldDelegate>
 @property (nonatomic,retain)NSDictionary *dictInfo;
 @property (nonatomic,retain)NSString *orderID;
+
+
+-(void)setAddress:(NSString*)address;
 @end

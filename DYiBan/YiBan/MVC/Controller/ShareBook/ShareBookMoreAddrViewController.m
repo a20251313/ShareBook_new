@@ -12,12 +12,13 @@
 
 
     DYBUITableView *tbDataBank11;
+    NSMutableArray  *m_arrayAddress;
 }
 
 @end
 
 @implementation ShareBookMoreAddrViewController
-
+@synthesize applyController;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -25,6 +26,13 @@
         // Custom initialization
     }
     return self;
+}
+
+-(void)dealloc
+{
+    self.applyController = nil;
+    RELEASE(m_arrayAddress);
+    [super dealloc];
 }
 
 - (void)viewDidLoad
@@ -52,6 +60,12 @@
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
+        
+        if (!m_arrayAddress)
+        {
+            m_arrayAddress = [[NSMutableArray alloc] init];
+            [m_arrayAddress addObjectsFromArray:@[@"人民广场100号5楼404",@"人民广场100号5楼405",@"人民广场100号5楼406",@"人民广场300号5楼407"]];
+        }
         
 //        [self setButtonImage:self.rightButton setImage:@"icon_retreat"];
     }
@@ -115,7 +129,7 @@ static NSString *cellName = @"cellName";
         
         NSNumber *s;
         
-        s = [NSNumber numberWithInteger:10];
+        s = [NSNumber numberWithInteger:m_arrayAddress.count];
         
         [signal setReturnValue:s];
         
@@ -140,7 +154,7 @@ static NSString *cellName = @"cellName";
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         UITableView *tableView = [dict objectForKey:@"tableView"];
         
-        UIButton *btnCheck;
+       // UIButton *btnCheck;
         
         static NSString *reuseIdetify = @"SvTableViewCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdetify];
@@ -149,7 +163,7 @@ static NSString *cellName = @"cellName";
         //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         DLogInfo(@"%d", indexPath.section);
         UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(10.09f, 10.0f, 300.0, 30.0f)];
-        [labelText setText:@"人民广场100号5楼404"];
+        [labelText setText:m_arrayAddress[indexPath.row]];
         [cell addSubview:labelText];
         RELEASE(labelText);
         
@@ -182,7 +196,7 @@ static NSString *cellName = @"cellName";
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
+        [self.applyController setAddress:m_arrayAddress[indexPath.row]];
         [self.drNavigationController popViewControllerAnimated:YES];
         
         

@@ -11,7 +11,7 @@
 	<key>CFBundleIconFiles</key>
 	<array/>
 	<key>CFBundleIdentifier</key>
-	<string>cn.loopool.sharebook</string>
+	<string>com.jingfu.huituban</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
@@ -57,5 +57,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>infobundle</key>
+	<string>cn.loopool.sharebook</string>
+	<key>infobundle2</key>
+	<string>com.jingfu.huituban</string>
 </dict>
 </plist>

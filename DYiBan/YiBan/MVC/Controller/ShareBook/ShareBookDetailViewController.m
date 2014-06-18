@@ -20,6 +20,7 @@
 @interface ShareBookDetailViewController ()
 {
     UILabel         *labelNum;
+    UILabel         *labelComment;
     NSMutableArray  *m_dataArray;
     DYBUITableView * tbDataBank11;
 }
@@ -31,6 +32,7 @@
 
 -(void)dealloc
 {
+    RELEASE(labelComment);;
     RELEASE(labelNum);
     RELEASE(tbDataBank11);
     [super dealloc];
@@ -109,14 +111,16 @@
         [imageNum1 addSubview:labelNum3];
         RELEASE(labelNum3);
         
-        UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(110.0f, .0f , 210.0f, 40)];
-        [labelText setText:@"图书很好看，图书很好看图书很好看评主评论："];
-        [labelText setFont:[UIFont systemFontOfSize:14]];
         
-        labelText.lineBreakMode = UILineBreakModeWordWrap;
-        labelText.numberOfLines = 0;
-        [imageNum1 addSubview:labelText];
-        RELEASE(labelText);
+        //author_intro
+       labelComment = [[UILabel alloc]initWithFrame:CGRectMake(110.0f, .0f , 210.0f, 40)];
+        [labelComment setText:@"图书很好看，图书很好看图书很好看评主评论："];
+        [labelComment setFont:[UIFont systemFontOfSize:14]];
+        
+        labelComment.lineBreakMode = UILineBreakModeWordWrap;
+        labelComment.numberOfLines = 0;
+        [imageNum1 addSubview:labelComment];
+
         
         
         
@@ -127,14 +131,8 @@
         [self.view addSubview:imageNum];
         [imageNum release];
         
-        
-        
-        
-        
-        
-        
         labelNum  = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 0, 320.0f, 40)];
-        [labelNum setText:@"本书评论（101）"];
+        [labelNum setText:@"本书评论0）"];
         [imageNum addSubview:labelNum];
     
 
@@ -263,7 +261,7 @@
     [self.view addSubview:imageIcon];
     [imageIcon release];
     
-    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 15.0f + self.headHeight, 100, 20)];
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 15.0f + self.headHeight, 200, 20)];
     [labelName setText:[dict objectForKey:@"title"]];
     [self.view addSubview:labelName];
     [labelName release];
@@ -317,6 +315,7 @@
     [labelModle release];
     
     
+    [labelComment setText:[dict valueForKey:@"summary"]];
     
 
 }
