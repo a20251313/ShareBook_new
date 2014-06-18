@@ -116,6 +116,7 @@
          [DYBShareinstaceDelegate popViewText:@"评论不能为空" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
     }else
     {
+        point = 5;
         MagicRequest    *request = [DYBHttpMethod book_order_comment:self.orderID comment:_commentInput.text point:[@(point) description] sAlert:YES receive:self];
         request.tag = 100;
     }

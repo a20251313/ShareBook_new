@@ -94,7 +94,7 @@
 {
     NSDictionary    *dicData = [self getDataFromsignal:signal];
     
-    DLogInfo(@"%@ handleViewSignal:signal signal object:%@//%@",[signal object],signal,dicData);
+    DLogInfo(@"userID:%@ %@ handleViewSignal:signal signal object:%@//%@",SHARED.userId,[signal object],signal,dicData);
     
     if ([signal is:[ShareBookCellBtnCenterView CLICKREUPLOAD]])
     {
