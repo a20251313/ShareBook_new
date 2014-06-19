@@ -650,21 +650,21 @@
     
     if (self.orderID) {
         NSDictionary *dictTime = [dictRR objectForKey:@"order"];
-        NSString *strDate = [dictTime objectForKey:@"from_userid"];
+        NSString *strUserID = [dictTime objectForKey:@"from_userid"];
         
-        if ([SHARED.userId isEqualToString:strDate]) {
-            strDate = [dictTime objectForKey:@"to_userid"];
+        if ([SHARED.userId isEqualToString:strUserID]) {
+            strUserID = [dictTime objectForKey:@"to_userid"];
         }else{
         
-        
+            strUserID = [dictInfo valueForKey:@"user_id"];
         }
         
-        MagicRequest *request = [DYBHttpMethod message_send_userid:strDate content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod message_send_userid:strUserID content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
 
         [request setTag:1];
     }else{
         MagicRequest *request = [DYBHttpMethod message_send_userid:[dictInfo objectForKey:@"user_id"] content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
-    [request setTag:1];
+        [request setTag:1];
     }
     
     [_phoneInputNameRSend.nameField resignFirstResponder];

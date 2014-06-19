@@ -16,6 +16,7 @@
 #import "ShareBookApplyViewController.h"
 #import "ShareBookCommentController.h"
 #import "ShareBookOrderCommentController.h"
+#import "DYBTwoDimensionCodeViewController.h"
 
 @interface ShareBookListViewController (){
 
@@ -98,6 +99,9 @@
     
     if ([signal is:[ShareBookCellBtnCenterView CLICKREUPLOAD]])
     {
+        DYBTwoDimensionCodeViewController *scan = [[DYBTwoDimensionCodeViewController alloc]init];
+        [self.drNavigationController pushViewController:scan animated:YES];
+        [scan release];
       
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKBORROWHIS]])
     {
@@ -626,6 +630,23 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"提醒还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if (request.tag == 5000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [DYBShareinstaceDelegate popViewText:@"还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
