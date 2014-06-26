@@ -115,6 +115,7 @@
 		862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */; };
 		863342221950787100DD090E /* ShareBookCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 863342211950787100DD090E /* ShareBookCommentController.m */; };
 		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
+		8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F83503C195417C800CA6812 /* btn_makereceive.png */; };
 		8FB557A7195155AD00ADB016 /* star_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A5195155AD00ADB016 /* star_gray.png */; };
 		8FB557A8195155AD00ADB016 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A6195155AD00ADB016 /* star.png */; };
 		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -852,6 +853,7 @@
 		863342211950787100DD090E /* ShareBookCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookCommentController.m; sourceTree = "<group>"; };
 		8633422319508DF300DD090E /* ShareBookOrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderCommentController.h; sourceTree = "<group>"; };
 		8633422419508DF300DD090E /* ShareBookOrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderCommentController.m; sourceTree = "<group>"; };
+		8F83503C195417C800CA6812 /* btn_makereceive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_makereceive.png; sourceTree = "<group>"; };
 		8FB557A5195155AD00ADB016 /* star_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_gray.png; sourceTree = "<group>"; };
 		8FB557A6195155AD00ADB016 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
@@ -3906,6 +3908,7 @@
 		B5D5AE7418BC365F005E4732 /* 用户信息 */ = {
 			isa = PBXGroup;
 			children = (
+				8F83503C195417C800CA6812 /* btn_makereceive.png */,
 				B50D960418CEAF8900619B21 /* rightslide_foot.png */,
 				B50D960518CEAF8900619B21 /* rightslide_mid.png */,
 				B50D960618CEAF8900619B21 /* rightslide_sel.png */,
@@ -4295,6 +4298,7 @@
 				B50D960F18CEB3CF00619B21 /* qrcode_bg.png in Resources */,
 				1893FA4D18A87EC400DF758C /* bt.png in Resources */,
 				18DE074718D5F5CB00EEAEDF /* KeyboardNumericEntryKeyBackspaceGlyphTextured.png in Resources */,
+				8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */,
 				B50E71A218C8210200A68FB7 /* icon_list.png in Resources */,
 				B50D963118CF16AA00619B21 /* icon+(1).png in Resources */,
 				18DE075918D71DD300EEAEDF /* icon.png in Resources */,

@@ -220,7 +220,7 @@
             
             labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
             [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime1 setText:[NSString stringWithFormat:@"2014-06-20 15：30"]];
+            [labelTime1 setText:[self stringFromDate:[NSDate date]]];
             [viewBG addSubview:labelTime1];
             [labelTime1 setFont:[UIFont systemFontOfSize:14]];
             [labelTime1 release];
@@ -335,7 +335,7 @@
     
     labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
     [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelTime1 setText:[NSString stringWithFormat:@"2014-06-20 15：30"]];
+    [labelTime1 setText:[self stringFromDate:[NSDate date]]];
     [viewBG addSubview:labelTime1];
     [labelTime1 setFont:[UIFont systemFontOfSize:14]];
     [labelTime1 release];
@@ -558,7 +558,6 @@
         [view1 removeFromSuperview];
     }
 
-    
 }
 
 
@@ -579,8 +578,8 @@
 -(void)dateChanged:(UIDatePicker *)sender{
 
 
-    UIDatePicker* control = (UIDatePicker*)sender;
-    NSDate* _date = control.date;
+   // UIDatePicker* control = (UIDatePicker*)sender;
+  //  NSDate* _date = control.date;
 
 }
 

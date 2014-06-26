@@ -21,6 +21,7 @@ DEF_SIGNAL(CLICKNOTICERETURN)
 DEF_SIGNAL(CLICKEVULUATEBROWWER)
 DEF_SIGNAL(CLICKEVULUATEBOOK)
 DEF_SIGNAL(CLICKRETURNBOOK)
+DEF_SIGNAL(CLICKMAKERECEIVE)
 
 //- (id)initWithFrame:(CGRect)frame
 //{
@@ -95,6 +96,45 @@ DEF_SIGNAL(CLICKRETURNBOOK)
     [viewCell addSubview:btnBookHistory ];
     RELEASE(btnBookHistory);
 }
+
+//借入图书
+-(void)viewForBookBorrowIn:(UIView *)viewCell{
+    
+    UIImage *image = [UIImage imageNamed:@"btn_added"];
+    
+    
+    MagicUIButton *btnBookMakeSure = [[MagicUIButton alloc]initWithFrame:CGRectMake(30.0f + 10, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    [btnBookMakeSure addSignal:[ShareBookCellBtnCenterView CLICKMAKERECEIVE] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
+    [btnBookMakeSure setImage:[UIImage imageNamed:@"btn_makereceive"] forState:UIControlStateNormal];
+    [viewCell addSubview:btnBookMakeSure ];
+    RELEASE(btnBookMakeSure);
+    
+    
+    
+    MagicUIButton *btnBookSecond = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4+ 30,  (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    [btnBookSecond addSignal:[ShareBookCellBtnCenterView CLICKRETURNBOOK] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
+    [btnBookSecond setImage:[UIImage imageNamed:@"btn_return"] forState:UIControlStateNormal];
+    [viewCell addSubview:btnBookSecond ];
+    RELEASE(btnBookSecond);
+    
+    MagicUIButton *btnBookDown = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4 * 2 + 20, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    
+    [btnBookDown addSignal:[ShareBookCellBtnCenterView CLICKEVULUATEBOOK] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
+    [btnBookDown setImage:[UIImage imageNamed:@"btn_evaluate"] forState:UIControlStateNormal];
+    [viewCell addSubview:btnBookDown ];
+    RELEASE(btnBookDown);
+    
+    
+    MagicUIButton *btnBookShare = [[MagicUIButton alloc]initWithFrame:CGRectMake(320/4 * 3, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
+    
+    [btnBookShare addSignal:[ShareBookCellBtnCenterView CLICKSHARE] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
+    [btnBookShare setImage:[UIImage imageNamed:@"btn_share"] forState:UIControlStateNormal];
+    [viewCell addSubview:btnBookShare ];
+    RELEASE(btnBookShare);
+    
+    
+}
+/*
 //借入图书
 -(void)viewForBookBorrowIn:(UIView *)viewCell{
     
@@ -102,7 +142,6 @@ DEF_SIGNAL(CLICKRETURNBOOK)
 
     
     MagicUIButton *btnBookSecond = [[MagicUIButton alloc]initWithFrame:CGRectMake(30.0f + 10 + 20, (90 - image.size.height/1.5)/2, image.size.width/1.5, image.size.height/1.5)];
-
     [btnBookSecond addSignal:[ShareBookCellBtnCenterView CLICKRETURNBOOK] forControlEvents:UIControlEventTouchUpInside object:self.dicInfo];
     [btnBookSecond setImage:[UIImage imageNamed:@"btn_return"] forState:UIControlStateNormal];
     [viewCell addSubview:btnBookSecond ];
@@ -124,7 +163,7 @@ DEF_SIGNAL(CLICKRETURNBOOK)
     RELEASE(btnBookShare);
   
     
-}
+}*/
 
 //借出图书
 -(void)viewForBookBorrowOut:(UIView *)viewCell{

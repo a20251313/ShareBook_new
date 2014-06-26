@@ -21,6 +21,7 @@ AS_SIGNAL(CLICKNOTICERETURN)            //提醒还书
 AS_SIGNAL(CLICKEVULUATEBROWWER)            //评价借阅者
 AS_SIGNAL(CLICKEVULUATEBOOK)            //评价书
 AS_SIGNAL(CLICKRETURNBOOK)            //还书
+AS_SIGNAL(CLICKMAKERECEIVE)            //确认收到
 
 
 -(void)addBtnView:(int)type;

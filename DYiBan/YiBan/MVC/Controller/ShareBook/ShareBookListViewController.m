@@ -151,12 +151,7 @@
         
         //order_launchbook
         int orderstatus = [[dicData valueForKey:@"order_status"] intValue];
-        if (orderstatus == 2 )
-        {
-            MagicRequest    *request = [DYBHttpMethod book_order_receiptbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
-            request.tag = 1000;
-            
-        }else if(orderstatus == 4)
+        if(orderstatus == 4)
         {
             MagicRequest    *request = [DYBHttpMethod book_order_launchbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
             request.tag = 5000;
@@ -166,6 +161,23 @@
             
         }
   
+        
+    }else if ([signal is:[ShareBookCellBtnCenterView CLICKMAKERECEIVE]])
+    {
+        
+        //order_launchbook
+        int orderstatus = [[dicData valueForKey:@"order_status"] intValue];
+        if (orderstatus == 2)
+        {
+            MagicRequest    *request = [DYBHttpMethod book_order_receiptbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
+            request.tag = 1000;
+            
+        }else
+        {
+            [DYBShareinstaceDelegate popViewText:@"当前订单不存在或者不能够执行此操作！" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+        }
+        
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKSHARE]])
     {
