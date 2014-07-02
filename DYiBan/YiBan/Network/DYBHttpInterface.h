@@ -543,6 +543,10 @@
 //message_list
 +(NSMutableDictionary *)message_list_page:(NSString *)page num:(NSString *)page;
 
+
+//message_contracts
++(NSMutableDictionary *)message_contactsList:(NSString*)userID page:(NSString *)page num:(NSString *)num;
+
 +(NSMutableDictionary *)book_order_pub_id:(NSString *)pub_id;
 
 

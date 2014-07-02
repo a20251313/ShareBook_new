@@ -74,7 +74,8 @@
 //        arrayAddorder = [[NSMutableArray alloc]init];
         [self.view setBackgroundColor:[UIColor whiteColor]];
         arrayResult = [[NSMutableArray alloc]init];
-        MagicRequest *request = [DYBHttpMethod message_list_page:@"0" num:@"10000" sAlert:YES receive:self];
+        //MagicRequest *request = [DYBHttpMethod message_list_page:@"0" num:@"10000" sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod message_contractslist:SHARED.userId page:@"0" num:@"10000" sAlert:YES receive:self];
         [request setTag:1];
         
         UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
@@ -302,7 +303,7 @@ static NSString *cellName = @"cellName";
                     
                    // JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                   
-                    arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"msg_list"]];
+                    arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"arr"]];
                     
                     [tbDataBank1 reloadData];
                 }else{

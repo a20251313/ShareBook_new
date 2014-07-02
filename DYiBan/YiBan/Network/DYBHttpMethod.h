@@ -506,6 +506,9 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)message_list_page:(NSString *)page num:(NSString *)num  sAlert:(BOOL)isAlert receive:(id)receive;
 
+
++(MagicRequest *)message_contractslist:(NSString *)userID page:(NSString*)page num:(NSString *)num  sAlert:(BOOL)isAlert receive:(id)receive;
+
 +(MagicRequest *)book_order_pub_id:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive;
 
 

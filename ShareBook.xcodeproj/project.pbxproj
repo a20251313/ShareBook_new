@@ -116,8 +116,6 @@
 		863342221950787100DD090E /* ShareBookCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 863342211950787100DD090E /* ShareBookCommentController.m */; };
 		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
 		8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F83503C195417C800CA6812 /* btn_makereceive.png */; };
-		8FB557A7195155AD00ADB016 /* star_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A5195155AD00ADB016 /* star_gray.png */; };
-		8FB557A8195155AD00ADB016 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FB557A6195155AD00ADB016 /* star.png */; };
 		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
@@ -854,8 +852,6 @@
 		8633422319508DF300DD090E /* ShareBookOrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderCommentController.h; sourceTree = "<group>"; };
 		8633422419508DF300DD090E /* ShareBookOrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderCommentController.m; sourceTree = "<group>"; };
 		8F83503C195417C800CA6812 /* btn_makereceive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_makereceive.png; sourceTree = "<group>"; };
-		8FB557A5195155AD00ADB016 /* star_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_gray.png; sourceTree = "<group>"; };
-		8FB557A6195155AD00ADB016 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
 		8FB557AA195164F300ADB016 /* JFSegmentControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFSegmentControlView.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
@@ -2170,8 +2166,6 @@
 		1893F9E118A87EC400DF758C /* 图书 */ = {
 			isa = PBXGroup;
 			children = (
-				8FB557A5195155AD00ADB016 /* star_gray.png */,
-				8FB557A6195155AD00ADB016 /* star.png */,
 				1893F9E218A87EC400DF758C /* add_bt.png */,
 				1893F9E318A87EC400DF758C /* book_frame.png */,
 				1893F9E418A87EC400DF758C /* book_frame_big.png */,
@@ -4185,7 +4179,6 @@
 				B58CB0F21829CF6A00F73D66 /* sr_refresh@2X.png in Resources */,
 				B58CB4641829CF7F00F73D66 /* Default-568h in Resources */,
 				B58CB4661829CF7F00F73D66 /* Default.png in Resources */,
-				8FB557A8195155AD00ADB016 /* star.png in Resources */,
 				B50D961118CEB3CF00619B21 /* laser.png in Resources */,
 				B58CB4671829CF7F00F73D66 /* Default@2.png in Resources */,
 				B5CE2AE018B4AF4C008E4E44 /* icon_book 2.png in Resources */,
@@ -4265,7 +4258,6 @@
 				B5D5AE9218BC365F005E4732 /* btn_share.png in Resources */,
 				1893FA1D18A87EC400DF758C /* icon_book.png in Resources */,
 				B521EAE918ADB27B00C8599A /* SelectionCell.xib in Resources */,
-				8FB557A7195155AD00ADB016 /* star_gray.png in Resources */,
 				B50D961E18CEDDCA00619B21 /* player-progress-loading@2x.png in Resources */,
 				B50E71A118C8210200A68FB7 /* icon_down.png in Resources */,
 				18DE074618D5F5CB00EEAEDF /* KeyboardBackgroundTextured@2x.png in Resources */,
@@ -4929,8 +4921,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = ShareBook;
-				PROVISIONING_PROFILE = "AAB0ECDD-2153-4983-B63A-37420FA69C54";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AAB0ECDD-2153-4983-B63A-37420FA69C54";
+				PROVISIONING_PROFILE = "769C7FC6-BA70-429D-A0FE-BC8475DE07B4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "769C7FC6-BA70-429D-A0FE-BC8475DE07B4";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -4940,8 +4932,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: jingfu ran (5TR28FWHKP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: jingfu ran (5TR28FWHKP)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Irnovation";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Irnovation";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -4960,8 +4952,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = ShareBook;
-				PROVISIONING_PROFILE = "C7C8794C-2B9A-4D2F-9D19-1C8A9FDE47A9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C7C8794C-2B9A-4D2F-9D19-1C8A9FDE47A9";
+				PROVISIONING_PROFILE = "92A21880-C559-4BAE-8DD1-3943BB9CA98E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "92A21880-C559-4BAE-8DD1-3943BB9CA98E";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

@@ -150,6 +150,40 @@
     }
 }
 
+#pragma mark- UITextField
+- (void)handleViewSignal_MagicUITextField:(MagicViewSignal *)signal
+{
+    if ([signal.source isKindOfClass:[MagicUITextField class]])
+    {
+        MagicUITextField *textField = [signal source];
+        
+        if ([signal is:[MagicUITextField TEXTFIELDDIDENDEDITING]])
+        {
+
+        }else if ([signal is:[MagicUITextField TEXTFIELD]])
+        {
+            
+
+            
+            
+        }else if ([signal is:[MagicUITextField TEXTFIELDSHOULDRETURN]])
+        {
+            [textField resignFirstResponder];
+            
+        }
+        else if ([signal is:[MagicUITextField TEXTFIELDSHOULDCLEAR]])
+        {
+
+        }else if ([signal is:[MagicUITextField TEXTFIELDDIDBEGINEDITING]]) //开始编辑
+        {
+
+            
+        }
+    }
+    
+    
+}
+
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];

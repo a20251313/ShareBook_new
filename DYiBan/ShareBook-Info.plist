@@ -12,6 +12,10 @@
 	<array/>
 	<key>CFBundleIdentifier</key>
 	<string>cn.loopool.sharebook</string>
+	<key>CFBundleIdentifier - 2</key>
+	<string>com.irnovation.books</string>
+	<key>CFBundleIdentifier - dev</key>
+	<string>cn.loopool.sharebook</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
@@ -36,6 +40,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>loopool.cn20131</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>tenc</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tencent101046123</string>
 			</array>
 		</dict>
 	</array>

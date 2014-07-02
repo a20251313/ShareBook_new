@@ -2281,6 +2281,18 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 
 
 }
++(NSMutableDictionary *)message_contactsList:(NSString*)userID page:(NSString *)page num:(NSString *)num{
+    
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:num forKey:@"num"];
+    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:page forKey:@"page"];
+    //    [dict setValue:content forKey:@"content"];
+    [dict setValue:@"message_contacts" forKey:INTERFACEDOACTION];
+    return dict;
+    
+    
+}
 
 +(NSMutableDictionary *)book_order_pub_id:(NSString *)pub_id{
 

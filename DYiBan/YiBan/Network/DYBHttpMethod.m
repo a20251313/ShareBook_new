@@ -1827,6 +1827,13 @@
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;
 }
++(MagicRequest *)message_contractslist:(NSString *)userID page:(NSString*)page num:(NSString *)num  sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface message_contactsList:userID page:page num:num];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+}
 
 +(MagicRequest *)book_order_pub_id:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive{
 
