@@ -77,7 +77,7 @@
        
         
         
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list_sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
         [request setTag:3];
         
         

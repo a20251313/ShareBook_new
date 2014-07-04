@@ -463,7 +463,7 @@
 + (NSMutableDictionary *)shareBook_security_login_username:(NSString *)username password:(NSString *)password;
 
 //book_list
-+ (NSMutableDictionary *)shareBook_book_list_tag_id:(NSString *)tag_id;
++ (NSMutableDictionary *)shareBook_book_list_tag_id:(NSString *)tag_id page:(NSString*)page num:(NSString*)num;
 
 //security_reg
 
@@ -496,7 +496,7 @@
 
 //circle_list
 
-+ (NSMutableDictionary *)shareBook_circle_list;
++ (NSMutableDictionary *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num;
 
 //circle_add
 + (NSMutableDictionary *)shareBook_circle_add_circle_name:(NSString *)circle_name address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSString *)kind;
@@ -567,5 +567,30 @@
 //book_comment
 +(NSMutableDictionary *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point;
 
+
++ (NSMutableDictionary *)shareBook_user_search_user_id:(NSString *)user_id;
++ (NSMutableDictionary *)shareBook_friend_list_user_id:(NSString *)user_id;
++ (NSMutableDictionary *)shareBook_friend_add_user_id:(NSString *)user_id;
++ (NSMutableDictionary *)shareBook_friend_del_user_id:(NSString *)user_id;
++ (NSMutableDictionary *)shareBook_tag_list:(NSString *)cate;
++ (NSMutableDictionary *)shareBook_book_search:(NSString *)keyword kind:(NSString*)kind tagID:(NSString*)tagId circle_id:(NSString*)circle_id loan_status:(NSString*)loan_status loan_way:(NSString*)loadWay page:(NSString*)page num:(NSString*)num;
+
++ (NSMutableDictionary *)shareBook_address_add:(NSString *)address lat:(NSString*)lat lng:(NSString*)lng;
++ (NSMutableDictionary *)shareBook_address_active:(NSString *)addressID;
+//circle_join
++ (NSMutableDictionary *)shareBook_circle_join:(NSString *)circle_id;
++ (NSMutableDictionary *)shareBook_circle_quit:(NSString *)circle_id;
++ (NSMutableDictionary *)shareBook_circle_nearby:(NSString *)lng lat:(NSString*)lat page:(NSString*)page num:(NSString*)num range:(NSString*)range;
++ (NSMutableDictionary *)shareBook_message_managefriendreq:(NSString *)mid type:(NSString*)type;
++ (NSMutableDictionary *)shareBook_message_loanbook:(NSString *)msg_id;
++ (NSMutableDictionary *)shareBook_pay_rollout:(NSString *)userID coin:(NSString*)coin content:(NSString*)content;
++ (NSMutableDictionary *)shareBook_pay_logs:(NSString *)userID;
++ (NSMutableDictionary *)shareBook_feed_add:(NSString *)content address:(NSString*)address lng:(NSString*)lng lat:(NSString*)lat;
++ (NSMutableDictionary *)shareBook_feed_detail:(NSString *)feedID;
+
++ (NSMutableDictionary *)shareBook_feed_list:(NSString *)num lastID:(NSString*)last_id;
++ (NSMutableDictionary *)shareBook_feed_del:(NSString *)feedID;
++ (NSMutableDictionary *)shareBook_feed_addcomment:(NSString *)feedID content:(NSString*)content;
++ (NSMutableDictionary *)shareBook_feed_delcomment:(NSString *)comment_id;
 
 @end

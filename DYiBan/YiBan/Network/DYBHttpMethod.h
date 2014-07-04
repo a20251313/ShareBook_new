@@ -448,7 +448,7 @@
 
 + (MagicRequest *)shareBook_security_login_username:(NSString *)username password:(NSString *)password sAlert:(BOOL)isAlert receive:(id)receive;
 
-+ (MagicRequest *)shareBook_book_list_tag_id:(NSString *)tag_id sAlert:(BOOL)isAlert receive:(id)receive;
++ (MagicRequest *)shareBook_book_list_tag_id:(NSString *)tag_id page:(NSString*)page num:(NSString*)num sAlert:(BOOL)isAlert receive:(id)receive;
 
 + (MagicRequest *)shareBook_security_reg_username:(NSString *)username password:(NSString *)password phone_num:(NSString *)phone_num nickName:(NSString *)nick sAlert:(BOOL)isAlert receive:(id)receive;
 
@@ -466,7 +466,7 @@
 
 + (MagicRequest *)shareBook_user_detail_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
 
-+ (MagicRequest *)shareBook_circle_list_sAlert:(BOOL)isAlert receive:(id)receive;
++ (MagicRequest *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num sAlert:(BOOL)isAlert receive:(id)receive;
 
 + (MagicRequest *)shareBook_circle_add_circle_name:(NSString *)circle_name address:(NSString *)address
                                                lat:(NSString *)lat
@@ -523,5 +523,33 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 +(MagicRequest *)book_order_receiptbook:(NSString *)orderID sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_book_comment:(NSString *)pubID content:(NSString*)content points:(NSString*)point sAlert:(BOOL)isAlert receive:(id)receive;
+
+
+
++(MagicRequest *)book_user_search_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_friend_list_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_friend_add_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_friend_del_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_tag_list:(NSString *)cate sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_tag_list:(NSString *)keyword kind:(NSString*)kind tagID:(NSString*)tagId circle_id:(NSString*)circle_id loan_status:(NSString*)loan_status loan_way:(NSString*)loadWay page:(NSString*)page num:(NSString*)num sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_address_add:(NSString *)address lat:(NSString*)lat lng:(NSString*)lng sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_address_active:(NSString *)addressID sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_circle_join:(NSString *)circle_id sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_circle_quit:(NSString *)circle_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_circle_nearby:(NSString *)lng lat:(NSString*)lat page:(NSString*)page num:(NSString*)num range:(NSString*)range sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_message_managefriendreq:(NSString *)mid type:(NSString*)type sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_message_loanbook:(NSString *)msg_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_pay_rollout:(NSString *)userID coin:(NSString*)coin content:(NSString*)content sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_pay_logs:(NSString *)userID sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_feed_add:(NSString *)content address:(NSString*)address lng:(NSString*)lng lat:(NSString*)lat sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_feed_detail:(NSString *)feedID sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_feed_list:(NSString *)num lastID:(NSString*)last_id sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_feed_del:(NSString *)feedID sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)book_feed_addcomment:(NSString *)feedID content:(NSString*)content sAlert:(BOOL)isAlert receive:(id)receive;
+
++(MagicRequest *)book_feed_delcomment:(NSString *)comment_id sAlert:(BOOL)isAlert receive:(id)receive;
 
 @end
