@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShareBookDownViewController : DYBBaseView<UITableViewDataSource,UITableViewDelegate>
+@interface ShareBookDownView : DYBBaseView<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain)UIView *superView;
 @property (nonatomic,retain)NSArray *arrayResult;
 
 - (void)viewDidLoad;
-
+- (NSString*)getTextValue;
 @end

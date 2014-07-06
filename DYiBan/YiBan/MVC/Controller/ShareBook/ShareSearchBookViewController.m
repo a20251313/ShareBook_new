@@ -7,17 +7,17 @@
 //
 
 #import "ShareSearchBookViewController.h"
-#import "ShareBookDownViewController.h"
+#import "ShareBookDownView.h"
+#import "ShareBookSearchResultViewController.h"
+#import "iToast.h"
 
 
-
-
-@interface ShareSearchBookViewController ()
-
+@interface ShareSearchBookViewController ()<UISearchBarDelegate>
+@property(nonatomic,retain)searchDataModel *dataModel;
 @end
 
 @implementation ShareSearchBookViewController
-
+@synthesize dataModel;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -56,9 +56,6 @@
         [self.rightButton setHidden:YES];
         
         [self.view setBackgroundColor:[UIColor blackColor]];
-        
-        
-        
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:self.view.frame];
         [viewBG setTag:100];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
@@ -66,7 +63,7 @@
         RELEASE(viewBG);
         
         UISearchBar *searchView = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f,self.headHeight, 320, 44) ];
-                                                    /*backgroundColor:[UIColor clearColor] placeholder:@"文件名" isHideOutBackImg:NO isHideLeftView:NO];*/
+        searchView.tag = 3000;
         for (UIView *subview in [searchView subviews]) {
             if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
             {
@@ -84,6 +81,7 @@
         [searchView setBackgroundColor:[UIColor colorWithRed:248/255.0f green:248/255.0f blue:248/255.0f alpha:1.0f]];
         [searchView setUserInteractionEnabled:YES];
         [self.view addSubview:searchView];
+        searchView.delegate = self;
         RELEASE(searchView)
         
         UILabel *labelRange = [[UILabel alloc]initWithFrame:CGRectMake(5.0f, CGRectGetHeight(searchView.frame) + CGRectGetMinY(searchView.frame)+ 20, 100.0f, 20.0)];
@@ -93,9 +91,11 @@
         [labelRange setBackgroundColor:[UIColor clearColor]];
         
         
-        ShareBookDownViewController *downView1 = [[ShareBookDownViewController alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(searchView.frame) + CGRectGetMinY(searchView.frame)+ 20, 200, 30)];
-        NSArray *array1 = [NSArray arrayWithObjects:@"生活圈",@"好友",@"生活圈+好友", nil];
+        ShareBookDownView *downView1 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(searchView.frame) + CGRectGetMinY(searchView.frame)+ 20, 200, 30)];
+        //@"生活圈+好友"
+        NSArray *array1 = [NSArray arrayWithObjects:@"生活圈",@"好友", nil];
         downView1.arrayResult = array1;
+        downView1.tag = 3001;
         [downView1 viewDidLoad];
         [self.view addSubview:downView1];
         downView1.superView = self.view;
@@ -107,9 +107,10 @@
         RELEASE(labelType);
         [labelType setBackgroundColor:[UIColor clearColor]];
 
-        ShareBookDownViewController *downView2 = [[ShareBookDownViewController alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelRange.frame) + CGRectGetMinY(labelRange.frame)+ 20, 200, 30)];
+        ShareBookDownView *downView2 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelRange.frame) + CGRectGetMinY(labelRange.frame)+ 20, 200, 30)];
         [self.view addSubview:downView2];
-        NSArray *array2 = [NSArray arrayWithObjects:@"文学",@"科技",@"人文", nil];
+        downView2.tag = 3002;
+        NSArray *array2 = [NSArray arrayWithObjects:@"全部",@"大众",@"其他", nil];
         downView2.arrayResult = array2;
         [downView2 viewDidLoad];
         downView2.superView = self.view;
@@ -123,11 +124,12 @@
         RELEASE(labelModel);
         
         
-        ShareBookDownViewController *downView3 = [[ShareBookDownViewController alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelType.frame) + CGRectGetMinY(labelType.frame)+ 20, 200, 30)];
+        ShareBookDownView *downView3 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelType.frame) + CGRectGetMinY(labelType.frame)+ 20, 200, 30)];
         [self.view addSubview:downView3];
         
         NSArray *array3 = [NSArray arrayWithObjects:@"可借阅",@"不可借阅", nil];
         downView3.arrayResult = array3;
+        downView3.tag = 3003;
         [downView3 viewDidLoad];
         downView3.superView = self.view;
         [downView3 release];
@@ -138,13 +140,16 @@
         RELEASE(labelBorrowType);
         [labelBorrowType setBackgroundColor:[UIColor clearColor]];
 
-        ShareBookDownViewController *downView4 = [[ShareBookDownViewController alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelModel.frame) + CGRectGetMinY(labelModel.frame)+ 20, 200, 40)];
+        ShareBookDownView *downView4 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelModel.frame) + CGRectGetMinY(labelModel.frame)+ 20, 200, 40)];
         
-        NSArray *array4 = [NSArray arrayWithObjects:@"做客",@"旅行",@"做客+旅行",nil];
+        
+        //@"做客+旅行"
+        NSArray *array4 = [NSArray arrayWithObjects:@"做客",@"旅行",nil];
         downView4.arrayResult = array4;
         [downView4 viewDidLoad];
         
         downView4.superView = self.view;
+        downView4.tag = 3004;
         [self.view addSubview:downView4];
         [downView4 release];
         
@@ -182,7 +187,7 @@
         [self.view addSubview:btnOK];
         RELEASE(btnOK);
         
-        [self addlabel_title:@"设置默认地址" frame:btnOK.frame view:btnOK];
+        [self addlabel_title:@"开始查询" frame:btnOK.frame view:btnOK];
         
         
         DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(image.size.width/2, 44, 320.0f - 50, self.view.frame.size.height -44  ) isNeedUpdate:YES];
@@ -195,6 +200,7 @@
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        self.dataModel = nil;
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
@@ -204,9 +210,7 @@
 
 
 -(void)doChoose{
-
-
-
+    [self doSearch];
 }
 
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
@@ -240,10 +244,134 @@
 
 }
 
--(void)doSearch{
+-(void)doSearch
+{
 
-
+    if ([self checkInputValueIsValild])
+    {
+        ShareBookSearchResultViewController *controller = [[ShareBookSearchResultViewController alloc] init];
+        controller.dataModel = self.dataModel;
+        [self.drNavigationController pushViewController:controller animated:YES];
+        [controller release];
+    }
 
 }
 
+
+-(void)toastWithText:(NSString*)text
+{
+    iToast  *toast = [[iToast alloc] initWithText:text];
+    [toast setGravity:iToastGravityCenter];
+    [toast show];
+    [toast release];
+}
+-(BOOL)checkInputValueIsValild
+{
+    if (!self.dataModel)
+    {
+        self.dataModel = [[searchDataModel alloc] init];
+    }
+    
+    
+    UISearchBar *bar = (UISearchBar*)[self.view viewWithTag:3000];
+    if ([bar.text length] < 1)
+    {
+        [self toastWithText:@"请输入搜索关键字"];
+        return NO;
+    }
+    
+    
+    ShareBookDownView  *view1 = (ShareBookDownView*)[self.view viewWithTag:3001];
+    NSString    *textrange = [view1 getTextValue];
+    if (textrange.length < 1)
+    {
+        [self toastWithText:@"请选择图书范围!"];
+        return NO;
+    }
+    ShareBookDownView  *view2 = (ShareBookDownView*)[self.view viewWithTag:3002];
+    NSString    *textCate = [view2 getTextValue];
+    if (textCate.length < 1)
+    {
+        [self toastWithText:@"请选择图书类别!"];
+        return NO;
+    }
+    ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
+    NSString    *textState = [view3 getTextValue];
+    if (textState.length < 1)
+    {
+        [self toastWithText:@"请选择图书状态!"];
+        return NO;
+    }
+    ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
+    NSString    *textway = [view4 getTextValue];
+    if (textway.length < 1)
+    {
+        [self toastWithText:@"请选择图书借出方式!"];
+        return NO;
+    }
+    
+    /*
+    @property(nonatomic,strong)NSString *cirleID;
+    @property(nonatomic,strong)NSString *loanstatus;
+    @property(nonatomic,strong)NSString *keyword;
+    @property(nonatomic,strong)NSString *loanway;
+    @property(nonatomic,strong)NSString *tagid;
+    @property(nonatomic,strong)NSString *kind;
+    */
+    self.dataModel.keyword = bar.text;
+    
+    if ([textrange isEqualToString:@"生活圈"])
+    {
+        self.dataModel.kind = @"1";
+    }else if ([textrange isEqualToString:@"好友"])
+    {
+        self.dataModel.kind = @"2";
+    }
+    
+    if ([textState isEqualToString:@"可借阅"])
+    {
+        self.dataModel.loanstatus= @"1";
+    }else if ([textState isEqualToString:@"不可借阅"])
+    {
+        self.dataModel.loanstatus = @"0";
+    }
+    
+    if ([textCate isEqualToString:@"全部"])
+    {
+        self.dataModel.tagid = @"0";
+    }else if ([textCate isEqualToString:@"大众"])
+    {
+        self.dataModel.tagid = @"1";
+    }else
+    {
+        self.dataModel.kind = @"2";
+    }
+    
+    if ([textway isEqualToString:@"做客"])
+    {
+        self.dataModel.tagid = @"2";
+    }else if ([textway isEqualToString:@"旅行"])
+    {
+        self.dataModel.tagid = @"1";
+    }
+    
+    return YES;
+}
+
+
+
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.view endEditing:YES];
+    [self doSearch];
+}
+
+
+-(void)dealloc
+{
+    self.dataModel = nil;
+    
+    [super dealloc];
+}
 @end

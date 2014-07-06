@@ -117,6 +117,10 @@
 		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
 		8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F83503C195417C800CA6812 /* btn_makereceive.png */; };
 		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		8FBF7F4019690BD20080656F /* EGORefreshTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3C19690BD20080656F /* EGORefreshTableFooterView.m */; };
+		8FBF7F4119690BD20080656F /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3E19690BD20080656F /* EGORefreshTableHeaderView.m */; };
+		8FBF7F4419691ECA0080656F /* ShareBookSearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F4319691EC90080656F /* ShareBookSearchResultViewController.m */; };
+		8FBF7F47196923880080656F /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F46196923880080656F /* iToast.m */; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
 		B50D960818CEAF8900619B21 /* rightslide_foot.png in Resources */ = {isa = PBXBuildFile; fileRef = B50D960418CEAF8900619B21 /* rightslide_foot.png */; };
@@ -172,7 +176,7 @@
 		B521EAEC18ADB27B00C8599A /* TableViewWithBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAE118ADB27B00C8599A /* TableViewWithBlock.m */; };
 		B521EAED18ADB27B00C8599A /* UITableView+DataSourceBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAE318ADB27B00C8599A /* UITableView+DataSourceBlocks.m */; };
 		B521EAEE18ADB27B00C8599A /* UITableView+DelegateBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAE518ADB27B00C8599A /* UITableView+DelegateBlocks.m */; };
-		B521EAF918ADC4CC00C8599A /* ShareBookDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAF718ADC4CC00C8599A /* ShareBookDownViewController.m */; };
+		B521EAF918ADC4CC00C8599A /* ShareBookDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAF718ADC4CC00C8599A /* ShareBookDownView.m */; };
 		B521EAFC18ADF71800C8599A /* ShareFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAFB18ADF71800C8599A /* ShareFriendListViewController.m */; };
 		B521EAFF18ADFBA200C8599A /* ShareGiveDouCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EAFE18ADFBA200C8599A /* ShareGiveDouCell.m */; };
 		B521EB0218AE17EB00C8599A /* ShareDouSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B521EB0118AE17EB00C8599A /* ShareDouSendViewController.m */; };
@@ -854,6 +858,15 @@
 		8F83503C195417C800CA6812 /* btn_makereceive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_makereceive.png; sourceTree = "<group>"; };
 		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
 		8FB557AA195164F300ADB016 /* JFSegmentControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFSegmentControlView.m; sourceTree = "<group>"; };
+		8FBF7F3B19690BD20080656F /* EGORefreshTableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableFooterView.h; sourceTree = "<group>"; };
+		8FBF7F3C19690BD20080656F /* EGORefreshTableFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableFooterView.m; sourceTree = "<group>"; };
+		8FBF7F3D19690BD20080656F /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		8FBF7F3E19690BD20080656F /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		8FBF7F3F19690BD20080656F /* EGOViewCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOViewCommon.h; sourceTree = "<group>"; };
+		8FBF7F4219691EC90080656F /* ShareBookSearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookSearchResultViewController.h; sourceTree = "<group>"; };
+		8FBF7F4319691EC90080656F /* ShareBookSearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookSearchResultViewController.m; sourceTree = "<group>"; };
+		8FBF7F45196923880080656F /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
+		8FBF7F46196923880080656F /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
 		B50D95FE18CEA45F00619B21 /* DYBDataBankShotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankShotView.h; sourceTree = "<group>"; };
 		B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankTopRightCornerView.h; sourceTree = "<group>"; };
@@ -929,8 +942,8 @@
 		B521EAE318ADB27B00C8599A /* UITableView+DataSourceBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+DataSourceBlocks.m"; sourceTree = "<group>"; };
 		B521EAE418ADB27B00C8599A /* UITableView+DelegateBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+DelegateBlocks.h"; sourceTree = "<group>"; };
 		B521EAE518ADB27B00C8599A /* UITableView+DelegateBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+DelegateBlocks.m"; sourceTree = "<group>"; };
-		B521EAF718ADC4CC00C8599A /* ShareBookDownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookDownViewController.m; sourceTree = "<group>"; };
-		B521EAF818ADC4CC00C8599A /* ShareBookDownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookDownViewController.h; sourceTree = "<group>"; };
+		B521EAF718ADC4CC00C8599A /* ShareBookDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookDownView.m; sourceTree = "<group>"; };
+		B521EAF818ADC4CC00C8599A /* ShareBookDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookDownView.h; sourceTree = "<group>"; };
 		B521EAFA18ADF71800C8599A /* ShareFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareFriendListViewController.h; sourceTree = "<group>"; };
 		B521EAFB18ADF71800C8599A /* ShareFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareFriendListViewController.m; sourceTree = "<group>"; };
 		B521EAFD18ADFBA200C8599A /* ShareGiveDouCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareGiveDouCell.h; sourceTree = "<group>"; };
@@ -2239,6 +2252,7 @@
 		1893FA5818A90B6600DF758C /* ShareBook */ = {
 			isa = PBXGroup;
 			children = (
+				8FBF7F3A19690BD20080656F /* EGO */,
 				18DE075218D5F5F400EEAEDF /* ZenKeyboardView */,
 				B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */,
 				B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */,
@@ -2286,11 +2300,25 @@
 			path = JPush;
 			sourceTree = "<group>";
 		};
+		8FBF7F3A19690BD20080656F /* EGO */ = {
+			isa = PBXGroup;
+			children = (
+				8FBF7F3B19690BD20080656F /* EGORefreshTableFooterView.h */,
+				8FBF7F3C19690BD20080656F /* EGORefreshTableFooterView.m */,
+				8FBF7F3D19690BD20080656F /* EGORefreshTableHeaderView.h */,
+				8FBF7F3E19690BD20080656F /* EGORefreshTableHeaderView.m */,
+				8FBF7F3F19690BD20080656F /* EGOViewCommon.h */,
+			);
+			path = EGO;
+			sourceTree = "<group>";
+		};
 		B521EAD718ADB27A00C8599A /* ShareDownView */ = {
 			isa = PBXGroup;
 			children = (
-				B521EAF718ADC4CC00C8599A /* ShareBookDownViewController.m */,
-				B521EAF818ADC4CC00C8599A /* ShareBookDownViewController.h */,
+				8FBF7F45196923880080656F /* iToast.h */,
+				8FBF7F46196923880080656F /* iToast.m */,
+				B521EAF818ADC4CC00C8599A /* ShareBookDownView.h */,
+				B521EAF718ADC4CC00C8599A /* ShareBookDownView.m */,
 				B521EAD818ADB27A00C8599A /* dropdown.png */,
 				B521EAD918ADB27A00C8599A /* dropup.png */,
 				B521EADA18ADB27A00C8599A /* SelectionCell.h */,
@@ -3843,6 +3871,8 @@
 				B5C6633418A8C7A800C5A26C /* ShareMYHomeViewController.m */,
 				B5C6633618A8C7BE00C5A26C /* ShareBookBankViewController.h */,
 				B5C6633718A8C7BE00C5A26C /* ShareBookBankViewController.m */,
+				8FBF7F4219691EC90080656F /* ShareBookSearchResultViewController.h */,
+				8FBF7F4319691EC90080656F /* ShareBookSearchResultViewController.m */,
 				B513F14018AA05BB00EDF09C /* ShareBookDetailViewController.h */,
 				B513F14118AA05BC00EDF09C /* ShareBookDetailViewController.m */,
 				B5A42B1C186939530086AC34 /* WOSLogInViewController.h */,
@@ -4430,6 +4460,7 @@
 				B58CB0991829CF6A00F73D66 /* UIPanGestureRecognizer+init.m in Sources */,
 				B58CB09A1829CF6A00F73D66 /* UIImage+Create.m in Sources */,
 				B58CB09B1829CF6A00F73D66 /* UIImage+MagicCategory.m in Sources */,
+				8FBF7F4119690BD20080656F /* EGORefreshTableHeaderView.m in Sources */,
 				B58CB09C1829CF6A00F73D66 /* UIImage+Save.m in Sources */,
 				B58CB09D1829CF6A00F73D66 /* UIImageView+Animation.m in Sources */,
 				B58CB09E1829CF6A00F73D66 /* UIImageView+Init.m in Sources */,
@@ -4465,6 +4496,7 @@
 				B58CB0B91829CF6A00F73D66 /* Magic_UILabel.m in Sources */,
 				B58CB0BA1829CF6A00F73D66 /* Magic_UILabelImgView.m in Sources */,
 				B58CB0BB1829CF6A00F73D66 /* Magic_UINavigationBar.m in Sources */,
+				8FBF7F4019690BD20080656F /* EGORefreshTableFooterView.m in Sources */,
 				B58CB0BC1829CF6A00F73D66 /* Magic_UIPopAlertView.m in Sources */,
 				B58CB0BD1829CF6A00F73D66 /* Magic_UIPopView.m in Sources */,
 				B58CB0BE1829CF6A00F73D66 /* Magic_UIScrollListView.m in Sources */,
@@ -4669,6 +4701,7 @@
 				B58CB1A71829CF6A00F73D66 /* status_detail_other.m in Sources */,
 				B58CB1A81829CF6A00F73D66 /* status_list.m in Sources */,
 				B58CB1A91829CF6A00F73D66 /* status_notice_model.m in Sources */,
+				8FBF7F4419691ECA0080656F /* ShareBookSearchResultViewController.m in Sources */,
 				B58CB1AA1829CF6A00F73D66 /* StatusListModel.m in Sources */,
 				B58CB1AB1829CF6A00F73D66 /* SyncType.m in Sources */,
 				B58CB1AC1829CF6A00F73D66 /* Tag.m in Sources */,
@@ -4696,6 +4729,7 @@
 				B58CB1BC1829CF6B00F73D66 /* XiTongFaceCode.m in Sources */,
 				B58CB1BD1829CF6B00F73D66 /* YiBanApp_list.m in Sources */,
 				B58CB1C51829CF6B00F73D66 /* DYBBaseView.m in Sources */,
+				8FBF7F47196923880080656F /* iToast.m in Sources */,
 				B527907718BB45690062637C /* ShareAddQuanViewController.m in Sources */,
 				B58CB1C61829CF6B00F73D66 /* DYBBaseViewLeftView.m in Sources */,
 				B58CB1C71829CF6B00F73D66 /* DYBBoxView.m in Sources */,
@@ -4751,7 +4785,7 @@
 				B58CB1F01829CF6B00F73D66 /* DYBImagePickerAssetView.m in Sources */,
 				B58CB1F11829CF6B00F73D66 /* DYBImagePickerFooterView.m in Sources */,
 				B58CB1F21829CF6B00F73D66 /* DYBImagePickerGroupCell.m in Sources */,
-				B521EAF918ADC4CC00C8599A /* ShareBookDownViewController.m in Sources */,
+				B521EAF918ADC4CC00C8599A /* ShareBookDownView.m in Sources */,
 				B58CB1F31829CF6B00F73D66 /* DYBImagePickerVideoInfoView.m in Sources */,
 				B58CB1F41829CF6B00F73D66 /* DYBInputView.m in Sources */,
 				B58CB1F51829CF6B00F73D66 /* DYBLoadingView.m in Sources */,

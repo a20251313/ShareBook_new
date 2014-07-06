@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Eric Che. All rights reserved.
 //
 
-#import "ShareBookDownViewController.h"
+#import "ShareBookDownView.h"
 #import "UITableView+DataSourceBlocks.h"
 @class TableViewWithBlock;
 #import "UITableView+DataSourceBlocks.h"
@@ -15,7 +15,7 @@
 
 
 
-@interface ShareBookDownViewController (){
+@interface ShareBookDownView ()<UITextFieldDelegate>{
  
     BOOL isOpened;
     UIButton *_openButton;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation ShareBookDownViewController
+@implementation ShareBookDownView
 @synthesize superView,arrayResult = _arrayResult;
 - (id)initWithFrame:(CGRect)frame
 {
@@ -49,6 +49,7 @@
     [_inputTextField setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [_inputTextField setBackgroundColor:[UIColor whiteColor]];
     [self addSubview:_inputTextField];
+    _inputTextField.delegate = self;
     [_inputTextField release];
     
     UIImage *closeImage=[UIImage imageNamed:@"icon_down"];
@@ -189,4 +190,21 @@
     [super dealloc];
 }
 
+- (NSString*)getTextValue
+{
+    return  _inputTextField.text;
+}
+#pragma mark UITextFieldDelegate
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+}
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 @end

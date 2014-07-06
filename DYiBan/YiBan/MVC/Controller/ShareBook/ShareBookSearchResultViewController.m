@@ -10,15 +10,31 @@
 #import "WOSOrderCell.h"
 #import "ShareBookCell.h"
 #import "ShareBookDetailViewController.h"
-#import "ShareSearchBookViewController.h"
+#import "ShareBookSearchResultViewController.h"
 #import "EGORefreshTableFooterView.h"
 
 #import "JSONKit.h"
 #import "JSON.h"
-@interface ShareBookBankViewController ()<EGORefreshTableDelegate>{
+
+
+@implementation searchDataModel
+
+
+-(void)dealloc
+{
+    self.keyword = nil;
+    self.kind = nil;
+    self.loanstatus = nil;
+    self.tagid = nil;
+    self.cirleID = nil;
+    self.loanway = nil;
+    [super dealloc];
+}
+
+@end
+@interface ShareBookSearchResultViewController ()<EGORefreshTableDelegate>{
     
-    UIScrollView *scrollView;
-    NSArray *arraySouce;
+
     DYBUITableView * tbDataBank11;
     NSMutableArray *arrayReturnSouce;
     EGORefreshTableFooterView   *refreshView;
@@ -32,8 +48,18 @@
 
 @end
 
-@implementation ShareBookBankViewController
-
+@implementation ShareBookSearchResultViewController
+@synthesize dataModel;
+-(void)dealloc
+{
+    [refreshView release];
+    refreshView = nil;
+    [arrayReturnSouce release];
+    arrayReturnSouce = nil;
+    [tbDataBank11 release];
+    tbDataBank11 = nil;
+    [super dealloc];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,10 +89,7 @@
     
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
-        //        [self.rightButton setHidden:YES];
-        [self.headview setTitle:@"图书"];
-        
-//        [self setButtonImage:self.leftButton setImage:@"back"];
+        [self.headview setTitle:@"搜索结果"];
         [self.leftButton setHidden:YES];
         [self setButtonImage:self.rightButton setImage:@"icon_search"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
@@ -81,15 +104,6 @@
         
         [self.leftButton setHidden:YES];
         
-        UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight , 320.0f, self.view.frame.size.height - self.headHeight)];
-        [viewBG setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:viewBG];
-        RELEASE(viewBG);
-        arraySouce = [[NSArray alloc]initWithObjects:@"全部",@"大众",@"其他", nil];
-        
-        [self creatSelectType:arraySouce];
-        
-        UIImage *image = [UIImage imageNamed:@"options_bg"];
         DLogInfo(@"dddd %@",SHARED.userId);
         MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil page:@"1" num:@"20" sAlert:YES receive:self];
         [request setTag:2];
@@ -100,12 +114,10 @@
         m_bHasNext = NO;
         m_iPageNum = 20;
         
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight + image.size.height/2, 320.0f, self.view.frame.size.height - self.headHeight -image.size.height/2-44) isNeedUpdate:NO];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight, 320.0f, self.view.frame.size.height - self.headHeight) isNeedUpdate:NO];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-        RELEASE(tbDataBank11);
-        
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
@@ -117,101 +129,7 @@
     }
 }
 
--(void)creatSelectType:(NSArray *)arraySource{
 
-    UIImage *imageSouce = [UIImage imageNamed:@"options_bg"];
-    //imageSouce.size.width/2 * 4
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight,320, imageSouce.size.height/2)];
-    [self.view addSubview:scrollView];
-    scrollView.layer.contents = (id)imageSouce.CGImage;
-    [scrollView release];
-    
-    /*UIImage *imageMoer = [UIImage imageNamed:@"add_bt"];
-    UIButton *btnMore = [[UIButton alloc]initWithFrame:CGRectMake(imageSouce.size.width/2 * 4, self.headHeight, imageMoer.size.width/2 , imageMoer.size.height/2)];
-    [btnMore setImage:imageMoer forState:UIControlStateNormal];
-    [btnMore setBackgroundColor:[UIColor clearColor
-                                 ]];
-    [btnMore addTarget:self action:@selector(doMore) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnMore];
-    [btnMore release];*/
-    
-    int offset = imageSouce.size.width/2;
-    for (int i = 0; i < arraySource.count; i++) {
-        
-        UIButton *btnTouchType = [[UIButton alloc]initWithFrame:CGRectMake(i * offset, 0, offset, imageSouce.size.height/2)];
-       
-//        i%2 == 0 ? [btnTouchType setBackgroundColor:[UIColor redColor]]:[btnTouchType setBackgroundColor:[UIColor yellowColor]];
-        [btnTouchType setImage:[UIImage imageNamed:@"options_bg"] forState:UIControlStateNormal];
-        [btnTouchType setImage:[UIImage imageNamed:@"click_bg"] forState:UIControlStateSelected];
-        [btnTouchType setTag:10 + i];
-        [btnTouchType addTarget:self action:@selector(doChoose:) forControlEvents:UIControlEventTouchUpInside];
-        [btnTouchType setTitle:[arraySource objectAtIndex:i] forState:UIControlStateNormal];
-        [self addlabel_title:[arraySouce objectAtIndex:i] frame:btnTouchType.frame view:btnTouchType];
-        [scrollView addSubview:btnTouchType];
-        [btnTouchType release];
-        
-        if (i == 0) {
-            [btnTouchType setSelected:YES];
-        }
-    }
-    [scrollView setContentSize:CGSizeMake(offset * arraySource.count, 44)];
-}
-
--(void)doChoose:(UIButton*)sender{
-
-    UIButton *btn = (UIButton *)sender;
-    for (int i = 0; i <arraySouce.count; i++) {
-        
-        UIButton *btnT = (UIButton *)[scrollView viewWithTag:10+i];
-        if (btn.tag ==  btnT.tag) {
-            
-            [btnT setSelected:YES];
-        }else{
-            
-            [btnT setSelected:NO];
-        }
-    }
-    
-    if (m_itagId == sender.tag-10)
-    {
-        return;
-    }
-    
-    m_itagId =  sender.tag-10;
-    m_bHasNext = NO;
-    [arrayReturnSouce removeAllObjects];
-    m_iCurrentPage = 1;
-    m_iPageNum = 20;
-    switch (sender.tag-10)
-    {
-        case 0:
-        {
-            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
-            [request setTag:2];
-            
-        }
-           
-            break;
-        case 1:
-        {
-            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
-            [request setTag:2];
-        }
-            break;
-        case 2:
-        {
-            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
-            [request setTag:2];
-            
-        }
-          
-            break;
-            
-        default:
-            break;
-    }
-
-}
 
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
@@ -227,14 +145,7 @@
     
 }
 
--(void)doMore{
-    
-    [UIView animateWithDuration:0.4 animations:^{
-      [scrollView setContentOffset:CGPointMake(320/5 * 2, 0)];
-    }];
-  
 
-}
 
 #pragma mark- 只接受UITableView信号
 static NSString *cellName = @"cellName";
@@ -342,10 +253,6 @@ static NSString *cellName = @"cellName";
         
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
         
-        ShareSearchBookViewController *searchBook = [[ShareSearchBookViewController alloc]init];
-        
-        [self.drNavigationController pushViewController:searchBook animated:YES];
-        [searchBook release];
     }
 }
 #pragma mark- 只接受HTTP信号
@@ -375,17 +282,7 @@ static NSString *cellName = @"cellName";
                     m_bHasNext = [[[dict valueForKey:@"data"] objectForKey:@"havenext"] boolValue];
                     [tbDataBank11 reloadData];
                     [self finishReloadingData];
-//
-//                    self.DB.FROM(USERMODLE)
-//                    .SET(@"userInfo", request.responseString)
-//                    .SET(@"userIndex",[dict objectForKey:@"user_id"])
-//                    .INSERT();
-//                    
-//                    SHARED.userId = [dict objectForKey:@"user_id"]; //设置userid 全局变量
-//                    
-//                    DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
-//                    
-//                    [self.drNavigationController pushViewController:vc animated:YES];
+
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -492,37 +389,6 @@ static NSString *cellName = @"cellName";
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 #pragma mark UIScrollViewDelegate Methods
-
-//- (void)scrollViewDidScroll:(UIScrollView *)newscrollView{
-//    
-//    
-//    if (![self needNoteRefreshView])
-//    {
-//        
-//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
-//        return;
-//    }
-//	
-//	if (refreshView)
-//	{
-//        [refreshView egoRefreshScrollViewDidScroll:newscrollView];
-//    }
-//}
-//
-//- (void)scrollViewDidEndDragging:(UIScrollView *)newscrollView willDecelerate:(BOOL)decelerate{
-//	
-//    
-//    if (![self needNoteRefreshView])
-//    {
-//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
-//        return;
-//    }
-//	if (refreshView)
-//	{
-//        [refreshView egoRefreshScrollViewDidEndDragging:newscrollView];
-//    }
-//}
-
 
 
 -(BOOL)needNoteRefreshView
