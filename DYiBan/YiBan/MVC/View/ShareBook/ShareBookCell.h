@@ -8,14 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef enum
+{
+    ShareBookCellTypeDefault,
+    ShareBookCellTypeOpearate
+}ShareBookCellType;
 @interface ShareBookCell : UITableViewCell
 
+
+@property (nonatomic,assign) int cellType; // 0 ShareBookCellTypeDefault 1，ShareBookCellTypeOpearate
 
 @property (nonatomic,retain) UIView *cellBackground;
 @property (nonatomic,retain) UITableView *tb;
 @property (nonatomic,retain) NSIndexPath *indexPath;
 @property (nonatomic,retain) id sendMegTarget;
-@property (nonatomic,assign) int cellType; // 0 默认 1，分享，2，----
 @property (nonatomic,retain) NSString *bSwip;
 @property (nonatomic,assign) int btnType;
 //@property (nonatomic,retain) DYBProgressView *progressView;

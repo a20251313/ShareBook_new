@@ -16,7 +16,7 @@
 #import "ShareBookListViewController.h"
 #import "UIImageView+WebCache.h"
 
-
+#define ShareBookCellCELLHEIGHT          90
 
 @interface ShareBookCell ()
 
@@ -67,11 +67,123 @@ DEF_SIGNAL(FINISHSWIP)
     // Configure the view for the selected state
 }
 
+
+-(void)crateCellDefault:(NSDictionary*)dict
+{
+    
+    self.dicData = dict;
+
+
+    swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT)];
+    swipView.tag = 100;
+    [swipView setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:swipView];
+    RELEASE(swipView);
+    
+    
+    NSDictionary    *dicInfo = [dict objectForKey:@"book"];
+    NSString    *strImageKey = @"image";
+    NSString    *strauthorKey = @"author";
+    NSString    *strPublisherKey = @"publisher";
+    NSString    *strLentWay = @"lent_way";
+    NSString    *strNameKey = @"title";
+    dicInfo = dict;
+    
+    UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
+    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
+    [imageBook setBackgroundColor:[UIColor redColor]];
+    [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
+    [swipView addSubview:imageBook];
+    [imageBook release];
+    
+    
+    CGFloat fypoint = 2;
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, fypoint, 250, 15)];
+    [labelName setBackgroundColor:[UIColor clearColor]];
+    [labelName setText:[dicInfo objectForKey:strNameKey]];
+    [swipView addSubview:labelName];
+    [labelName release];
+    
+    fypoint += 15+2;
+    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
+    [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicInfo objectForKey:strauthorKey]]];
+    [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelAuther setBackgroundColor:[UIColor clearColor]];
+    [labelAuther setFont:[UIFont systemFontOfSize:12]];
+    [swipView addSubview:labelAuther];
+    [labelAuther release];
+    
+      fypoint += 15+2;
+    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame)+2, fypoint, 200, 15)];
+    [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    if ([dicInfo valueForKey:strPublisherKey])
+    {
+        [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
+    }else
+    {
+        [labelPublic setText:@""];
+    }
+    
+    [labelPublic setBackgroundColor:[UIColor clearColor]];
+    
+    [swipView addSubview:labelPublic];
+    [labelPublic setFont:[UIFont systemFontOfSize:12]];
+    [labelPublic release];
+    
+    
+     fypoint += 15+2;
+    UILabel *labelowner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
+    [labelowner setText:[ NSString stringWithFormat:@"书主：%@",[dicInfo objectForKey:@"username"]]];
+    [labelowner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelowner setBackgroundColor:[UIColor clearColor]];
+    [labelowner setFont:[UIFont systemFontOfSize:12]];
+    [swipView addSubview:labelowner];
+    [labelowner release];
+    
+    /*UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
+    [labelAddr setText:[NSString stringWithFormat:@"地址:%@",[dict objectForKey:@"address"]]];
+    [swipView addSubview:labelAddr];
+    [labelAddr setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelAddr setBackgroundColor:[UIColor clearColor]];
+    [labelAddr setFont:[UIFont systemFontOfSize:12]];
+    [labelAddr sizeToFit];
+    [labelAddr release];*/
+    
+    fypoint += 15+2;
+    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 200, 15)];
+  
+    [labelModel setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelModel setBackgroundColor:[UIColor clearColor]];
+    
+    
+    [labelModel setText:[NSString stringWithFormat:@"借出方式:%@",[dict valueForKey:strLentWay]]];
+    [swipView addSubview:labelModel];
+    [labelModel setFont:[UIFont systemFontOfSize:12]];
+    [labelModel sizeToFit];
+    [labelModel release];
+    //6.5 * 100 =
+    
+
+    [swipView setBackgroundColor:[UIColor colorWithRed:246.0f/255 green:246.0f/255 blue:246.0f/255 alpha:1.0f]];
+    
+    UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, ShareBookCellCELLHEIGHT-1, 320.0f, 1)];
+    [imageLine setImage:[UIImage imageNamed:@"line3"]];
+    [swipView addSubview:imageLine];
+    [imageLine release];
+    
+}
 -(void)creatCell:(NSDictionary *)dict{
     
     
+    if (self.cellType == ShareBookCellTypeDefault)
+    {
+        [self crateCellDefault:dict];
+        return;
+    }
+    
+    
     self.dicData = dict;
-    UIButton *bgBtn = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
+    UIButton *bgBtn = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT)];
     [bgBtn setBackgroundColor:[UIColor clearColor]];
     [bgBtn addTarget:self action:@selector(justPinB) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:bgBtn];
@@ -100,7 +212,7 @@ DEF_SIGNAL(FINISHSWIP)
     }
     
 
-        swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 84.0f)];
+        swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT)];
         swipView.tag = 100;
         [swipView setBackgroundColor:[UIColor clearColor]];
         [self addSubview:swipView];
@@ -128,11 +240,7 @@ DEF_SIGNAL(FINISHSWIP)
     {
         dicInfo = dict;
     }
-    
-    
-    
-    
-    
+
     [swipView addSignal:[UIView TAP] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil] target:self];
     
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
@@ -385,7 +493,7 @@ DEF_SIGNAL(FINISHSWIP)
     if (point.x > param) {
         
         [swipIcan setImage:[UIImage imageNamed:@"slide_more"]];
-        [swipIcan setFrame:CGRectMake(320 - SWIPICAN_WIDTH, (84 - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
+        [swipIcan setFrame:CGRectMake(320 - SWIPICAN_WIDTH, (ShareBookCellCELLHEIGHT - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
         
         isOpen = NO;
         
@@ -400,7 +508,7 @@ DEF_SIGNAL(FINISHSWIP)
         
         [swipIcan setImage:[UIImage imageNamed:@"close_more.png"]];
         
-        [swipIcan setFrame:CGRectMake(320  - SWIPICAN_WIDTH - (25 - SWIPICAN_WIDTH), (84 - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
+        [swipIcan setFrame:CGRectMake(320  - SWIPICAN_WIDTH - (25 - SWIPICAN_WIDTH), (ShareBookCellCELLHEIGHT - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
         
         //发送信号到上层页面
         //        [self sendViewSignal:[DYBDataBankListCell FINISHSWIP] withObject:nil from:self target:_sendMegTarget];
@@ -470,7 +578,7 @@ DEF_SIGNAL(FINISHSWIP)
     //
     //    }
     [swipIcan setImage:[UIImage imageNamed:@"slide_more"]];
-    [swipIcan setFrame:CGRectMake(320 - SWIPICAN_WIDTH, (84 - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
+    [swipIcan setFrame:CGRectMake(320 - SWIPICAN_WIDTH, (ShareBookCellCELLHEIGHT - SWIPICAN_HIGHT)/2, SWIPICAN_WIDTH,SWIPICAN_HIGHT)];
 }
 
 -(void)doTap{
@@ -507,7 +615,7 @@ DEF_SIGNAL(FINISHSWIP)
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
                          animations:^
          {
-             swipView.frame = CGRectMake(0.0f, 0.0f, 320.0f, 84.0f);
+             swipView.frame = CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT);
          } completion:^(BOOL finished) {
          }];
     }

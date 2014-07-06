@@ -76,7 +76,7 @@
         [viewBG setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
-        arraySouce = [[NSArray alloc]initWithObjects:@"全部",@"少儿",@"科技",@"其他",@"全部",@"少儿",@"科技",@"其他", nil];
+        arraySouce = [[NSArray alloc]initWithObjects:@"全部",@"大众",@"其他", nil];
         
         [self creatSelectType:arraySouce];
         
@@ -87,7 +87,7 @@
         
         
         
-       tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight + image.size.height/2, 320.0f, self.view.frame.size.height - self.headHeight -image.size.height/2 ) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight + image.size.height/2, 320.0f, self.view.frame.size.height - self.headHeight -image.size.height/2-10) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -107,20 +107,20 @@
 -(void)creatSelectType:(NSArray *)arraySource{
 
     UIImage *imageSouce = [UIImage imageNamed:@"options_bg"];
-    
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, imageSouce.size.width/2 * 4, imageSouce.size.height/2)];
+    //imageSouce.size.width/2 * 4
+    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight,320, imageSouce.size.height/2)];
     [self.view addSubview:scrollView];
+    scrollView.layer.contents = (id)imageSouce.CGImage;
     [scrollView release];
     
-    UIImage *imageMoer = [UIImage imageNamed:@"add_bt"];
-    
+    /*UIImage *imageMoer = [UIImage imageNamed:@"add_bt"];
     UIButton *btnMore = [[UIButton alloc]initWithFrame:CGRectMake(imageSouce.size.width/2 * 4, self.headHeight, imageMoer.size.width/2 , imageMoer.size.height/2)];
     [btnMore setImage:imageMoer forState:UIControlStateNormal];
     [btnMore setBackgroundColor:[UIColor clearColor
                                  ]];
     [btnMore addTarget:self action:@selector(doMore) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnMore];
-    [btnMore release];
+    [btnMore release];*/
     
     int offset = imageSouce.size.width/2;
     for (int i = 0; i < arraySource.count; i++) {
@@ -144,7 +144,7 @@
     [scrollView setContentSize:CGSizeMake(offset * arraySource.count, 44)];
 }
 
--(void)doChoose:(id)sender{
+-(void)doChoose:(UIButton*)sender{
 
     UIButton *btn = (UIButton *)sender;
     for (int i = 0; i <arraySouce.count; i++) {
@@ -157,6 +157,35 @@
             
             [btnT setSelected:NO];
         }
+    }
+    
+    switch (sender.tag-10)
+    {
+        case 0:
+        {
+            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil page:@"1" num:@"20" sAlert:YES receive:self];
+            [request setTag:2];
+            
+        }
+           
+            break;
+        case 1:
+        {
+            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
+            [request setTag:2];
+        }
+            break;
+        case 2:
+        {
+            MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:@"2" page:@"1" num:@"20" sAlert:YES receive:self];
+            [request setTag:2];
+            
+        }
+          
+            break;
+            
+        default:
+            break;
     }
 
 }
@@ -227,11 +256,8 @@ static NSString *cellName = @"cellName";
         
         ShareBookCell *cell = [[ShareBookCell alloc]init];
         cell.tb  = tbDataBank11;
-        //        cell.type = _type;
         cell.indexPath = indexPath;
         [cell creatCell:[arrayReturnSouce objectAtIndex:indexPath.row]];
-//        NSDictionary *dictInfoFood = nil;
-//        [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
         
         
