@@ -83,29 +83,7 @@
 }
 
 
--(void)setNoDataViewHide:(BOOL)isHide
-{
-    UILabel *label = (UILabel*)[self.view viewWithTag:10001];
-    
-    if (!label && !isHide)
-    {
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height-40)/2, self.view.frame.size.width, 40)];
-        [label setTag:10001];
-        [label setBackgroundColor:[UIColor clearColor]];
-        [label setTextColor:[UIColor grayColor]];
-        [label setFont:[UIFont systemFontOfSize:20]];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        
-        [self.view addSubview:label];
-    }
-    label.hidden = isHide;
 
-    
-    [label setText:@"搜索结果为空"];
-    
-    
-    
-}
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
@@ -334,6 +312,30 @@ static NSString *cellName = @"cellName";
 
 
 
+
+-(void)setNoDataViewHide:(BOOL)isHide
+{
+    UILabel *label = (UILabel*)[self.view viewWithTag:10001];
+    
+    if (!label && !isHide)
+    {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height-40)/2, self.view.frame.size.width, 40)];
+        [label setTag:10001];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor grayColor]];
+        [label setFont:[UIFont systemFontOfSize:20]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        
+        [self.view addSubview:label];
+    }
+    label.hidden = isHide;
+    
+    
+    [label setText:@"搜索结果为空"];
+    
+    
+    
+}
 
 /**
  *  init refreshView

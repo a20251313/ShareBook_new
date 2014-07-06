@@ -16,6 +16,7 @@
 #import "ShareBookFriendListViewController.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "EGORefreshTableFooterView.h"
 #import "ShareBookApplyViewController.h"
 #define  RIGHTVIEWTAG 111
 
@@ -23,6 +24,15 @@
 
     NSMutableArray *arrayResult;
     DYBUITableView  *tbDataBank1;
+    
+    
+    EGORefreshTableFooterView   *refreshView;
+    
+    int             m_itagId;
+    int             m_iCurrentPage;
+    int             m_iPageNum;
+    BOOL            m_bHasNext;
+    BOOL            m_bIsLoading;
 }
 
 @end
@@ -41,6 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self initRefrshView];
 	// Do any additional setup after loading the view.
 }
 
@@ -75,7 +86,13 @@
         [self.view setBackgroundColor:[UIColor whiteColor]];
         arrayResult = [[NSMutableArray alloc]init];
         //MagicRequest *request = [DYBHttpMethod message_list_page:@"0" num:@"10000" sAlert:YES receive:self];
-        MagicRequest *request = [DYBHttpMethod message_contractslist:SHARED.userId page:@"0" num:@"10000" sAlert:YES receive:self];
+        
+        m_iPageNum = 20;
+        m_iCurrentPage = 1;
+        m_bIsLoading = NO;
+        m_bHasNext = NO;
+        
+        MagicRequest *request = [DYBHttpMethod message_contractslist:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
         [request setTag:1];
         
         UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
@@ -92,10 +109,7 @@
         [self.view addSubview:tbDataBank1];
         [tbDataBank1 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank1);
-        
-        
-        
-        
+  
     }
     
     
@@ -171,6 +185,22 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
         
+        if (refreshView)
+        {
+            [refreshView egoRefreshScrollViewDidScroll:tbDataBank1];
+        }
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        if (![self needNoteRefreshView])
+        {
+            
+            [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:tbDataBank1];
+            return;
+        }
+        
+        if (refreshView)
+        {
+            [refreshView egoRefreshScrollViewDidEndDragging:tbDataBank1];
+        }
     }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
         
         
@@ -300,20 +330,16 @@ static NSString *cellName = @"cellName";
             if (dict) {
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    
-                   // JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
-                  
-                    arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"arr"]];
-                    
+            
+                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"arr"]];
+                     m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] boolValue];
                     [tbDataBank1 reloadData];
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
-                    
                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
                 }
             }
+               [self finishReloadingData];
         }else if(request.tag == 3){
             
             NSDictionary *dict = [request.responseString JSONValue];
@@ -342,5 +368,148 @@ static NSString *cellName = @"cellName";
             
         }
     }
+}
+
+
+
+#pragma mark
+-(void)setNoDataViewHide:(BOOL)isHide
+{
+    UILabel *label = (UILabel*)[self.view viewWithTag:10001];
+    
+    if (!label && !isHide)
+    {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height-40)/2, self.view.frame.size.width, 40)];
+        [label setTag:10001];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor grayColor]];
+        [label setFont:[UIFont systemFontOfSize:20]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        
+        [self.view addSubview:label];
+    }
+    label.hidden = isHide;
+    
+    
+    [label setText:@"消息为空"];
+    
+    
+    
+}
+
+/**
+ *  init refreshView
+ */
+-(void)initRefrshView
+{
+    [self setFooterView];
+}
+
+- (void)finishReloadingData{
+	
+	//  model should call this when its done loading
+	m_bIsLoading = NO;
+    
+    if (refreshView) {
+        [refreshView egoRefreshScrollViewDataSourceDidFinishedLoading:tbDataBank1];
+        
+    }
+    [self setFooterView];
+    // [self removeFooterView];
+    
+    // overide, the actula reloading tableView operation and reseting position operation is done in the subclass
+}
+
+
+
+-(void)setFooterView{
+	//    UIEdgeInsets test = self.aoView.contentInset;
+    // if the footerView is nil, then create it, reset the position of the footer
+    CGFloat height = MAX(tbDataBank1.contentSize.height, tbDataBank1.frame.size.height);
+    if (refreshView && [refreshView superview])
+	{
+        // reset position
+        refreshView.frame = CGRectMake(0.0f,height,tbDataBank1.frame.size.width,
+                                       self.view.bounds.size.height);
+    }else
+	{
+        // create the footerView
+        refreshView = [[EGORefreshTableFooterView alloc] initWithFrame:  CGRectMake(0.0f, height,tbDataBank1.frame.size.width, tbDataBank1.bounds.size.height) arrowImageName:nil textColor:[UIColor grayColor]
+                       ];
+        refreshView.delegate = self;
+        [tbDataBank1 addSubview:refreshView];
+    }
+    if (refreshView)
+	{
+        [refreshView refreshLastUpdatedDate];
+    }
+}
+
+-(void)removeFooterView
+{
+    if (refreshView && [refreshView superview])
+	{
+        [refreshView removeFromSuperview];
+    }
+    
+    
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark UIScrollViewDelegate Methods
+
+
+-(BOOL)needNoteRefreshView
+{
+    
+    return m_bHasNext;
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+/**
+ * egoRefreshTableDidTriggerRefresh
+ *
+ *  @param aRefreshPos pos
+ */
+- (void)egoRefreshTableDidTriggerRefresh:(EGORefreshPos)aRefreshPos
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (m_bHasNext && !m_bIsLoading)
+        {
+            m_bIsLoading = YES;
+            m_iCurrentPage++;
+            
+            
+            MagicRequest *request = [DYBHttpMethod message_contractslist:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
+            [request setTag:1];
+
+                //[request setTag:2];
+        }
+        
+    });
+    
+}
+/**
+ *  ego status return
+ *
+ *  @param view scrollView
+ *
+ *  @return status
+ */
+- (BOOL)egoRefreshTableDataSourceIsLoading:(UIView*)view
+{
+    return m_bIsLoading;
+}
+
+
+- (NSDate*)egoRefreshTableDataSourceLastUpdated:(UIView*)view
+{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
 }
 @end
