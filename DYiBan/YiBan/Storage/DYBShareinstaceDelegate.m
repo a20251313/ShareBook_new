@@ -39,6 +39,19 @@ isLoginMethod = _isLoginMethod;
 
 static DYBShareinstaceDelegate *sharedInstace = nil;
 
+
+
+
+
+@synthesize userName;
+@synthesize nick;
+@synthesize realName;
+@synthesize email;
+@synthesize phone_Num;
+@synthesize pic;
+@synthesize sex;
+@synthesize sskey;
+
 + (DYBShareinstaceDelegate *)sharedInstace
 {
     static dispatch_once_t onceToken;
@@ -50,6 +63,21 @@ static DYBShareinstaceDelegate *sharedInstace = nil;
         }
     });
     return sharedInstace;
+    
+}
+
++ (void)sharedSetUserInfo:(NSDictionary*)dicInfo
+{
+    DYBShareinstaceDelegate *share = [DYBShareinstaceDelegate sharedInstace];
+    share.userName = [dicInfo valueForKey:@"username"];
+    share.realName = [dicInfo valueForKey:@"realname"];
+    share.nick = [dicInfo valueForKey:@"nick"];
+    share.email = [dicInfo valueForKey:@"email"];
+    share.phone_Num = [dicInfo valueForKey:@"phone_num"];
+    share.pic = [dicInfo valueForKey:@"pic"];
+    share.sex = [dicInfo valueForKey:@"sex"];
+    share.coin = [dicInfo valueForKey:@"coin"];
+    share.sskey = [dicInfo valueForKey:@"sskey"];
     
 }
 

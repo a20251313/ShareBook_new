@@ -10,4 +10,6 @@
 
 @interface ShareBookDouCell : UITableViewCell
 
+
+-(void)creatCell:(NSDictionary*)dicInfo;
 @end

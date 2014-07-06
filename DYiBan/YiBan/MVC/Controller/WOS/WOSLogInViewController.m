@@ -526,6 +526,7 @@
                 .SET(@"userIndex",[dict objectForKey:@"user_id"])
                 .INSERT();
                
+                [DYBShareinstaceDelegate sharedSetUserInfo:[dict objectForKey:@"data"]];
                 SHARED.userId = [[dict objectForKey:@"data"] objectForKey:@"user_id"]; //设置userid 全局变量
                 DLogInfo(@"SHARED.userId -- >%@",SHARED.userId);
 

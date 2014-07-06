@@ -31,7 +31,22 @@
 @property (nonatomic, readonly)NSDateFormatter *dateFormatter;
 @property (nonatomic, readonly)NSString *imei;
 
+
+
+
+@property (nonatomic, retain)NSString *userName;
+@property (nonatomic, retain)NSString *nick;
+@property (nonatomic, retain)NSString *realName;
+@property (nonatomic, retain)NSString *email;
+@property (nonatomic, retain)NSString *phone_Num;
+@property (nonatomic, retain)NSString *pic;
+@property (nonatomic, retain)NSString *sex;
+@property (nonatomic, retain)NSString *coin;
+@property (nonatomic, retain)NSString *sskey;
+
 + (DYBShareinstaceDelegate *)sharedInstace;
+
++ (void)sharedSetUserInfo:(NSDictionary*)dicInfo;
 
 //删除数据库
 - (void)deleteSql;

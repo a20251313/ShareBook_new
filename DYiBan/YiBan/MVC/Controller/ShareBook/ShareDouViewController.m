@@ -10,8 +10,13 @@
 #import "ShareBookDouCell.h"
 #import "ShareBookApplyViewController.h"
 #import "ShareFriendListViewController.h"
+#import "NSString+SBJSON.h"
 
 @interface ShareDouViewController ()
+{
+    NSMutableArray      *m_dataArray;
+    DYBUITableView      *tbDataBank11;
+}
 
 @end
 
@@ -73,15 +78,16 @@
         
         
         UILabel *labelDou = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight + 10, 100.0f, 20.0f)];
-        [labelDou setText:@"我的享乐豆"];
+        [labelDou setText:@"我的享乐豆:"];
         [labelDou sizeToFit];
         [self.view addSubview:labelDou];
         [labelDou release];
         [labelDou setBackgroundColor:[UIColor clearColor]];
         
         UILabel *labelNum  = [[UILabel alloc]initWithFrame:CGRectMake(10.0f + CGRectGetMinX(labelDou.frame) + CGRectGetWidth(labelDou.frame), self.headHeight + 10 , 100.0f, 20.0f)];
-        [labelNum setText:@"100"];
+        [labelNum setText:SHARED.coin];
         [self.view addSubview:labelNum];
+        labelNum.tag = 2000;
         [labelNum release];
         [labelDou setBackgroundColor:[UIColor clearColor]];
 
@@ -97,6 +103,7 @@
         [label2 setTextColor:[UIColor colorWithRed:230.0f/255 green:94.0f/255 blue:22.0f/255 alpha:1.0f]];
         [label2 setText:@"www.baidu.com"];
         [label2 sizeToFit];
+        label2.tag = 2001;
         [self.view addSubview:label2];
         [label2 release];
         [label2 setBackgroundColor:[UIColor clearColor]];
@@ -128,7 +135,7 @@
         [labelHistoryList release];
         [labelHistoryList setBackgroundColor:[UIColor clearColor]];
 
-        UIImage *image = [UIImage imageNamed:@"menu_inactive"];
+       // UIImage *image = [UIImage imageNamed:@"menu_inactive"];
         
         UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10, 200 + 3, 300.0f, self.view.frame.size.height -100 - 60 - 100  )];
         
@@ -142,13 +149,17 @@
 
         
         
-        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,200 , 320 , self.view.frame.size.height -100 - 60 - 100 + 5  + 3 + 2) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,200 , 320 , self.view.frame.size.height -100 - 10 - 100 + 5  + 3 + 2) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank11);
         
-        [self creatDownBar];
+        MagicRequest    *request = [DYBHttpMethod book_pay_logs:SHARED.userId sAlert:YES receive:self];
+        request.tag = 100;
+        
+        
+      //  [self creatDownBar];
         
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
@@ -175,7 +186,7 @@ static NSString *cellName = @"cellName";
         NSNumber *s;
         
         //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:10];
+        s = [NSNumber numberWithInteger:m_dataArray.count];
         //        }else{
         //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
         //        }
@@ -207,14 +218,13 @@ static NSString *cellName = @"cellName";
         //        NSDictionary *dictInfoFood = Nil;
         //        [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
-        
-        
+        [cell creatCell:m_dataArray[indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+      //  NSDictionary *dict = (NSDictionary *)[signal object];
+     //   NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
         
@@ -314,6 +324,54 @@ static NSString *cellName = @"cellName";
     
 }
 
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    
+    if ([request succeed])
+    {
+        //        JsonResponse *response = (JsonResponse *)receiveObj;
+        if (request.tag == 100) {
+            
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+
+                    
+                    NSArray *arrayData  = [[dict objectForKey:@"data"] objectForKey:@"arr"]; //设置userid 全局变量
+                    if (!m_dataArray)
+                    {
+                        m_dataArray = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [m_dataArray addObjectsFromArray:arrayData];
+                    
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        } else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
+            
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+            
+        }
+    }
+}
 
 
 
