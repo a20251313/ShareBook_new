@@ -2426,7 +2426,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 {
     
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
-    [dict setValue:keyword forKey:@"cate"];
+   
     [dict setValue:kind forKey:@"kind"];
     [dict setValue:tagId forKey:@"tag_id"];
     [dict setValue:circle_id forKey:@"circle_id"];
@@ -2434,6 +2434,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     [dict setValue:loadWay forKey:@"loan_way"];
     [dict setValue:page forKey:@"page"];
     [dict setValue:num forKey:@"num"];
+    [dict setValue:keyword forKey:@"key_word"];
 
     
     [dict setValue:@"book_search" forKey:INTERFACEDOACTION];

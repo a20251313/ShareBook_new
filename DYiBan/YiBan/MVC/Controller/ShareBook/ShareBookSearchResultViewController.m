@@ -83,6 +83,29 @@
 }
 
 
+-(void)setNoDataViewHide:(BOOL)isHide
+{
+    UILabel *label = (UILabel*)[self.view viewWithTag:10001];
+    
+    if (!label && !isHide)
+    {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height-40)/2, self.view.frame.size.width, 40)];
+        [label setTag:10001];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor grayColor]];
+        [label setFont:[UIFont systemFontOfSize:20]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        
+        [self.view addSubview:label];
+    }
+    label.hidden = isHide;
+
+    
+    [label setText:@"搜索结果为空"];
+    
+    
+    
+}
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
@@ -90,8 +113,7 @@
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
         [self.headview setTitle:@"搜索结果"];
-        [self.leftButton setHidden:YES];
-        [self setButtonImage:self.rightButton setImage:@"icon_search"];
+        [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:17.0f/255 green:22.0f/255 blue:27.0f/255 alpha:1.0f]];
         
@@ -102,17 +124,19 @@
       
         [self.view setBackgroundColor:[UIColor whiteColor]];
         
-        [self.leftButton setHidden:YES];
+
         
         DLogInfo(@"dddd %@",SHARED.userId);
-        MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil page:@"1" num:@"20" sAlert:YES receive:self];
-        [request setTag:2];
+     
         
         m_itagId = 0;
         m_iCurrentPage = 1;
         m_bIsLoading = NO;
         m_bHasNext = NO;
         m_iPageNum = 20;
+        
+        MagicRequest *request = [DYBHttpMethod book_tag_list:self.dataModel.keyword kind:self.dataModel.kind tagID:self.dataModel.tagid circle_id:self.dataModel.cirleID loan_status:self.dataModel.loanstatus loan_way:self.dataModel.loanway page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
+        [request setTag:2];
         
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight, 320.0f, self.view.frame.size.height - self.headHeight) isNeedUpdate:NO];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
@@ -281,6 +305,11 @@ static NSString *cellName = @"cellName";
                     [arrayReturnSouce addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"book_list"]];
                     m_bHasNext = [[[dict valueForKey:@"data"] objectForKey:@"havenext"] boolValue];
                     [tbDataBank11 reloadData];
+                    
+                    if (![arrayReturnSouce count])
+                    {
+                        [self setNoDataViewHide:NO];
+                    }
                     [self finishReloadingData];
 
                     
@@ -292,28 +321,7 @@ static NSString *cellName = @"cellName";
                     
                 }
             }
-        }else if(request.tag == 3){
-            
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
-                if (!result) {
-                    
-//                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
-//                    [btn setTag:10];
-//                    [self doChange:btn];
-                }
-                else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-            
-        } else{
+        }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             
@@ -412,15 +420,8 @@ static NSString *cellName = @"cellName";
         {
             m_bIsLoading = YES;
             m_iCurrentPage++;
-            if (m_itagId == 0)
-            {
-                MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:nil page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
-                [request setTag:2];
-            }else
-            {
-                MagicRequest *request = [DYBHttpMethod shareBook_book_list_tag_id:[@(m_itagId) description] page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
-                [request setTag:2];
-            }
+            MagicRequest *request = [DYBHttpMethod book_tag_list:self.dataModel.keyword kind:self.dataModel.kind tagID:self.dataModel.tagid circle_id:self.dataModel.cirleID loan_status:self.dataModel.loanstatus loan_way:self.dataModel.loanway page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
+            [request setTag:2];
         }
         
     });

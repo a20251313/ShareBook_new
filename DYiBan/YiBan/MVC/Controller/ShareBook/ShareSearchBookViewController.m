@@ -344,15 +344,15 @@
         self.dataModel.tagid = @"1";
     }else
     {
-        self.dataModel.kind = @"2";
+        self.dataModel.tagid = @"2";
     }
     
     if ([textway isEqualToString:@"做客"])
     {
-        self.dataModel.tagid = @"2";
+        self.dataModel.loanway = @"1";
     }else if ([textway isEqualToString:@"旅行"])
     {
-        self.dataModel.tagid = @"1";
+        self.dataModel.loanway = @"2";
     }
     
     return YES;
