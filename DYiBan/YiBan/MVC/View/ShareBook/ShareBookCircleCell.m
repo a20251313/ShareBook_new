@@ -29,7 +29,7 @@
 -(void)creatCell:(NSDictionary*)dicInfo{
 
     
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 200.0f, 30.0f)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 260.0f, 30.0f)];
     [label setText:[dicInfo objectForKey:@"circle_name"]];
     [self addSubview:label];
     RELEASE(label);
