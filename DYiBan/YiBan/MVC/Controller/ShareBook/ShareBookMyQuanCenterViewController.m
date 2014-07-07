@@ -14,6 +14,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "EGORefreshTableFooterView.h"
+#import "ShareBookCircleCell.h"
 
 @interface ShareBookMyQuanCenterViewController ()<EGORefreshTableDelegate,UISearchBarDelegate>{
 
@@ -263,23 +264,13 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
         NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
         s = [NSNumber numberWithInteger:_arrayResult.count];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -305,38 +296,11 @@ static NSString *cellName = @"cellName";
        
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        UITableViewCell *cell = [[UITableViewCell alloc]init];
-        
-
-        DLogInfo(@"%d", indexPath.section);
-        
         NSDictionary *dictt = [_arrayResult objectAtIndex:indexPath.row];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 5.0f, 260.0f, 25.0f)];
-        [label setText:[dictt objectForKey:@"circle_name"]];
-        [cell addSubview:label];
-        RELEASE(label);
-        
-        
-        UILabel *labelB = [[UILabel alloc]initWithFrame:CGRectMake(15, 30, 220, 20)];
-        NSString *temp = [NSString stringWithFormat:@"热度：%@人 | %@书 | %@交易",[dictt objectForKey:@"hots"],[dictt objectForKey:@"book_num"],[dictt objectForKey:@"loan_num"]];
-        [labelB setText:temp];
-        [labelB setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-        [labelB setFont:[UIFont systemFontOfSize:14]];
-        [cell addSubview:labelB];
-        RELEASE(labelB);
-        
-        UILabel *labelDis = [[UILabel alloc]initWithFrame:CGRectMake(15, 50, 220, 20)];
-        [labelDis setText:[NSString stringWithFormat:@"距离:%@",[dictt valueForKey:@"distance_num"]]];
-        [labelDis setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-        [labelDis setFont:[UIFont systemFontOfSize:14]];
-        [cell addSubview:labelDis];
-        RELEASE(labelDis);
-        
-        
-        
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        ShareBookCircleCell *cell = [[ShareBookCircleCell alloc] init];
+        cell.isHasDistance = YES;
+        [cell creatCell:dictt];
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{

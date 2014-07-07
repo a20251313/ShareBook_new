@@ -17,7 +17,7 @@ typedef enum
 @interface ShareBookCell : UITableViewCell
 
 
-@property (nonatomic,assign) int cellType; // 0 ShareBookCellTypeDefault 1，ShareBookCellTypeOpearate
+@property (nonatomic,assign)ShareBookCellType cellType; // 0 ShareBookCellTypeDefault 1，ShareBookCellTypeOpearate
 
 @property (nonatomic,retain) UIView *cellBackground;
 @property (nonatomic,retain) UITableView *tb;

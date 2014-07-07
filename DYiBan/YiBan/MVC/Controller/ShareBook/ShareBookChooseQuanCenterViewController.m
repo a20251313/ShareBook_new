@@ -13,6 +13,7 @@
 #import "WOSMapViewController.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "ShareBookCircleCell.h"
 
 @interface ShareBookChooseQuanCenterViewController (){
 
@@ -280,29 +281,14 @@ static NSString *cellName = @"cellName";
        
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
         
 
         DLogInfo(@"%d", indexPath.section);
         
         NSDictionary *dictt = [_arrayResult objectAtIndex:indexPath.row];
-        
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 200.0f, 30.0f)];
-        [label setText:[dictt objectForKey:@"circle_name"]];
-        
-        [cell addSubview:label];
-        RELEASE(label);
-        
-        
-        UILabel *labelB = [[UILabel alloc]initWithFrame:CGRectMake(15, 35, 220, 20)];
-        NSString *temp = [NSString stringWithFormat:@"热度：%@人 | %@书 | %@交易",[dictt objectForKey:@"hots"],[dictt objectForKey:@"book_num"],[dictt objectForKey:@"loan_num"]];
-        [labelB setText:temp];
-        [labelB setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-        [labelB setFont:[UIFont systemFontOfSize:14]];
-        [cell addSubview:labelB];
-        RELEASE(labelB);
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+        ShareBookCircleCell *cell = [[ShareBookCircleCell alloc] init];
+        [cell creatCell:dictt];
         [signal setReturnValue:cell];
         
         

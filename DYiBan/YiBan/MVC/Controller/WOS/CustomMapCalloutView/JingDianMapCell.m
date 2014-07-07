@@ -25,22 +25,13 @@ DEF_SIGNAL(TOUCHCELL)
 
 -(void)creatView{
 
-//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 40.f, 40.f)];
-//    [imageView setImage:[UIImage imageNamed:@"food1"]];
-////    [self addSubview:imageView];
-////    RELEASE(imageView);
 
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, 120, 20)];
     [self addSubview:labelName];
     [labelName setText:[dictInfo objectForKey:@"circle_name"]];
     RELEASE(labelName);
-    
-//    UIImage *image  = [UIImage imageNamed:@"icon_pepole(1)"];
-//    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(15.0f, 25.0f + 2+ 2, image.size.width/2, image.size.height/2)];
-//    [imageView setImage:[UIImage imageNamed:@"icon_book(1)"]];
-//    [self addSubview:imageView];
-//    RELEASE(imageView);
+
     
     UILabel *labelB = [[UILabel alloc]initWithFrame:CGRectMake(15, 25, 220, 20)];
     NSString *strContent = [NSString stringWithFormat:@"热度：%@人 | %@书 | %@交易",[dictInfo objectForKey:@"hots"],[dictInfo objectForKey:@"book_num"],[dictInfo objectForKey:@"loan_num"]];

@@ -121,6 +121,7 @@
 		8FBF7F4119690BD20080656F /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3E19690BD20080656F /* EGORefreshTableHeaderView.m */; };
 		8FBF7F4419691ECA0080656F /* ShareBookSearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F4319691EC90080656F /* ShareBookSearchResultViewController.m */; };
 		8FBF7F47196923880080656F /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F46196923880080656F /* iToast.m */; };
+		8FBF7F4A196A89670080656F /* ShareBookCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F49196A89670080656F /* ShareBookCircleCell.m */; };
 		B50D960118CEA45F00619B21 /* DYBDataBankShotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */; };
 		B50D960318CEA48C00619B21 /* DYBDataBankTopRightCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50D960218CEA48C00619B21 /* DYBDataBankTopRightCornerView.m */; };
 		B50D960818CEAF8900619B21 /* rightslide_foot.png in Resources */ = {isa = PBXBuildFile; fileRef = B50D960418CEAF8900619B21 /* rightslide_foot.png */; };
@@ -867,6 +868,8 @@
 		8FBF7F4319691EC90080656F /* ShareBookSearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookSearchResultViewController.m; sourceTree = "<group>"; };
 		8FBF7F45196923880080656F /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		8FBF7F46196923880080656F /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		8FBF7F48196A89670080656F /* ShareBookCircleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookCircleCell.h; sourceTree = "<group>"; };
+		8FBF7F49196A89670080656F /* ShareBookCircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookCircleCell.m; sourceTree = "<group>"; };
 		B50D95FD18CEA45F00619B21 /* DYBDataBankShotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBDataBankShotView.m; sourceTree = "<group>"; };
 		B50D95FE18CEA45F00619B21 /* DYBDataBankShotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankShotView.h; sourceTree = "<group>"; };
 		B50D95FF18CEA45F00619B21 /* DYBDataBankTopRightCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBDataBankTopRightCornerView.h; sourceTree = "<group>"; };
@@ -2268,6 +2271,8 @@
 				B5122BC118AB20E2006ECE62 /* ShareBookDetailCell.m */,
 				B5186D1818ACA69200CC2E36 /* ShareBookDouCell.h */,
 				B5186D1918ACA69200CC2E36 /* ShareBookDouCell.m */,
+				8FBF7F48196A89670080656F /* ShareBookCircleCell.h */,
+				8FBF7F49196A89670080656F /* ShareBookCircleCell.m */,
 				B521EAFD18ADFBA200C8599A /* ShareGiveDouCell.h */,
 				B521EAFE18ADFBA200C8599A /* ShareGiveDouCell.m */,
 				B521EB0318AE1D7400C8599A /* ShareSendCell.h */,
@@ -4541,6 +4546,7 @@
 				1893FA5B18A90C0200DF758C /* ShareMessagerCell.m in Sources */,
 				B58CB1121829CF6A00F73D66 /* DYBXinHualistViewController.m in Sources */,
 				B58CB1131829CF6A00F73D66 /* DYBXinHuaViewController.m in Sources */,
+				8FBF7F4A196A89670080656F /* ShareBookCircleCell.m in Sources */,
 				B58CB1141829CF6A00F73D66 /* DYBYiMaTongViewController.m in Sources */,
 				B58CB1161829CF6A00F73D66 /* DYBATViewController.m in Sources */,
 				B58CB1171829CF6A00F73D66 /* DYBBaseViewController.m in Sources */,
@@ -4901,7 +4907,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -4924,7 +4930,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -4945,7 +4951,7 @@
 				GCC_PREFIX_HEADER = "DYiBan/ShareBook-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
 				INFOPLIST_FILE = "DYiBan/ShareBook-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK\"",
@@ -4976,7 +4982,7 @@
 				GCC_PREFIX_HEADER = "DYiBan/ShareBook-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
 				INFOPLIST_FILE = "DYiBan/ShareBook-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK\"",

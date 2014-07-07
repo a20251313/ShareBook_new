@@ -203,161 +203,117 @@ DEF_SIGNAL(FINISHSWIP)
     [self addSubview:bgBtn];
     RELEASE(bgBtn);
     
-    
-    
-    
-    
-    if ([[_tb superCon] isKindOfClass:[ShareBookListViewController class]]) {
-        [self addSignal:[UIView PAN] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil]];
-        
-        
-        if (_type != ShareBookListTypeJieYueHis)
-        {
-            ShareBookCellBtnCenterView *btnView = [[ShareBookCellBtnCenterView alloc]init];
-            [btnView setViewBG:self];
-            [btnView addBtnView:_type];
-            [btnView setDicInfo:dict];
-            self.centerView = btnView;
-        }
-      
-        
-        
-        
-    }
-    
 
-        swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT)];
-        swipView.tag = 100;
-        [swipView setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:swipView];
-        RELEASE(swipView);
-    
+    swipView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, ShareBookCellCELLHEIGHT)];
+    swipView.tag = 100;
+    [swipView setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:swipView];
+    RELEASE(swipView);
 
-    
-    
-    
     NSDictionary    *dicInfo = [dict objectForKey:@"book"];
-    NSString    *strImageKey = @"image";
-    NSString    *strauthorKey = @"author";
+    NSString    *strImageKey = @"book_image";
+    NSString    *strauthorKey = @"book_author";
     NSString    *strPublisherKey = @"publisher";
-    NSString    *strLentWay = @"lent_way";
-    NSString    *strNameKey = @"title";
-    if ([dicInfo count])
-    {
-        strImageKey = @"book_image";
-        strauthorKey = @"book_author";
-        strPublisherKey = @"publisher";
-        strLentWay = @"loan_way";
-        strNameKey = @"book_name";
-        
-    }else
-    {
-        dicInfo = dict;
-    }
+    NSString    *strLentWay = @"loan_way";
+    NSString    *strNameKey = @"book_name";
 
-    [swipView addSignal:[UIView TAP] object:[NSDictionary dictionaryWithObjectsAndKeys:_tb,@"tbv",_indexPath,@"indexPath", nil] target:self];
-    
+
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
     [imageBook setBackgroundColor:[UIColor redColor]];
-    //    [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
     [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
     [imageBook release];
     
-    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5, 250, 20)];
+    
+    CGFloat fypoint = 2;
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, fypoint, 250, 15)];
     [labelName setBackgroundColor:[UIColor clearColor]];
     [labelName setText:[dicInfo objectForKey:strNameKey]];
     [swipView addSubview:labelName];
     [labelName release];
     
-    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 20)];
+    fypoint += 15+2;
+    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
     [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicInfo objectForKey:strauthorKey]]];
     [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelAuther setBackgroundColor:[UIColor clearColor]];
-    
-    [labelAuther setFont:[UIFont systemFontOfSize:15]];
+    [labelAuther setFont:[UIFont systemFontOfSize:12]];
     [swipView addSubview:labelAuther];
     [labelAuther release];
     
-    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
+    fypoint += 15+2;
+    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame)+2, fypoint, 200, 15)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     if ([dicInfo valueForKey:strPublisherKey])
     {
-       [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
+        [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dicInfo objectForKey:strPublisherKey]]];
     }else
     {
-        [labelPublic setText:@""];
+        [labelPublic setText:@"出版社："];
     }
- 
+    
     [labelPublic setBackgroundColor:[UIColor clearColor]];
     
     [swipView addSubview:labelPublic];
-    [labelPublic setFont:[UIFont systemFontOfSize:14]];
+    [labelPublic setFont:[UIFont systemFontOfSize:12]];
     [labelPublic release];
     
-    UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
-    [labelAddr setText:[dict objectForKey:@"address"]];
-    [swipView addSubview:labelAddr];
-    [labelAddr setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelAddr setBackgroundColor:[UIColor clearColor]];
     
-    [labelAddr setFont:[UIFont systemFontOfSize:12]];
-    [labelAddr sizeToFit];
-    [labelAddr release];
+    fypoint += 15+2;
+    UILabel *labelowner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
+    [labelowner setText:[ NSString stringWithFormat:@"书主：%@",[dicInfo objectForKey:@"username"]]];
+    [labelowner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelowner setBackgroundColor:[UIColor clearColor]];
+    [labelowner setFont:[UIFont systemFontOfSize:12]];
+    [swipView addSubview:labelowner];
+    [labelowner release];
     
-   // UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelAddr.frame) + CGRectGetMinX(labelAddr.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
-    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(200, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
-    [labelModel setText:[dict objectForKey:strLentWay]];
+    /*UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, 200, 20)];
+     [labelAddr setText:[NSString stringWithFormat:@"地址:%@",[dict objectForKey:@"address"]]];
+     [swipView addSubview:labelAddr];
+     [labelAddr setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+     [labelAddr setBackgroundColor:[UIColor clearColor]];
+     [labelAddr setFont:[UIFont systemFontOfSize:12]];
+     [labelAddr sizeToFit];
+     [labelAddr release];*/
+    
+    fypoint += 15+2;
+    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 120, 15)];
+    
     [labelModel setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelModel setBackgroundColor:[UIColor clearColor]];
     
+    NSString    *strTempLentWay = @"借出方式:做客";
+    if ([[dicInfo valueForKey:strLentWay] intValue] == 2)
+    {
+        strTempLentWay = @"借出方式:旅行";
+    }
+    [labelModel setText:strTempLentWay];
     [swipView addSubview:labelModel];
     [labelModel setFont:[UIFont systemFontOfSize:12]];
     [labelModel sizeToFit];
     [labelModel release];
+    
+    
+    
+    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 40, fypoint, 120, 15)];
+    
+    [labelStatus setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelStatus setBackgroundColor:[UIColor clearColor]];
+    
+    
+    [labelStatus setText:[NSString stringWithFormat:@"图书状态:%@",[dict valueForKey:@"order_status"]]];
+    [swipView addSubview:labelStatus];
+    [labelStatus setFont:[UIFont systemFontOfSize:12]];
+    [labelStatus sizeToFit];
+    [labelStatus release];
     //6.5 * 100 =
     
-    UIImage *imageTitle = [UIImage imageNamed:@"title_bg"];
-  //  UIImageView *imageViewLabel = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, imageTitle.size.width/2, imageTitle.size.height/2)];
-    UIImageView *imageViewLabel = [[UIImageView alloc]initWithFrame:CGRectMake(240, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3, imageTitle.size.width/2, imageTitle.size.height/2)];
-    [imageViewLabel setImage:[UIImage imageNamed:@"title_bg"]];
-    [swipView addSubview:imageViewLabel];
-    RELEASE(imageViewLabel);
-    
-    
-    UILabel *labelMon = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 200, 20)];
-    ;
-    [labelMon setText: [NSString stringWithFormat:@"%@豆押金",[dicInfo objectForKey:@"deposit"]]];
-    [imageViewLabel addSubview:labelMon];
-    [labelMon setTextColor:[UIColor whiteColor]];
-    [labelMon setBackgroundColor:[UIColor clearColor]];
-    [labelMon setFont:[UIFont systemFontOfSize:12]];
-    [labelMon sizeToFit];
-    [labelMon release];
-    [labelMon setBackgroundColor:[UIColor clearColor]];
-    
-    
-
-   // UIImageView *imageViewLabel1 = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 30, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3 - 40, imageTitle.size.width/2, imageTitle.size.height/2)];
-    UIImageView *imageViewLabel1 = [[UIImageView alloc]initWithFrame:CGRectMake(240,CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 3 - 40, imageTitle.size.width/2, imageTitle.size.height/2)];
-    [imageViewLabel1 setImage:imageTitle];
-    [swipView addSubview:imageViewLabel1];
-    RELEASE(imageViewLabel1);
-    
-    
-    UILabel *labelMon1 = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 200, 20)];
-    [labelMon1 setText:@"5豆租金"];
-    [imageViewLabel1 addSubview:labelMon1];
-    [labelMon1 setTextColor:[UIColor whiteColor]];
-    [labelMon1 setBackgroundColor:[UIColor clearColor]];
-    [labelMon1 setFont:[UIFont systemFontOfSize:12]];
-    [labelMon1 sizeToFit];
-    [labelMon1 release];
     
     [swipView setBackgroundColor:[UIColor colorWithRed:246.0f/255 green:246.0f/255 blue:246.0f/255 alpha:1.0f]];
     
-    UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 90-1, 320.0f, 1)];
+    UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, ShareBookCellCELLHEIGHT-1, 320.0f, 1)];
     [imageLine setImage:[UIImage imageNamed:@"line3"]];
     [swipView addSubview:imageLine];
     [imageLine release];

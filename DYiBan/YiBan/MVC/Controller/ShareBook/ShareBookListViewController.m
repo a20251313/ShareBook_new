@@ -333,6 +333,7 @@
     
         ShareBookCell *cell = [[ShareBookCell alloc]init];
         cell.tb  = tbDataBank11;
+        cell.cellType = ShareBookCellTypeOpearate;
         cell.type = _type;
         cell.indexPath = indexPath;
         [cell creatCell:m_dataArray[indexPath.row]];
