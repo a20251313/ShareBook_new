@@ -13,19 +13,26 @@
 #import "WOSMapViewController.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "EGORefreshTableFooterView.h"
 
-@interface ShareBookMyQuanCenterViewController (){
+@interface ShareBookMyQuanCenterViewController ()<EGORefreshTableDelegate,UISearchBarDelegate>{
 
-    NSMutableArray *arrayResult;
+
     DYBUITableView * tbDataBank11;
-
+    EGORefreshTableFooterView   *refreshView;
+    
+    int             m_itagId;
+    int             m_iCurrentPage;
+    int             m_iPageNum;
+    BOOL            m_bHasNext;
+    BOOL            m_bIsLoading;
 }
 
 @end
 
 @implementation ShareBookMyQuanCenterViewController
 
-@synthesize  bEnter = _bEnter,arrayResult = _arrayResult,bselct,makesure;
+@synthesize  bEnter = _bEnter,arrayResult=_arrayResult,bselct,makesure;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,6 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+
 	// Do any additional setup after loading the view.
 }
 
@@ -74,6 +84,9 @@
             
             [self setButtonImage:self.rightButton setImage:@"icon_map"];
         }
+        
+        
+  
        
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
@@ -81,25 +94,16 @@
         [self.rightButton setHidden:YES];
         
         [self.view setBackgroundColor:[UIColor blackColor]];
-      
-        if (!_bEnter) {
-            
-            MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
-            [request setTag:3];
-        }
-        
-        
-        
+
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [viewBG setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-        
-        
-        
+
         UISearchBar *searchView = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f,self.headHeight, 320, 44) ];
+        searchView.delegate = self;
         /*backgroundColor:[UIColor clearColor] placeholder:@"文件名" isHideOutBackImg:NO isHideLeftView:NO];*/
         for (UIView *subview in [searchView subviews]) {
             if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
@@ -133,8 +137,11 @@
 
         
         
-        UIImage *image = [UIImage imageNamed:@"menu_inactive"];
-        
+        m_itagId = 0;
+        m_iCurrentPage = 1;
+        m_bIsLoading = NO;
+        m_bHasNext = NO;
+        m_iPageNum = 1000;
         
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20,self.headHeight + 44 + 20, 280.0f , self.view.frame.size.height -self.headHeight - 44 - 50 - 20 - 30 ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
@@ -143,6 +150,8 @@
 
         
         RELEASE(tbDataBank11);
+        
+        [self setFooterView];
         
         int offset = 0;
         if (!IOS7_OR_LATER) {
@@ -160,7 +169,7 @@
         
         [self addlabel_title:@"创建乐享圈" frame:btnOK.frame view:btnOK];
         
-        
+        [self getCircleList];
 //        [self creatDownBar];
         
         
@@ -173,7 +182,27 @@
     }
 }
 
+-(void)getCircleList
+{
+    if (!_bEnter) {
+        
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+        [request setTag:3];
+    }
+}
 
+-(void)setArrayResult:(NSMutableArray *)NewarrayResult
+{
+    if (_arrayResult == nil)
+    {
+        _arrayResult = [[NSMutableArray alloc] init];
+    }
+    
+    [_arrayResult addObjectsFromArray:NewarrayResult];
+    [self resortDataInfo];
+    
+    
+}
 
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
@@ -182,28 +211,7 @@
     if ([request succeed])
     {
         //        JsonResponse *response = (JsonResponse *)receiveObj;
-        if (request.tag == 2) {
-            
-            
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            if (dict) {
-                
-                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
-                    
-                    
-                    
-                }else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-        }else if(request.tag == 3){
+      if(request.tag == 3){
             
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -211,11 +219,15 @@
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                 
-                    _arrayResult  = [[NSArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"list"]];;
-
                     
-                    
-                    [tbDataBank11 reloadData];
+                    if (!_arrayResult)
+                    {
+                        _arrayResult = [[NSMutableArray alloc] init];
+                    }
+                    [_arrayResult addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"list"]];
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] boolValue];
+                    [self resortDataInfo];
+                    [self finishReloadingData];
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -276,7 +288,7 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:60];
+        NSNumber *s = [NSNumber numberWithInteger:75];
         [signal setReturnValue:s];
         
         
@@ -300,20 +312,29 @@ static NSString *cellName = @"cellName";
         
         NSDictionary *dictt = [_arrayResult objectAtIndex:indexPath.row];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 100.0f, 30.0f)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 5.0f, 260.0f, 25.0f)];
         [label setText:[dictt objectForKey:@"circle_name"]];
-        
         [cell addSubview:label];
         RELEASE(label);
         
         
-        UILabel *labelB = [[UILabel alloc]initWithFrame:CGRectMake(15, 35, 220, 20)];
+        UILabel *labelB = [[UILabel alloc]initWithFrame:CGRectMake(15, 30, 220, 20)];
         NSString *temp = [NSString stringWithFormat:@"热度：%@人 | %@书 | %@交易",[dictt objectForKey:@"hots"],[dictt objectForKey:@"book_num"],[dictt objectForKey:@"loan_num"]];
         [labelB setText:temp];
         [labelB setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
         [labelB setFont:[UIFont systemFontOfSize:14]];
         [cell addSubview:labelB];
         RELEASE(labelB);
+        
+        UILabel *labelDis = [[UILabel alloc]initWithFrame:CGRectMake(15, 50, 220, 20)];
+        [labelDis setText:[NSString stringWithFormat:@"距离:%@",[dictt valueForKey:@"distance_num"]]];
+        [labelDis setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+        [labelDis setFont:[UIFont systemFontOfSize:14]];
+        [cell addSubview:labelDis];
+        RELEASE(labelDis);
+        
+        
+        
         
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
@@ -343,7 +364,28 @@ static NSString *cellName = @"cellName";
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        if (![self needNoteRefreshView])
+        {
+            [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:tbDataBank11];
+            return;
+        }
         
+        if (refreshView)
+        {
+            [refreshView egoRefreshScrollViewDidScroll:tbDataBank11];
+        }
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        if (![self needNoteRefreshView])
+        {
+            
+            [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:tbDataBank11];
+            return;
+        }
+        
+        if (refreshView)
+        {
+            [refreshView egoRefreshScrollViewDidEndDragging:tbDataBank11];
+        }
     }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
         
         
@@ -381,5 +423,212 @@ static NSString *cellName = @"cellName";
         RELEASE(map);
         
     }
+}
+
+
+
+
+-(void)resortDataInfo
+{
+    [_arrayResult sortUsingComparator:^NSComparisonResult(id obj1,id obj2)
+    {
+        NSString    *strOne = [[obj1 valueForKey:@"distance_num"] lowercaseString];
+        NSString    *strTwo = [[obj2 valueForKey:@"distance_num"] lowercaseString];
+        strOne = [strOne stringByReplacingOccurrencesOfString:@"km" withString:@""];
+        strTwo = [strTwo stringByReplacingOccurrencesOfString:@"km" withString:@""];
+        strOne = [strOne stringByReplacingOccurrencesOfString:@"," withString:@""];
+        strTwo = [strTwo stringByReplacingOccurrencesOfString:@"," withString:@""];
+        if ([strOne floatValue] > [strTwo floatValue])
+        {
+            return NSOrderedDescending;
+        }else
+        {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+    
+    [tbDataBank11 reloadData];
+    [self setFooterView];
+}
+#pragma mark refresh view
+/**
+ *  init refreshView
+ */
+-(void)initRefrshView
+{
+    [self setFooterView];
+}
+
+- (void)finishReloadingData{
+	
+	//  model should call this when its done loading
+	m_bIsLoading = NO;
+    
+    if (refreshView) {
+        [refreshView egoRefreshScrollViewDataSourceDidFinishedLoading:tbDataBank11];
+        
+    }
+    [self setFooterView];
+    // [self removeFooterView];
+    
+    // overide, the actula reloading tableView operation and reseting position operation is done in the subclass
+}
+
+
+
+-(void)setFooterView{
+    return;
+	//    UIEdgeInsets test = self.aoView.contentInset;
+    // if the footerView is nil, then create it, reset the position of the footer
+    CGFloat height = MAX(tbDataBank11.contentSize.height, tbDataBank11.frame.size.height);
+    if (refreshView && [refreshView superview])
+	{
+        // reset position
+        refreshView.frame = CGRectMake(0.0f,height,tbDataBank11.frame.size.width,
+                                       self.view.bounds.size.height);
+    }else
+	{
+        // create the footerView
+        refreshView = [[EGORefreshTableFooterView alloc] initWithFrame:  CGRectMake(0.0f, height,tbDataBank11.frame.size.width, tbDataBank11.bounds.size.height) arrowImageName:nil textColor:[UIColor grayColor]
+                       ];
+        refreshView.delegate = self;
+        [tbDataBank11 addSubview:refreshView];
+    }
+    if (refreshView)
+	{
+        [refreshView refreshLastUpdatedDate];
+    }
+}
+
+-(void)removeFooterView
+{
+    if (refreshView && [refreshView superview])
+	{
+        [refreshView removeFromSuperview];
+    }
+    
+    
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark UIScrollViewDelegate Methods
+
+//- (void)scrollViewDidScroll:(UIScrollView *)newscrollView{
+//
+//
+//    if (![self needNoteRefreshView])
+//    {
+//
+//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
+//        return;
+//    }
+//
+//	if (refreshView)
+//	{
+//        [refreshView egoRefreshScrollViewDidScroll:newscrollView];
+//    }
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)newscrollView willDecelerate:(BOOL)decelerate{
+//
+//
+//    if (![self needNoteRefreshView])
+//    {
+//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
+//        return;
+//    }
+//	if (refreshView)
+//	{
+//        [refreshView egoRefreshScrollViewDidEndDragging:newscrollView];
+//    }
+//}
+
+
+
+-(BOOL)needNoteRefreshView
+{
+    
+    return m_bHasNext;
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+/**
+ * egoRefreshTableDidTriggerRefresh
+ *
+ *  @param aRefreshPos pos
+ */
+- (void)egoRefreshTableDidTriggerRefresh:(EGORefreshPos)aRefreshPos
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (m_bHasNext && !m_bIsLoading)
+        {
+            m_bIsLoading = YES;
+            m_iCurrentPage++;
+            [self getCircleList];
+        }
+        
+    });
+    
+}
+/**
+ *  ego status return
+ *
+ *  @param view scrollView
+ *
+ *  @return status
+ */
+- (BOOL)egoRefreshTableDataSourceIsLoading:(UIView*)view
+{
+    return m_bIsLoading;
+}
+
+
+- (NSDate*)egoRefreshTableDataSourceLastUpdated:(UIView*)view
+{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
+
+#pragma mark UISearchBardelegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+}
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    return YES;
+}
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    
+}
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+}
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+  //  MagicRequest    *request = [DYBHttpMethod sharebook_c];
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    [searchBar resignFirstResponder];
 }
 @end

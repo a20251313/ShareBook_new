@@ -496,7 +496,7 @@
 
 //circle_list
 
-+ (NSMutableDictionary *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num;
++ (NSMutableDictionary *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num lat:(NSString*)lat lng:(NSString*)lng;
 
 //circle_add
 + (NSMutableDictionary *)shareBook_circle_add_circle_name:(NSString *)circle_name address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSString *)kind;

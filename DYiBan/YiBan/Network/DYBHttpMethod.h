@@ -466,7 +466,7 @@
 
 + (MagicRequest *)shareBook_user_detail_user_id:(NSString *)user_id sAlert:(BOOL)isAlert receive:(id)receive;
 
-+ (MagicRequest *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num sAlert:(BOOL)isAlert receive:(id)receive;
++ (MagicRequest *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num lat:(NSString*)lat lng:(NSString*)lng sAlert:(BOOL)isAlert receive:(id)receive;
 
 + (MagicRequest *)shareBook_circle_add_circle_name:(NSString *)circle_name address:(NSString *)address
                                                lat:(NSString *)lat

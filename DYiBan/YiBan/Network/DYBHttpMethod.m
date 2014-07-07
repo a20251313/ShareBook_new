@@ -1696,9 +1696,9 @@
     
 }
 
-+ (MagicRequest *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num sAlert:(BOOL)isAlert receive:(id)receive{
++ (MagicRequest *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num lat:(NSString*)lat lng:(NSString*)lng sAlert:(BOOL)isAlert receive:(id)receive{
 
-    NSMutableDictionary *dict = [DYBHttpInterface shareBook_circle_list:type page:page num:num];
+    NSMutableDictionary *dict = [DYBHttpInterface shareBook_circle_list:type page:page num:num lat:lat lng:lng];
     DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;

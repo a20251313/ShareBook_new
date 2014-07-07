@@ -110,7 +110,7 @@
         ShareBookDownView *downView2 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelRange.frame) + CGRectGetMinY(labelRange.frame)+ 20, 200, 30)];
         [self.view addSubview:downView2];
         downView2.tag = 3002;
-        NSArray *array2 = [NSArray arrayWithObjects:@"全部",@"大众",@"其他", nil];
+        NSArray *array2 = SHARED.arrayTagNames;
         downView2.arrayResult = array2;
         [downView2 viewDidLoad];
         downView2.superView = self.view;
@@ -295,6 +295,9 @@
         [self toastWithText:@"请选择图书类别!"];
         return NO;
     }
+    
+ 
+    
     ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
     NSString    *textState = [view3 getTextValue];
     if (textState.length < 1)
@@ -336,16 +339,7 @@
         self.dataModel.loanstatus = @"0";
     }
     
-    if ([textCate isEqualToString:@"全部"])
-    {
-        self.dataModel.tagid = @"0";
-    }else if ([textCate isEqualToString:@"大众"])
-    {
-        self.dataModel.tagid = @"1";
-    }else
-    {
-        self.dataModel.tagid = @"2";
-    }
+    self.dataModel.tagid = [view2 getChooseIndexValue];
     
     if ([textway isEqualToString:@"做客"])
     {

@@ -57,6 +57,13 @@
 }
 
 
+-(void)getTagList
+{
+    MagicRequest    *request = [DYBHttpMethod book_tag_list:@"1" sAlert:YES receive:self];
+    [request setTag:200];
+}
+
+
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
@@ -107,6 +114,8 @@
         RELEASE(tbDataBank11);
         
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        
+        [self getTagList];
     
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -119,6 +128,11 @@
 
 -(void)creatSelectType:(NSArray *)arraySource{
 
+    
+    if (scrollView && scrollView.superview)
+    {
+        [scrollView removeFromSuperview];
+    }
     UIImage *imageSouce = [UIImage imageNamed:@"options_bg"];
     //imageSouce.size.width/2 * 4
     scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight,320, imageSouce.size.height/2)];
@@ -408,6 +422,38 @@ static NSString *cellName = @"cellName";
 //                    [self doChange:btn];
                 }
                 else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if(request.tag == 200){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    
+                    NSArray *arrayData = [[dict objectForKey:@"data"] objectForKey:@"tags"];
+                    NSMutableArray  *array = [NSMutableArray array];
+                    for (NSDictionary *dicInfo in arrayData)
+                    {
+                        if ([dicInfo valueForKey:@"tag"])
+                        {
+                            [array addObject:[dicInfo valueForKey:@"tag"]];
+                        }
+                    }
+                    
+                    arraySouce = [[NSArray arrayWithArray:array] retain];
+                    SHARED.arrayTagNames = arraySouce;
+                    [self creatSelectType:arraySouce];
+                    
+                }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];

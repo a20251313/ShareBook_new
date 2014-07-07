@@ -150,7 +150,7 @@ DEF_SIGNAL(FINISHSWIP)
     [labelAddr release];*/
     
     fypoint += 15+2;
-    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 200, 15)];
+    UILabel *labelModel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 120, 15)];
   
     [labelModel setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelModel setBackgroundColor:[UIColor clearColor]];
@@ -161,6 +161,20 @@ DEF_SIGNAL(FINISHSWIP)
     [labelModel setFont:[UIFont systemFontOfSize:12]];
     [labelModel sizeToFit];
     [labelModel release];
+    
+    
+    
+    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 40, fypoint, 120, 15)];
+    
+    [labelStatus setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelStatus setBackgroundColor:[UIColor clearColor]];
+    
+    
+    [labelStatus setText:[NSString stringWithFormat:@"图书状态:%@",[dict valueForKey:@"loan_status"]]];
+    [swipView addSubview:labelStatus];
+    [labelStatus setFont:[UIFont systemFontOfSize:12]];
+    [labelStatus sizeToFit];
+    [labelStatus release];
     //6.5 * 100 =
     
 

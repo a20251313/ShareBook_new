@@ -95,7 +95,7 @@
       
         if (!_bEnter) {
             
-            MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
+            MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
             [request setTag:3];
         }
         
@@ -287,7 +287,7 @@ static NSString *cellName = @"cellName";
         
         NSDictionary *dictt = [_arrayResult objectAtIndex:indexPath.row];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 100.0f, 30.0f)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 200.0f, 30.0f)];
         [label setText:[dictt objectForKey:@"circle_name"]];
         
         [cell addSubview:label];
@@ -460,4 +460,7 @@ static NSString *cellName = @"cellName";
         
     }
 }
+
+
+
 @end

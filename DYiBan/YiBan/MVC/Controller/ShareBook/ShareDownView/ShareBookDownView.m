@@ -21,6 +21,7 @@
     UIButton *_openButton;
     UITextField *_inputTextField;
     TableViewWithBlock *_tb;
+    int         m_iChooseIndex;
 }
 
 @end
@@ -124,6 +125,7 @@
     SelectionCell *cell=(SelectionCell*)[tableView cellForRowAtIndexPath:indexPath];
     _inputTextField.text=cell.lb.text;
     [_openButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+    m_iChooseIndex = indexPath.row;
 
 
 
@@ -194,7 +196,16 @@
 {
     return  _inputTextField.text;
 }
+- (NSString*)getChooseIndexValue
+{
+    return  [NSString stringWithFormat:@"%d",m_iChooseIndex];
+}
 #pragma mark UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return NO;
+}
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [textField resignFirstResponder];

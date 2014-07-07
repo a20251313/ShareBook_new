@@ -10,7 +10,7 @@
 #import "ShareBookMakeSureUpBookViewController.h"
 @interface ShareBookMyQuanCenterViewController : DYBBaseViewController
 @property (nonatomic,assign)BOOL bEnter;
-@property (nonatomic,retain)NSArray *arrayResult;
+@property (nonatomic,retain)NSMutableArray *arrayResult;
 @property (nonatomic,assign)BOOL bselct;
 @property (nonatomic,retain)ShareBookMakeSureUpBookViewController *makesure;
 @end

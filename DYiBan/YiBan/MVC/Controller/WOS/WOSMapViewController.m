@@ -14,7 +14,7 @@
 #import "ShareBookQuanDetailViewController.h"
 #import "ShareAddQuanViewController.h"
 
-@interface WOSMapViewController (){
+@interface WOSMapViewController ()<CLLocationManagerDelegate>{
     MapViewController*   _mapViewController;
     NSMutableArray *arrayResult;
     }
@@ -77,7 +77,7 @@
        
         
         
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"2000" lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
         
         
@@ -159,15 +159,13 @@
     RELEASE(detail);
 }
 
-//MapViewController TOUCHANNITION
+
 
 
 - (void)handleViewSignal_MapViewController:(MagicViewSignal *)signal
 {
     if ([signal is:[MapViewController TOUCHANNITION]]) {
-        
-        UIView *bb = (UIView *)[signal object];
-        
+
         ShareBookQuanDetailViewController *detail = [[ShareBookQuanDetailViewController alloc]init];
         [self.drNavigationController pushViewController:detail animated:YES];
         RELEASE(detail);
@@ -198,27 +196,7 @@
     
     if ([request succeed])
     {
-        //        JsonResponse *response = (JsonResponse *)receiveObj;
-        if (request.tag == 2) {
-            
-            
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            if (dict) {
-                
-                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    
-                   
-                    
-                }else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-        }else if(request.tag == 3){
+       if(request.tag == 3){
             
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -242,9 +220,9 @@
                     _mapViewController.target = self;
                     [self.view insertSubview:_mapViewController atIndex:0];
                     [_mapViewController resetAnnitations:array];
-                    
-                
                     _mapViewController.arrayResuce = arrayResult;
+                    
+                   
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -266,86 +244,15 @@
     }
 }
 
-
-#pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
-- (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
-{
-    
-    
-    if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
-        NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:10];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
-        [signal setReturnValue:s];
-        
-    }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
-        NSNumber *s = [NSNumber numberWithInteger:1];
-        [signal setReturnValue:s];
-        
-    }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
-        
-        NSNumber *s = [NSNumber numberWithInteger:50];
-        [signal setReturnValue:s];
-        
-        
-    }else if([signal is:[MagicUITableView TABLETITLEFORHEADERINSECTION]])/*titleForHeaderInSection*/{
-        
-    }else if([signal is:[MagicUITableView TABLEVIEWFORHEADERINSECTION]])/*viewForHeaderInSection*/{
-        
-    }else if([signal is:[MagicUITableView TABLETHEIGHTFORHEADERINSECTION]])/*heightForHeaderInSection*/{
-        
-    }else if([signal is:[MagicUITableView TABLECELLFORROW]])/*cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
-//        ShareMessagerCell *cell = [[ShareMessagerCell alloc]init];
-//        
-//        //        NSDictionary *dictInfoFood = Nil;
-//        //        [cell creatCell:dictInfoFood];
-//        DLogInfo(@"%d", indexPath.section);
-//        
-//        
-//        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-//        [signal setReturnValue:cell];
-        
-    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
-        
-        
-        
-    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
-        
-    }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
-        
-        
-    }else if ([signal is:[MagicUITableView TAbLEVIEWLODATA]]){
-    }else if ([signal is:[MagicUITableView TAbLEVIERETOUCH]]){
-        
-    }
-    
-    
-    
-}
-
-
-
-
-
 - (void)dealloc
 {
     
     [super dealloc];
 }
+
+
+
+
+
 
 @end

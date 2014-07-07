@@ -43,6 +43,11 @@
 @property (nonatomic, retain)NSString *sex;
 @property (nonatomic, retain)NSString *coin;
 @property (nonatomic, retain)NSString *sskey;
+@property (nonatomic, retain)NSArray  *arrayTagNames;
+@property (nonatomic, retain)NSString  *locationLat;
+@property (nonatomic, retain)NSString  *locationLng;
+@property (nonatomic, retain)NSString  *locationAddress;
+
 
 + (DYBShareinstaceDelegate *)sharedInstace;
 

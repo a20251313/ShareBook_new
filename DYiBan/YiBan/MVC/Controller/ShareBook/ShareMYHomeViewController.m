@@ -269,13 +269,9 @@ static NSString *cellName = @"cellName";
                 break;
             case 3:
             {
-                
                 ShareDouViewController *dou = [[ShareDouViewController alloc]init];
                 [self.drNavigationController pushViewController:dou animated:YES];
                 RELEASE(dou);
-            
-//                [self presentModalViewController:dou animated:NO];
-                
             }
                 break;
             case 4:

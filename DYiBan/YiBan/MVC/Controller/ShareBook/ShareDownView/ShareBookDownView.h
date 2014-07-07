@@ -14,4 +14,5 @@
 
 - (void)viewDidLoad;
 - (NSString*)getTextValue;
+- (NSString*)getChooseIndexValue;
 @end

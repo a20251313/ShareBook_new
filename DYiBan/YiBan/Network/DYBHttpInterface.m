@@ -2114,11 +2114,13 @@
     return dict;
 }
 
-+ (NSMutableDictionary *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num{
++ (NSMutableDictionary *)shareBook_circle_list:(NSString*)type page:(NSString*)page num:(NSString*)num lat:(NSString*)lat lng:(NSString*)lng{
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
     [dict setValue:type forKey:@"type"];
     [dict setValue:page forKey:@"page"];
     [dict setValue:num forKey:@"num"];
+    [dict setValue:lat forKey:@"lat"];
+    [dict setValue:lng forKey:@"lng"];
     [dict setValue:@"circle_list" forKey:INTERFACEDOACTION];
     return dict;
 

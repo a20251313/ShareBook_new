@@ -118,7 +118,7 @@
                                                    UIRemoteNotificationTypeAlert)];
     // Required
     [APService setupWithOption:launchOptions];
-
+    [self doSure_getSource];
     return YES;
 }
 
@@ -474,6 +474,52 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [TencentOAuth HandleOpenURL:url];
+}
+
+
+
+#pragma mark CLLocationManagerDelegate
+
+//获取当前位置
+-(void)doSure_getSource{
+    
+    CLLocationManager *locManager = [[CLLocationManager alloc] init];
+    locManager.delegate = self;
+    locManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locManager.distanceFilter = 5.0;
+    [locManager startUpdatingLocation];
+    
+    
+}
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    NSLog(@"%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
+    
+    CLLocationCoordinate2D coordinate2D;
+    coordinate2D.latitude = newLocation.coordinate.latitude;
+    coordinate2D.longitude = newLocation.coordinate.longitude;
+    
+    
+    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    
+    [geocoder reverseGeocodeLocation:newLocation completionHandler:
+     ^(NSArray* placemarks, NSError* error){
+         NSLog(@"%@",placemarks);
+         
+         CLPlacemark *placemark = [placemarks objectAtIndex:0];
+         NSArray *names = [placemark.addressDictionary objectForKey:@"FormattedAddressLines"];
+         if (names.count>0) {
+             SHARED.locationAddress = [names objectAtIndex:0];
+         }else{
+             
+             SHARED.locationAddress = [placemark.addressDictionary objectForKey:@"Name"];
+         }
+         SHARED.locationLat = [NSString stringWithFormat:@"%f",newLocation.coordinate.latitude];
+         SHARED.locationLng = [NSString stringWithFormat:@"%f",newLocation.coordinate.longitude];
+         
+     }];
+}
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"%@",error);
 }
 
 @end

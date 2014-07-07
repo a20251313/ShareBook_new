@@ -15,13 +15,11 @@
 
 @interface ShareAddQuanViewController (){
 
-    BMKMapView * _mapView ;
+  
     CLLocationManager *locManager;
 
     DYBInputView  *_phoneInputName;
     UILabel *labelJINWEI;
-    CLLocationCoordinate2D coordinate2D;
-
 }
 
 @end
@@ -95,10 +93,17 @@
         [_phoneInputName.nameField setTextColor:[UIColor blackColor]];
         [_phoneInputName setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:_phoneInputName];
+        [_phoneInputName.nameField setText:SHARED.locationAddress];
         RELEASE(_phoneInputName);
         
         labelJINWEI = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputName.frame) + CGRectGetMinY(_phoneInputName.frame), 300.0f, 40.0f)];
-        [labelJINWEI setText:@"经纬度   ： -20.03，-113.75"];
+       // [labelJINWEI setText:@"经纬度   ： -20.03，-113.75"];
+        
+      //  SHARED.locationLat;SHARED.locationLng;SHARED.locationAddress;
+        NSString *newLocation1 = [NSString stringWithFormat:@"经纬度   ：%@,%@",SHARED.locationLat,SHARED.locationLng];
+        
+        [labelJINWEI setText:newLocation1];
+        
         [self.view addSubview:labelJINWEI];
         RELEASE(labelJINWEI);
         
@@ -207,10 +212,9 @@
  
 //    sAlert:(BOOL)isAlert receive:(id)receive;
     MagicRequest *request = [DYBHttpMethod shareBook_circle_add_circle_name:_phoneInputName.nameField.text
-                                address:@"d1d"
-                                    lat:[NSString stringWithFormat:@"%f",coordinate2D.latitude ]
-                                         
-                                    lng:[NSString stringWithFormat:@"%f",coordinate2D.longitude ]
+                                address:_phoneInputName.nameField.text
+                                    lat:SHARED.locationLat
+                                    lng:SHARED.locationLng
                                     kind:@"1" sAlert:YES receive:self];
     [request setTag:2];
 
@@ -233,7 +237,7 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+                //    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                     [DYBShareinstaceDelegate popViewText:@"创建成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
@@ -285,52 +289,11 @@
 
     
 }
-//
-///**
-// *用户位置更新后，会调用此函数
-// *@param mapView 地图View
-// *@param userLocation 新的用户位置
-// */
-//
-- (void)mapView:(BMKMapView *)mapView didUpdateUserLocation:(BMKUserLocation *)userLocation
-{
-	if (userLocation != nil) {
-		NSLog(@"%f %f", userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
-        
-        //        CLLocationDistance radiusMeters = 500; //设置搜索范围
-        //        [_search poiMultiSearchNearBy:@[@"学校", @"美食", @"小区", @"交通"] center:_mapView.centerCoordinate radius:radiusMeters pageIndex:0];
-        
-        //        [_searchTest reverseGeocode:mapView.userLocation.location.coordinate];
-	}
-    
-}
-///**
-// *在地图View停止定位后，会调用此函数
-// *@param mapView 地图View
-// */
-- (void)mapViewDidStopLocatingUser:(BMKMapView *)mapView
-{
-    NSLog(@"stop locate");
-}
-//
-///**
-// *定位失败后，会调用此函数
-// *@param mapView 地图View
-// *@param error 错误号，参考CLError.h中定义的错误号
-// */
-- (void)mapView:(BMKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
-{
-    NSLog(@"location error");
-}
-//
-//
-- (void)onGetAddrResult:(BMKAddrInfo*)result errorCode:(int)error{
-    NSLog(@"%@", result.strAddr);
-    
-  }
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
     NSLog(@"%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
     
+    CLLocationCoordinate2D coordinate2D;
     coordinate2D.latitude = newLocation.coordinate.latitude;
     coordinate2D.longitude = newLocation.coordinate.longitude;
     
