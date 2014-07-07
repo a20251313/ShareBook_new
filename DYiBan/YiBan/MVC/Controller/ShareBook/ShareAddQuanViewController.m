@@ -71,7 +71,7 @@
         
         [self.view setBackgroundColor:[UIColor blackColor]];
         
-        [self doSure_getSource];
+        //[self doSure_getSource];
         
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
@@ -97,10 +97,7 @@
         RELEASE(_phoneInputName);
         
         labelJINWEI = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputName.frame) + CGRectGetMinY(_phoneInputName.frame), 300.0f, 40.0f)];
-       // [labelJINWEI setText:@"经纬度   ： -20.03，-113.75"];
-        
-      //  SHARED.locationLat;SHARED.locationLng;SHARED.locationAddress;
-        NSString *newLocation1 = [NSString stringWithFormat:@"经纬度   ：%@,%@",SHARED.locationLat,SHARED.locationLng];
+        NSString *newLocation1 = [NSString stringWithFormat:@"经  纬  度：%@,%@",SHARED.locationLat,SHARED.locationLng];
         
         [labelJINWEI setText:newLocation1];
         
