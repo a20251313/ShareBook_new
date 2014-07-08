@@ -182,7 +182,6 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
@@ -295,7 +294,6 @@ static NSString *cellName = @"cellName";
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     
-//                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
                     arrayResultBook = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]];
                     [tbDataBank11 reloadData];
                     

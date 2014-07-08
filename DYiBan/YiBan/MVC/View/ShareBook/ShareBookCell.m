@@ -15,6 +15,7 @@
 #import "ShareBookCellBtnCenterView.h"
 #import "ShareBookListViewController.h"
 #import "UIImageView+WebCache.h"
+#import "PublicUtl.h"
 
 #define ShareBookCellCELLHEIGHT          90
 
@@ -303,14 +304,15 @@ DEF_SIGNAL(FINISHSWIP)
     [labelStatus setBackgroundColor:[UIColor clearColor]];
     
     
-    [labelStatus setText:[NSString stringWithFormat:@"图书状态:%@",[dict valueForKey:@"order_status"]]];
+    
+    NSString *strStatus = [PublicUtl getStatusStringByStatus:[[dict valueForKey:@"order_status"] intValue]];
+    [labelStatus setText:[NSString stringWithFormat:@"图书状态:%@",strStatus]];
     [swipView addSubview:labelStatus];
     [labelStatus setFont:[UIFont systemFontOfSize:12]];
     [labelStatus sizeToFit];
     [labelStatus release];
+    
     //6.5 * 100 =
-    
-    
     [swipView setBackgroundColor:[UIColor colorWithRed:246.0f/255 green:246.0f/255 blue:246.0f/255 alpha:1.0f]];
     
     UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, ShareBookCellCELLHEIGHT-1, 320.0f, 1)];

@@ -9,9 +9,15 @@
 #import "ShareBookAddAddrViewController.h"
 #import "DYBInputView.h"
 #import "CALayer+Custom.h"
+#import "iToast.h"
+#import "JSONKit.h"
+#import "JSON.h"
 
 
 @interface ShareBookAddAddrViewController ()
+{
+    DYBInputView *_phoneInputName;
+}
 
 @end
 
@@ -71,7 +77,7 @@
         RELEASE(label);
         
         
-        DYBInputView *_phoneInputName = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, self.headHeight + 60, INPUTWIDTH, INPUTHEIGHT) placeText:@"地址" textType:0];
+        _phoneInputName = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, self.headHeight + 60, INPUTWIDTH, INPUTHEIGHT) placeText:@"地址" textType:0];
         [_phoneInputName.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
         //        [_phoneInputName.nameField setText:@"1"];
         [_phoneInputName.nameField setTextColor:[UIColor blackColor]];
@@ -88,6 +94,7 @@
         RELEASE(btnOK);
         
         [self addlabel_title:@"确认添加" frame:btnOK.frame view:btnOK];
+        
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -117,8 +124,49 @@
 -(void)doChoose
 {
     
+    [self.view endEditing:YES];
+    MagicRequest    *request = [DYBHttpMethod book_address_add:_phoneInputName.nameField.text lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+    request.tag = 100;
 }
 
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    
+    if ([request succeed])
+    {
+        if(request.tag == 100){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    iToast  *toast = [[iToast alloc] initWithText:@"添加地址成功"];
+                    [toast setGravity:iToastGravityBottom];
+                    [toast show];
+                    [toast release];
+                    
+                }else
+                {
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                }
+              
+            }
+            
+        }else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+            
+        }
+    }
+}
 
 
 @end

@@ -142,6 +142,8 @@
     [btnBorrow addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [btnBorrow autorelease];
 }
+
+
 -(BOOL)createBtnForSupView:(UIView*)superView
 {
     int orderStatus = [[[m_dictOrdeDeatil objectForKey:@"order"] objectForKey:@"order_status"] intValue];
@@ -353,7 +355,7 @@
         RELEASE(tbDataBank11);
     }
     
-    [tbDataBank11 setFrame:CGRectMake(0, CGRectGetMinY(bgbtnView.frame) + fdelHeight + 10+self.headHeight, 320.0f, self.view.frame.size.height-fdelHeight + CGRectGetHeight(bgbtnView.frame) -50-self.headHeight)];
+    [tbDataBank11 setFrame:CGRectMake(0, CGRectGetMinY(bgbtnView.frame) + fdelHeight + 10+self.headHeight, 320.0f, self.view.frame.size.height-fdelHeight-100-self.headHeight)];
     [self.view bringSubviewToFront:tbDataBank11];
  
     [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
@@ -388,65 +390,6 @@
 
 
 
--(void)doChooseTime{
-    
-    
-    
-    UIView *viewBG2 = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 0.0f, 320.0f, CGRectGetHeight(self.view.frame))];
-    [viewBG2 setBackgroundColor:[UIColor blackColor]];
-    [viewBG2 setAlpha:0.7];
-    [viewBG2 setTag:102];
-    [self.view addSubview:viewBG2];
-    RELEASE(viewBG2);
-    
-    
-    UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 0.0f, 320.0f, CGRectGetHeight(self.view.frame))];
-    [viewBG setBackgroundColor:[UIColor clearColor]];
-    [viewBG setTag:101];
-    [self.view addSubview:viewBG];
-    RELEASE(viewBG);
-    
-    UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 216-44, 320, 44)];
-    UIBarButtonItem *done = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doMakeSureTime)];
-    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(doCancel)];
-    toolBar.items = [NSArray arrayWithObjects:cancel,right,done,nil];
-    toolBar.barStyle = UIBarStyleBlack;
-   
-    
-    
-    [viewBG addSubview:toolBar];
-    [toolBar release];
-    [cancel release];
-    [right release];
-    [done release];
-    datePicker = [[ UIDatePicker alloc] initWithFrame:CGRectMake(0.0,CGRectGetHeight(self.view.frame) - 216 ,0.0,0.0)];
-
-    datePicker.datePickerMode  = UIDatePickerModeDateAndTime;
-    datePicker.minuteInterval = 5;
-    [datePicker setBackgroundColor:[UIColor whiteColor]];
-    
-    NSDate* minDate = [NSDate convertDateFromString:@"1900-01-01 00:00:00 -0500"];
-    NSDate* maxDate = [NSDate convertDateFromString:@"2099-01-01 00:00:00 -0500"];
-    
-    datePicker.minimumDate = minDate;
-    datePicker.maximumDate = maxDate;
-    
-    datePicker.date = [NSDate date];
-    
-    [viewBG addSubview:datePicker];
-    RELEASE(datePicker);
-    
-    
-    [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged ];
-    
-    
-//     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];//设置为英文显示
-     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];//设置为中文显示
-     datePicker.locale = locale;
-     [locale release];
-
-}
 
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
@@ -462,41 +405,6 @@
     
 }
 
--(void)doCancel{
-
-    UIView *view = [self.view viewWithTag:101];
-    if ( view ) {
-        [view removeFromSuperview];
-    }
-    
-    UIView *view1 = [self.view viewWithTag:102];
-    if ( view1 ) {
-        [view1 removeFromSuperview];
-    }
-
-}
-
-
--(void)doMakeSureTime{
-    
-    NSDate *date = [datePicker date];
-    NSString *strDate = [self stringFromDate:date];
-    DLogInfo(@"date -- %@",strDate);
-    [labelTime1 setText:strDate];
-    UIView *view = [self.view viewWithTag:101];
-    if ( view ) {
-        [view removeFromSuperview];
-    }
-    
-    
-    UIView *view1 = [self.view viewWithTag:102];
-    if ( view1 ) {
-        [view1 removeFromSuperview];
-    }
-
-}
-
-
 - (NSString *)stringFromDate:(NSDate *)date{
     
     NSTimeInterval  timerInt = [date timeIntervalSince1970];
@@ -504,14 +412,6 @@
     return [NSString stringWithFormat:@"%f",timerInt];
     
 }
-
--(void)dateChanged:(UIDatePicker *)sender{
-
-}
-
-
-
-
 
 -(void)creatDownBar{
 
@@ -557,7 +457,6 @@
 
 -(void)doSend{
 
-    
     NSDictionary *dictTime = [m_dictOrdeDeatil objectForKey:@"order"];
     NSString *strUserID = [dictTime objectForKey:@"from_userid"];
     

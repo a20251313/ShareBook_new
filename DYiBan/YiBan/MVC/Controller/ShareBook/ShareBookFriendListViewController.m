@@ -18,6 +18,7 @@
 
     DYBUITableView *tbDataBank11;
     NSMutableArray *arrayResult;
+    NSMutableArray *arrayBooks;
 }
 
 @end
@@ -175,8 +176,6 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
@@ -186,11 +185,8 @@ static NSString *cellName = @"cellName";
         //        NSNumber *_section = [dict objectForKey:@"section"];
         NSNumber *s;
         
-        //        if ([_section intValue] == 0) {
         s = [NSNumber numberWithInteger:arrayResult.count];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
+
         
         [signal setReturnValue:s];
         
@@ -274,7 +270,7 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+           
                     
                     arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"user_list"]];
                     [tbDataBank11 reloadData];
@@ -292,12 +288,9 @@ static NSString *cellName = @"cellName";
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    [btn setTag:10];
-                    //                    [self doChange:btn];
+           
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];

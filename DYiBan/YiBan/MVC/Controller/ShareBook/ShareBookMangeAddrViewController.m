@@ -8,7 +8,7 @@
 
 #import "ShareBookMangeAddrViewController.h"
 #import "ShareBookAddAddrViewController.h"
-
+#import "iToast.h"
 #import "JSONKit.h"
 #import "JSON.h"
 
@@ -18,8 +18,8 @@
     UIButton *btnTemp;
     
     int iSelectRow;
-    DYBUITableView * tbDataBank11;
-
+    DYBUITableView  *tbDataBank11;
+    NSMutableArray  *arrayAddress;
 }
 @property (nonatomic,retain)UIButton *btnTemp;
 @end
@@ -76,10 +76,7 @@
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-        
-//        shareBook_address_list_user_id
-         MagicRequest *request =   [DYBHttpMethod shareBook_address_list_user_id:SHARED.userId sAlert:YES receive:self];
-        [request setTag:2];
+       
         UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10,self.headHeight + 20 , 300.0f , self.view.frame.size.height -self.headHeight - 100  )];
         [viewBGTableView setBackgroundColor:[UIColor whiteColor]];
         [viewBGTableView.layer setBorderWidth:1];
@@ -109,6 +106,9 @@
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        MagicRequest *request =   [DYBHttpMethod shareBook_address_list_user_id:SHARED.userId sAlert:YES receive:self];
+        [request setTag:2];
+        
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
@@ -119,7 +119,7 @@
 
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
+
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
@@ -129,7 +129,7 @@ static NSString *cellName = @"cellName";
 
         NSNumber *s;
         
-        s = [NSNumber numberWithInteger:10];
+        s = [NSNumber numberWithInteger:arrayAddress.count];
 
         [signal setReturnValue:s];
         
@@ -158,12 +158,11 @@ static NSString *cellName = @"cellName";
         
         static NSString *reuseIdetify = @"SvTableViewCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdetify];
-//        if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdetify];
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
             DLogInfo(@"%d", indexPath.section);
             UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(10.09f, 10.0f, 300.0, 30.0f)];
-            [labelText setText:@"人民广场100号5楼404"];
+            [labelText setText:[arrayAddress[indexPath.row] objectForKey:@"address"]];
             [cell addSubview:labelText];
             RELEASE(labelText);
         
@@ -174,10 +173,15 @@ static NSString *cellName = @"cellName";
             [btnCheck addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
             [cell addSubview:btnCheck];
             RELEASE(btnCheck);
-
-//        }
-        //        NSDictionary *dictInfoFood = Nil;
-        //        [cell creatCell:dictInfoFood];
+        
+       /* if ([[arrayAddress[indexPath.row] valueForKey:@"is_active"] boolValue])
+        {
+            [btnCheck setSelected:YES];
+        }else
+        {
+            [btnCheck setSelected:NO];
+        }*/
+        
         UIButton *tt = (UIButton *)[cell viewWithTag:indexPath.row + 10];
         
         if (tt) {
@@ -188,8 +192,6 @@ static NSString *cellName = @"cellName";
             }
         }
         
-        
-        
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
         
@@ -197,7 +199,9 @@ static NSString *cellName = @"cellName";
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        
+        UITableViewCell *cell = [tbDataBank11 cellForRowAtIndexPath:indexPath];
+        UIButton *tt = (UIButton *)[cell viewWithTag:indexPath.row + 10];
+        [self doSelect:tt];
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
@@ -218,7 +222,6 @@ static NSString *cellName = @"cellName";
 -(void)doSelect:(id)sender{
 
     UIButton *btn =(UIButton *)sender;
-//    [btn setSelected:YES];
     
     NSIndexPath *index = [NSIndexPath indexPathForRow:iSelectRow - 10 inSection:0];
     UITableViewCell *cell = [tbDataBank11 cellForRowAtIndexPath:index];
@@ -267,7 +270,18 @@ static NSString *cellName = @"cellName";
 -(void)doChoose{
 
 
-
+    if (iSelectRow < 0)
+    {
+        iToast  *toast = [[iToast alloc] initWithText:@"请选择默认地址"];
+        [toast setGravity:iToastGravityBottom];
+        [toast show];
+        [toast release];
+        return;
+    }
+    int  index = iSelectRow-10;
+    NSString    *addressID  = [arrayAddress[index] objectForKey:@"address_id"];
+    MagicRequest    *request = [DYBHttpMethod book_address_active:addressID sAlert:YES receive:self];
+    request.tag = 100;
 }
 
 - (void)dealloc
@@ -292,8 +306,15 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
-                    
+   
+                    if (!arrayAddress)
+                    {
+                        arrayAddress = [[NSMutableArray alloc] init];
+                    }
+                    [arrayAddress removeAllObjects];
+                    iSelectRow = -10;
+                    [arrayAddress addObjectsFromArray:[[dict valueForKey:@"data"] valueForKey:@"address"]];
+                    [tbDataBank11 reloadData];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -309,11 +330,7 @@ static NSString *cellName = @"cellName";
             
             if (dict) {
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    
-                    //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    [btn setTag:10];
-                    ////                    [self doChange:btn];
-                    
+
                     [self.drNavigationController popViewControllerAnimated:YES];
                 }
                 //                else{
@@ -325,7 +342,30 @@ static NSString *cellName = @"cellName";
                 //                }
             }
             
-        } else{
+        } else if(request.tag == 100){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    iToast  *toast = [[iToast alloc] initWithText:@"设置默认地址成功"];
+                    [toast setGravity:iToastGravityBottom];
+                    [toast show];
+                    [toast release];
+                  
+                }
+                //                else{
+                NSString *strMSG = [dict objectForKey:@"message"];
+                
+                [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                
+                
+                //                }
+            }
+            
+        }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             

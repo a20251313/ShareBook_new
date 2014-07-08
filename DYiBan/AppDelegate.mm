@@ -119,6 +119,10 @@
     // Required
     [APService setupWithOption:launchOptions];
     [self doSure_getSource];
+    
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
     return YES;
 }
 

@@ -17,6 +17,7 @@
 #import "ShareBookCommentController.h"
 #import "ShareBookOrderCommentController.h"
 #import "DYBTwoDimensionCodeViewController.h"
+#import "ShareBookOrderDetailViewController.h"
 
 @interface ShareBookListViewController (){
 
@@ -334,15 +335,20 @@
     
         ShareBookCell *cell = [[ShareBookCell alloc]init];
         cell.tb  = tbDataBank11;
-        cell.cellType = ShareBookCellTypeOpearate;
+        
+        if (self.type != 0)
+        {
+              cell.cellType = ShareBookCellTypeOpearate;
+        }else
+        {
+              cell.cellType = ShareBookCellTypeDefault;
+        }
+      
         cell.type = _type;
         cell.indexPath = indexPath;
         [cell creatCell:m_dataArray[indexPath.row]];
-        //        NSDictionary *dictInfoFood = nil;
-        //        [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
         [tbDataBank11.muD_dicfferIndexForCellView setValue:cell forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
-//        [tbDataBank11._muA_differHeightCellView addObject:cell];
         cell.indexPath = indexPath;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
@@ -361,7 +367,7 @@
             
         }else
         {
-            ShareBookApplyViewController *bookApply = [[ShareBookApplyViewController alloc]init];
+            ShareBookOrderDetailViewController *bookApply = [[ShareBookOrderDetailViewController alloc]init];
             bookApply.orderID = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
             [self.drNavigationController pushViewController:bookApply animated:YES];
             RELEASE(bookApply);

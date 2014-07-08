@@ -10,4 +10,6 @@
 
 @interface PublicUtl : NSObject
 
+
++(NSString*)getStatusStringByStatus:(int)status;
 @end
