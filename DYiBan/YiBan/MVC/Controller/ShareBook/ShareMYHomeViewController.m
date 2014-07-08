@@ -18,9 +18,11 @@
 #import "JSON.h"
 #import "EGORefreshTableFooterView.h"
 #import "ShareBookApplyViewController.h"
+#import "ShareBookMsgChatViewController.h"
+#import "ShareBookOrderDetailViewController.h"
 #define  RIGHTVIEWTAG 111
 
-@interface ShareMYHomeViewController (){
+@interface ShareMYHomeViewController ()<EGORefreshTableDelegate>{
 
     NSMutableArray *arrayResult;
     DYBUITableView  *tbDataBank1;
@@ -123,8 +125,6 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
@@ -163,9 +163,6 @@ static NSString *cellName = @"cellName";
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         ShareMessagerCell *cell = [[ShareMessagerCell alloc]init];
-        
-//        NSDictionary *dictInfoFood = Nil;
-//        [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
         [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
         
@@ -176,11 +173,32 @@ static NSString *cellName = @"cellName";
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        ShareBookApplyViewController *apple = [[ShareBookApplyViewController alloc]init];
-        
-        NSString    *orderId = [arrayResult[indexPath.row] objectForKey:@"order_id"];
-        apple.orderID = orderId;//[[arrayResult objectAtIndex:indexPath.row] objectForKey:@"order_id"];
-        [self.drNavigationController pushViewController:apple animated:YES];
+        DLogInfo(@"TABLEDIDSELECT:%@ \n\n",arrayResult[indexPath.row]);
+      
+        NSDictionary    *dicData = arrayResult[indexPath.row];
+        int kind = [[dicData valueForKey:@"kind"] intValue];
+        if (kind == 1)
+        {
+            ShareBookMsgChatViewController *contrller = [[ShareBookMsgChatViewController alloc] init];
+            contrller.dictInfo = dicData;
+            [self.drNavigationController pushViewController:contrller animated:YES];
+            [contrller release];
+        }else if (kind == 2)
+        {
+            ShareBookOrderDetailViewController *apple = [[ShareBookOrderDetailViewController alloc]init];
+            
+            NSString    *orderId = [arrayResult[indexPath.row] objectForKey:@"order_id"];
+            apple.orderID = orderId;
+            [self.drNavigationController pushViewController:apple animated:YES];
+            
+        }else if (kind == 3)
+        {
+            ShareDouViewController *dou = [[ShareDouViewController alloc]init];
+            [self.drNavigationController pushViewController:dou animated:YES];
+            RELEASE(dou);
+            
+        }
+      
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{

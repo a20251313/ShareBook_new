@@ -29,6 +29,9 @@
 
 -(void)creatCell:(NSDictionary*)NewdicInfo{
 
+    
+    
+    //icon_star
     self.dicInfo = NewdicInfo;
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake( 5, 5, 100, 20)];
     if ([dicInfo valueForKey:@"username"])
@@ -61,7 +64,7 @@
     NSDateFormatter *formater = [[NSDateFormatter alloc] init];
     [formater setTimeZone:[NSTimeZone localTimeZone]];
     [formater setLocale:[NSLocale currentLocale]];
-    [formater setDateFormat:@"YYYY-MM-dd HH:MM:SS"];
+    [formater setDateFormat:@"YYYY-MM-dd"];
     NSString    *strDate = [formater stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[dicInfo valueForKey:@"time"] floatValue]]];
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(220, 5, 200, 20)];
     if (strDate)

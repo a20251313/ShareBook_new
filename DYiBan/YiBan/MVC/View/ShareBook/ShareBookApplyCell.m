@@ -78,27 +78,29 @@
 
 -(void)creatCell:(NSDictionary *) dict{
 
-    NSInteger itype = [[dict objectForKey:@"index"] intValue];
+    NSString *userID = [dict objectForKey:@"user_id"];
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(0,5, 320, 21.0f)];
     [labelTime setBackgroundColor:[UIColor clearColor]];
-    [labelTime setText:[self getDateString:[dict objectForKey:@"date"]]];
+    if ([dict objectForKey:@"date"])
+    {
+          [labelTime setText:[self getDateString:[dict objectForKey:@"date"]]];
+    }else if ([dict objectForKey:@"time"])
+    {
+            [labelTime setText:[self getDateString:[dict objectForKey:@"time"]]];
+    }
+
     [labelTime setFont:[UIFont systemFontOfSize:13.0f]];
     [labelTime setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:labelTime];
     [labelTime release];
-    if (itype%2 == 0) {
+    if ([userID isEqualToString:SHARED.userId]) {
         
-        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:YES];
+        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:NO];
         [self addSubview:contentView];
-        
 
-    
- 
     }else{
     
-       
-
-        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:NO];
+        UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:YES];
         [self addSubview:contentView];
     
     }

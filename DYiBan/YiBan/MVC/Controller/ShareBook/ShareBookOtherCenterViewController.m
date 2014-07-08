@@ -22,6 +22,12 @@
     BOOL bShowBook;
     
     NSMutableArray *arrayListBook;
+    NSMutableArray *arrayHisBooks;
+    
+    BOOL            m_bHasNext;
+    int             m_iCurrentPage;
+    int             m_ipageNum;
+    BOOL            m_bIsLoading;
 }
 
 @end
@@ -37,6 +43,13 @@
     return self;
 }
 
+
+-(void)dealloc
+{
+    RELEASE(arrayHisBooks);
+    RELEASE(arrayListBook);
+    [super dealloc];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,6 +91,17 @@
         MagicRequest *request = [DYBHttpMethod shareBook_user_detail_user_id:[_dictInfo objectForKey:@"user_id"] sAlert:YES receive:self];
         [request setTag:3];
         
+        
+        
+        
+        m_ipageNum = 20;
+        m_iCurrentPage = 1;
+        m_bHasNext = NO;
+        if (!arrayHisBooks)
+        {
+            arrayHisBooks = [[NSMutableArray alloc] init];
+        }
+        [self requestHistoryBooks];
         MagicRequest *req = [DYBHttpMethod shareBook_user_booklist_user_id:[_dictInfo objectForKey:@"user_id"] page:@"1" num:@"100" sAlert:YES receive:self];
         [req setTag:2];
 
@@ -114,7 +138,7 @@
         RELEASE(btnRight);
         [self addlabel_title:@"上架图书" frame:btnRight.frame view:btnRight];
         
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight  ) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight-60) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -132,22 +156,30 @@
     }
 }
 
+
+-(void)requestHistoryBooks
+{
+    m_bIsLoading = YES;
+    MagicRequest  *request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
+    request.tag = 1000;
+}
 -(void)creatView:(NSDictionary *)dict{
 
     UIImage *image = [UIImage imageNamed:@"system-avatar"];
     UIImageView *imageIcon = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f + self.headHeight, image.size.width/2, image.size.height/2)];
-//    [imageIcon setImage:image];
-//    pic_s
-    [imageIcon setImageWithURL:[DYBShareinstaceDelegate getImageString:[dict objectForKey:@"pic_s"] ]placeholderImage:image];
+    if ([[dict valueForKey:@"pic_s"] length] > 1)
+    {
+         [imageIcon setImageWithURL:[DYBShareinstaceDelegate getImageString:[dict objectForKey:@"pic_s"] ]placeholderImage:image];
+    }else
+    {
+        [imageIcon setImage:image];
+    }
+ 
     [imageIcon setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:imageIcon];
     [imageIcon release];
     
-    //        UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 15.0f + self.headHeight, 100, 20)];
-    //        [labelName setText:@"太空旅行"];
-    //        [self.view addSubview:labelName];
-    //        [labelName release];
-    //
+
     UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 10.0f + self.headHeight, 100, 20)];
     [labelAuther setFont:[UIFont systemFontOfSize:15]];
     [labelAuther setText:[NSString stringWithFormat:@"用户名：%@",[dict objectForKey:@"username"]]];
@@ -156,7 +188,7 @@
     [labelAuther setBackgroundColor:[UIColor clearColor]];
     
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, CGRectGetHeight(labelAuther.frame) + CGRectGetMinY(labelAuther.frame), 50, 20)];
-    [labelPublic setText:[NSString stringWithFormat:@"信  用："]];
+    [labelPublic setText:[NSString stringWithFormat:@"信    用："]];
     [labelPublic setFont:[UIFont systemFontOfSize:15]];
     [labelPublic sizeToFit];
     [self.view addSubview:labelPublic];
@@ -187,11 +219,6 @@
     RELEASE(labelDad);
     [labelDad setBackgroundColor:[UIColor clearColor]];
     
-    
-
-
-
-
 }
 
 
@@ -212,23 +239,20 @@
 
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
     
-    if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
+    if ([signal is:[MagicUITableView TABLENUMROWINSEC]]){
         NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:arrayListBook.count];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
+        if (bShowBook)
+        {
+            s = [NSNumber numberWithInteger:arrayListBook.count];
+        }else
+        {
+            s = [NSNumber numberWithInteger:arrayHisBooks.count];
+        }
+       
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -236,7 +260,7 @@ static NSString *cellName = @"cellName";
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
-        int high = bShowBook == YES ? 90 : 50;
+        int high = (bShowBook == YES ? 90 : 90);
         NSNumber *s = [NSNumber numberWithInteger:high];
         [signal setReturnValue:s];
         
@@ -261,7 +285,18 @@ static NSString *cellName = @"cellName";
             [signal setReturnValue:cell];
         }else{
             
-            ShareGiveDouCell *cell = [[ShareGiveDouCell alloc]init];
+  
+            //        UITableView *tableView = [dict objectForKey:@"tableView"];
+            
+            
+            ShareBookCell *cell = [[ShareBookCell alloc]init];
+            cell.tb  = tbDataBank11;
+            cell.cellType = ShareBookCellTypeOpearate;
+            cell.indexPath = indexPath;
+            [cell creatCell:arrayHisBooks[indexPath.row]];
+            //        NSDictionary *dictInfoFood = nil;
+            //        [cell creatCell:dictInfoFood];
+            cell.indexPath = indexPath;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [signal setReturnValue:cell];
         }
@@ -279,11 +314,48 @@ static NSString *cellName = @"cellName";
             RELEASE(bookDetail);
         }else{
             
+            ShareBookDetailViewController *bookDetail = [[ShareBookDetailViewController alloc]init];
+            bookDetail.dictInfo = [[arrayHisBooks objectAtIndex:indexPath.row] valueForKey:@"book"];
+            [self.drNavigationController pushViewController:bookDetail animated:YES];
+            RELEASE(bookDetail);
             
         }
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        
+        
+        if (bShowBook)
+        {
+            return;
+        }
+        
+        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        {
+            if (!m_bIsLoading && m_bHasNext)
+            {
+                m_iCurrentPage++;
+                [self requestHistoryBooks];
+            }
+            
+        }
+        
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        
+        if (bShowBook)
+        {
+            return;
+        }
+        
+        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        {
+            if (!m_bIsLoading && m_bHasNext)
+            {
+                m_iCurrentPage++;
+                [self requestHistoryBooks];
+            }
+            
+        }
         
     }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
         
@@ -340,7 +412,6 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
                     arrayListBook = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"book_list"]];
                     
                     [tbDataBank11 reloadData];
@@ -357,15 +428,9 @@ static NSString *cellName = @"cellName";
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     [self creatView:[[dict objectForKey:@"data"] objectForKey:@"user"]];
-//                    NSString *strMSG = [dict objectForKey:@"message"];
-//                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    [btn setTag:10];
-                    //                    [self doChange:btn];
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -376,6 +441,26 @@ static NSString *cellName = @"cellName";
                 }
             }
             
+        }else if(request.tag == 1000) {
+            
+            m_bIsLoading = NO;
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    [arrayHisBooks addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"order_list"]];
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] boolValue];
+                    [tbDataBank11 reloadData];
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
         } else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];

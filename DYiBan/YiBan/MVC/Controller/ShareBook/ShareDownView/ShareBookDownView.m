@@ -6,9 +6,10 @@
 //  Copyright (c) 2014年 Eric Che. All rights reserved.
 //
 
+@class TableViewWithBlock;
+
 #import "ShareBookDownView.h"
 #import "UITableView+DataSourceBlocks.h"
-@class TableViewWithBlock;
 #import "UITableView+DataSourceBlocks.h"
 #import "TableViewWithBlock.h"
 #import "SelectionCell.h"
@@ -17,11 +18,11 @@
 
 @interface ShareBookDownView ()<UITextFieldDelegate>{
  
-    BOOL isOpened;
-    UIButton *_openButton;
-    UITextField *_inputTextField;
-    TableViewWithBlock *_tb;
-    int         m_iChooseIndex;
+    BOOL                isOpened;
+    UIButton            *_openButton;
+    UITextField         *_inputTextField;
+    TableViewWithBlock  *_tb;
+    int                 m_iChooseIndex;
 }
 
 @end
@@ -210,8 +211,6 @@
 {
     [textField resignFirstResponder];
 }
-
-
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

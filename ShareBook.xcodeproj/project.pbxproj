@@ -115,7 +115,9 @@
 		862776591944915400792FE9 /* ShareBookChooseQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */; };
 		863342221950787100DD090E /* ShareBookCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 863342211950787100DD090E /* ShareBookCommentController.m */; };
 		8633422519508DF300DD090E /* ShareBookOrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8633422419508DF300DD090E /* ShareBookOrderCommentController.m */; };
+		8F45B377196B946F00DD6747 /* ShareBookMsgChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F45B376196B946F00DD6747 /* ShareBookMsgChatViewController.m */; };
 		8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F83503C195417C800CA6812 /* btn_makereceive.png */; };
+		8FABC471196BB6D200D90E12 /* ShareBookOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FABC470196BB6D200D90E12 /* ShareBookOrderDetailViewController.m */; };
 		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8FBF7F4019690BD20080656F /* EGORefreshTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3C19690BD20080656F /* EGORefreshTableFooterView.m */; };
 		8FBF7F4119690BD20080656F /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3E19690BD20080656F /* EGORefreshTableHeaderView.m */; };
@@ -856,7 +858,11 @@
 		863342211950787100DD090E /* ShareBookCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookCommentController.m; sourceTree = "<group>"; };
 		8633422319508DF300DD090E /* ShareBookOrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderCommentController.h; sourceTree = "<group>"; };
 		8633422419508DF300DD090E /* ShareBookOrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderCommentController.m; sourceTree = "<group>"; };
+		8F45B375196B946F00DD6747 /* ShareBookMsgChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookMsgChatViewController.h; sourceTree = "<group>"; };
+		8F45B376196B946F00DD6747 /* ShareBookMsgChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookMsgChatViewController.m; sourceTree = "<group>"; };
 		8F83503C195417C800CA6812 /* btn_makereceive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_makereceive.png; sourceTree = "<group>"; };
+		8FABC46F196BB6D200D90E12 /* ShareBookOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderDetailViewController.h; sourceTree = "<group>"; };
+		8FABC470196BB6D200D90E12 /* ShareBookOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderDetailViewController.m; sourceTree = "<group>"; };
 		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
 		8FB557AA195164F300ADB016 /* JFSegmentControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFSegmentControlView.m; sourceTree = "<group>"; };
 		8FBF7F3B19690BD20080656F /* EGORefreshTableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableFooterView.h; sourceTree = "<group>"; };
@@ -3892,6 +3898,10 @@
 				B521EB0118AE17EB00C8599A /* ShareDouSendViewController.m */,
 				B5CE2AB618B45C70008E4E44 /* ShareBookApplyViewController.h */,
 				B5CE2AB718B45C71008E4E44 /* ShareBookApplyViewController.m */,
+				8FABC46F196BB6D200D90E12 /* ShareBookOrderDetailViewController.h */,
+				8FABC470196BB6D200D90E12 /* ShareBookOrderDetailViewController.m */,
+				8F45B375196B946F00DD6747 /* ShareBookMsgChatViewController.h */,
+				8F45B376196B946F00DD6747 /* ShareBookMsgChatViewController.m */,
 				863342201950787100DD090E /* ShareBookCommentController.h */,
 				863342211950787100DD090E /* ShareBookCommentController.m */,
 				8633422319508DF300DD090E /* ShareBookOrderCommentController.h */,
@@ -4544,6 +4554,7 @@
 				B58CB1101829CF6A00F73D66 /* DYBTwoDimensionCodeViewController.m in Sources */,
 				B58CB1111829CF6A00F73D66 /* DYBWebController.m in Sources */,
 				1893FA5B18A90C0200DF758C /* ShareMessagerCell.m in Sources */,
+				8F45B377196B946F00DD6747 /* ShareBookMsgChatViewController.m in Sources */,
 				B58CB1121829CF6A00F73D66 /* DYBXinHualistViewController.m in Sources */,
 				B58CB1131829CF6A00F73D66 /* DYBXinHuaViewController.m in Sources */,
 				8FBF7F4A196A89670080656F /* ShareBookCircleCell.m in Sources */,
@@ -4689,6 +4700,7 @@
 				B58CB1961829CF6A00F73D66 /* reqlist.m in Sources */,
 				B58CB1971829CF6A00F73D66 /* Review.m in Sources */,
 				B58CB1981829CF6A00F73D66 /* school_list.m in Sources */,
+				8FABC471196BB6D200D90E12 /* ShareBookOrderDetailViewController.m in Sources */,
 				B58CB1991829CF6A00F73D66 /* school_list_all.m in Sources */,
 				B58CB19A1829CF6A00F73D66 /* scrollerData.m in Sources */,
 				B58CB19B1829CF6A00F73D66 /* security_cert.m in Sources */,
