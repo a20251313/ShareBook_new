@@ -120,6 +120,7 @@
         controller.bookOwner = [[dicData valueForKey:@"book"] valueForKey:@"username"];
         controller.bookName = [[dicData valueForKey:@"book"] valueForKey:@"book_name"];
         [self.drNavigationController pushViewController:controller animated:YES];
+        [controller release];
         /*
         ShareBookCommentController  *controller = [[ShareBookCommentController alloc] init];
         controller.pubID = [[dicData valueForKey:@"book"] valueForKey:@"pub_id"];

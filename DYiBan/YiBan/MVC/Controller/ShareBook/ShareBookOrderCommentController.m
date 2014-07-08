@@ -92,10 +92,17 @@
         bgTopView.backgroundColor = COLOR_RGB(215, 215, 215);
         CGFloat fwidth = imageStar.size.width;
         CGFloat fsep = 10;
-        CGFloat fxpoint = (bgTopView.frame.size.width-fwidth*5-fsep*4)/2;
+        CGFloat fxpoint = (bgTopView.frame.size.width-fwidth*5-fsep*4)-40;
         
         
-      
+        
+        UILabel *labelXinyong = [[UILabel alloc] initWithFrame:CGRectMake(10, 10,80, 30)];
+        [labelXinyong setBackgroundColor:[UIColor clearColor]];
+        [labelXinyong setText:[NSString stringWithFormat:@"信用评价:"]];
+        [labelXinyong setTextColor:[UIColor blackColor]];
+        [bgTopView addSubview:labelXinyong];
+        [labelXinyong release];
+        
         for (int i = 0; i < 5; i++)
         {
             UIButton   *btnStar = [[UIButton alloc] initWithFrame:CGRectMake(fxpoint, (bgTopView.frame.size.height-imageStar.size.height)/2, imageStar.size.width, imageStar.size.height)];
@@ -130,23 +137,18 @@
         [labelBookOwner release];
         
         fypoint += fsep+30;
-        UILabel *labelXinyong = [[UILabel alloc] initWithFrame:CGRectMake(10, fypoint,80, 30)];
-        [labelXinyong setBackgroundColor:[UIColor clearColor]];
-        [labelXinyong setText:[NSString stringWithFormat:@"信用评价:"]];
-        [labelXinyong setTextColor:[UIColor blackColor]];
-        [self.view addSubview:labelXinyong];
-        [labelXinyong release];
+      
         
         
-        JFSegmentControlView    *controll = [[JFSegmentControlView alloc] initWithFrame:CGRectMake(100, fypoint, 140, 30) withitems:@[@"好评",@"差评"]];
+       /* JFSegmentControlView    *controll = [[JFSegmentControlView alloc] initWithFrame:CGRectMake(100, fypoint, 140, 30) withitems:@[@"好评",@"差评"]];
        // controll.btnBgColor = [UIColor whiteColor];
         [self.view addSubview:controll];
         controll.delegate = self;
         [controll release];
         
         
-        fypoint += 30;
-        _commentInput = [[UITextField alloc] initWithFrame:CGRectMake(10,     fypoint += fsep+30, self.view.frame.size.width-20, 40)];
+        fypoint += 30;*/
+        _commentInput = [[UITextField alloc] initWithFrame:CGRectMake(10,     fypoint, self.view.frame.size.width-20, 40)];
         _commentInput.delegate = self;
         _commentInput.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _commentInput.layer.borderWidth = 1;
@@ -273,7 +275,6 @@
     if ([signal is:[DYBBaseViewController BACKBUTTON]])
     {
         [self.drNavigationController popViewControllerAnimated:YES];
-        
     }
 }
 

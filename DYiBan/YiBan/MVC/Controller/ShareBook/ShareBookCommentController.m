@@ -20,13 +20,7 @@
 
 @interface ShareBookCommentController ()<UITextViewDelegate>{
 
-
-    
     UITextView *_commentInput;
-    
-    int      order_status;
-    int      fromUserID;
-    int      toUserID;
 }
 
 @end
