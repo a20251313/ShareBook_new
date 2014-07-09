@@ -286,7 +286,7 @@
             [self.rightButton setHidden:YES];
         }
       
-        m_iOrderStatus = -10;
+         m_iOrderStatus = -10;
         [self.view setBackgroundColor:[UIColor whiteColor]];
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
