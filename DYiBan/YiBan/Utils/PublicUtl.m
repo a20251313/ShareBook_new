@@ -7,7 +7,7 @@
 //
 
 #import "PublicUtl.h"
-
+#import "MBProgressHUD.h"
 @implementation PublicUtl
 
 
@@ -46,5 +46,23 @@
             break;
     }
     return strReturn;
+}
+
++(void)addHUDviewinView:(UIView*)view
+{
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:view];
+	[view addSubview:HUD];
+    [HUD show:YES];
+}
+
++(void)hideHUDViewInView:(UIView*)view
+{
+    for (MBProgressHUD *subView in view.subviews)
+    {
+        if ([subView isKindOfClass:[MBProgressHUD class]])
+        {
+            [subView hide:YES];
+        }
+    }
 }
 @end

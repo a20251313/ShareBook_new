@@ -20,17 +20,19 @@
 #import "ShareBookOrderDetailViewController.h"
 #import "DYBDataBankTopRightCornerView.h"
 #import "PublicUtl.h"
+#import "EGORefreshTableFooterView.h"
 
 #define  RIGHTMENUVIEWTAG 3265523
-@interface ShareBookListViewController (){
+@interface ShareBookListViewController ()<EGORefreshTableDelegate>{
 
 
     DYBUITableView * tbDataBank11 ;
     NSMutableArray  *m_dataArray;
     
-    BOOL            m_bHasNext;
+    EGORefreshTableFooterView   *refreshView;
     int             m_iCurrentPage;
-    int             m_ipageNum;
+    int             m_iPageNum;
+    BOOL            m_bHasNext;
     BOOL            m_bIsLoading;
     
     int             m_iOrderStatus;     //图书状态
@@ -85,7 +87,7 @@
         }
         m_iOrderStatus = [num intValue]-1;
         m_iCurrentPage = 1;
-        m_ipageNum = 20;
+        m_iPageNum = 20;
         m_bHasNext = NO;
         [m_dataArray removeAllObjects];
         [self requestOrderList];
@@ -316,14 +318,17 @@
         
         
         
-        m_ipageNum = 20;
+        m_iPageNum = 20;
         m_iCurrentPage = 1;
         [m_dataArray removeAllObjects];
-        [self requestOrderList];
+ 
         
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        m_iCurrentPage = 1;
+        [m_dataArray removeAllObjects];
+        [self requestOrderList];
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
@@ -333,6 +338,151 @@
 
 
 
+
+-(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view textColor:(UIColor *)textColor{
+    
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
+    [label1 setText:title];
+    [label1 setTag:100];
+    [label1 setTextAlignment:NSTextAlignmentCenter];
+    [view bringSubviewToFront:label1];
+    [label1 setTextColor:textColor];
+    [label1 setBackgroundColor:[UIColor clearColor]];
+    [view addSubview:label1];
+    RELEASE(label1);
+    
+}
+
+-(void)makeSureOrder:(UIButton*)sender
+{
+    ShareBookApplyViewController    *apply = [[ShareBookApplyViewController alloc] init];
+    NSDictionary    *dicInfo = m_dataArray[sender.tag];
+    apply.orderID = [dicInfo valueForKey:@"order_id"];
+    [self.drNavigationController pushViewController:apply animated:YES];
+    [apply release];
+    
+}
+-(void)makeSureOwnerAction:(UIButton*)sender
+{
+    ShareBookOrderDetailViewController    *details = [[ShareBookOrderDetailViewController alloc] init];
+    NSDictionary    *dicInfo = m_dataArray[sender.tag];
+    details.orderID = [dicInfo valueForKey:@"order_id"];
+    [self.drNavigationController pushViewController:details animated:YES];
+    [details release];
+    
+}
+-(void)makeSureReceiveBook:(UIButton*)sender
+{
+    NSDictionary  *dicData = m_dataArray[sender.tag];
+    MagicRequest    *request = [DYBHttpMethod book_order_receiptbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
+    request.tag = 1000;
+    
+}
+-(void)returnBook:(UIButton*)sender
+{
+     NSDictionary  *dicData = m_dataArray[sender.tag];
+    MagicRequest    *request = [DYBHttpMethod book_order_launchbook:[dicData objectForKey:@"order_id"] sAlert:YES receive:self];
+    request.tag = 5000;
+    
+}
+-(void)makeSurereturnBook:(UIButton*)sender
+{
+     NSDictionary  *dicData = m_dataArray[sender.tag];
+    MagicRequest    *request = [DYBHttpMethod book_order_confirmationbook:[dicData valueForKey:@"order_id"] sAlert:YES receive:self];
+    request.tag = 4000;
+    
+}
+-(void)commentBooK:(UIButton*)sender
+{
+    
+    ShareBookOrderCommentController *controller = [[ShareBookOrderCommentController  alloc] init];
+    NSDictionary  *dicData = m_dataArray[sender.tag];
+    controller.orderID = [dicData valueForKey:@"order_id"];
+    controller.bookOwner = [[dicData valueForKey:@"book"] valueForKey:@"username"];
+    controller.bookName = [[dicData valueForKey:@"book"] valueForKey:@"book_name"];
+    [self.drNavigationController pushViewController:controller animated:YES];
+    [controller release];
+    
+}
+
+
+-(UIButton*)getBtnWithFrame:(CGRect)frame status:(NSString*)status fromuserID:(NSString*)fromeUserID
+{
+  
+    NSString    *strTitle = nil;
+    SEL sel = nil;
+    switch ([status intValue])
+    {
+        case 0:
+            if ([fromeUserID isEqualToString:SHARED.userId])
+            {
+                sel = @selector(makeSureOrder:);
+                strTitle = @"确认订单";
+            }
+          
+            break;
+        case 1:
+            if (![fromeUserID isEqualToString:SHARED.userId])
+            {
+                sel = @selector(makeSureOwnerAction:);
+                strTitle = @"处理申请";
+            }
+            break;
+        case 2:
+            
+            if ([fromeUserID isEqualToString:SHARED.userId])
+            {
+                sel = @selector(makeSureReceiveBook:);
+                strTitle = @"确认收到书";
+            }
+          
+            break;
+        case 3:
+            break;
+        case 4:
+            if ([fromeUserID isEqualToString:SHARED.userId])
+            {
+                
+                sel = @selector(returnBook:);
+                strTitle = @"还书";
+            }
+            break;
+        case 5:
+            if (![fromeUserID isEqualToString:SHARED.userId])
+            {
+                sel = @selector(makeSurereturnBook:);
+                strTitle = @"确认还书";
+            }
+            break;
+        case 6:
+            if ([fromeUserID isEqualToString:SHARED.userId])
+            {
+                
+                sel = @selector(commentBooK:);
+                strTitle = @"评论";
+            }
+            break;
+        case 7:
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (sel == nil)
+    {
+        return nil;
+    }
+    UIButton *btnBorrow = [[UIButton alloc]initWithFrame:frame];
+    [btnBorrow setTag:102];
+    [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
+    [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
+    [btnBorrow addTarget:self action:sel forControlEvents:UIControlEventTouchUpInside];
+    [self addlabel_title:strTitle frame:btnBorrow.frame view:btnBorrow textColor:[UIColor whiteColor]];
+    
+    return [btnBorrow autorelease];
+}
+
 -(void)requestOrderList
 {
     
@@ -341,22 +491,25 @@
     MagicRequest *request = nil;
     if (m_iOrderStatus < 0)
     {
-       
+        if (m_iCurrentPage < 2)
+        {
+            [PublicUtl addHUDviewinView:self.view];
+        }
         switch (self.type)
         {
             case 0:
-                request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
+                request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
                 break;
             case 1:
-                request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
+                request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
                 break;
             case 2:
-                request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
+                request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
                 break;
             case 7:
             case 3:
                 self.type = 7;
-                request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
+                request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
                 break;
                 
             default:
@@ -365,10 +518,16 @@
         
         request.tag = self.type+1;
         
+        
     }else
     {
         
-         request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:[@(m_iOrderStatus) description] sAlert:YES receive:self];
+        if (m_iCurrentPage < 2)
+        {
+            [PublicUtl addHUDviewinView:self.view];
+        }
+  
+         request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] orderType:@"1" orderStatus:[@(m_iOrderStatus) description] sAlert:YES receive:self];
         request.tag = 40;
     }
 
@@ -416,12 +575,14 @@
 //        UITableView *tableView = [dict objectForKey:@"tableView"];
         
     
+        NSDictionary    *dicdata = m_dataArray[indexPath.row];
         ShareBookCell *cell = [[ShareBookCell alloc]init];
         cell.tb  = tbDataBank11;
         
         if (self.type != 0)
         {
               cell.cellType = ShareBookCellTypeOpearate;
+       
         }else
         {
               cell.cellType = ShareBookCellTypeDefault;
@@ -430,6 +591,16 @@
         cell.type = _type;
         cell.indexPath = indexPath;
         [cell creatCell:m_dataArray[indexPath.row]];
+        
+        if (self.type != 0)
+        {
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 40, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
+            if (btnOper)
+            {
+                [cell addSubview:btnOper];
+                btnOper.tag = indexPath.row;
+            }
+        }
         DLogInfo(@"%d", indexPath.section);
         [tbDataBank11.muD_dicfferIndexForCellView setValue:cell forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
         cell.indexPath = indexPath;
@@ -475,27 +646,23 @@
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
-        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        
+        if (refreshView)
         {
-            if (!m_bIsLoading && m_bHasNext)
-            {
-                [self requestOrderList];
-            }
+            [refreshView egoRefreshScrollViewDidScroll:tbDataBank11];
+        }
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        if (![self needNoteRefreshView])
+        {
             
+            [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:tbDataBank11];
+            return;
         }
         
-    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
-        
-        if (tbDataBank11.contentOffset.y+(tbDataBank11.frame.size.height) > tbDataBank11.contentSize.height)
+        if (refreshView)
         {
-            if (!m_bIsLoading && m_bHasNext)
-            {
-                [self requestOrderList];
-            }
-            
+            [refreshView egoRefreshScrollViewDidEndDragging:tbDataBank11];
         }
-        
-        
     }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
         
         
@@ -528,6 +695,8 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
 {
     
+     [PublicUtl hideHUDViewInView:self.view];
+    
     if ([request succeed])
     {
         //        JsonResponse *response = (JsonResponse *)receiveObj;
@@ -555,6 +724,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                    
                     [tbDataBank11 reloadData];
                     
+                    
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
@@ -562,6 +732,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                     
                 }
+                [self finishReloadingData];
             }
         }else if (request.tag == 2)
         {
@@ -592,6 +763,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                     
                 }
+                [self finishReloadingData];
             }
             
         }else if (request.tag == 3)
@@ -623,6 +795,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                 }
             }
+            [self finishReloadingData];
         }else if (request.tag == 8)
         {
             NSDictionary *dict = [request.responseString JSONValue];
@@ -652,6 +825,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                 }
             }
+               [self finishReloadingData];
         }else if (request.tag == 1000)
         {
             NSDictionary *dict = [request.responseString JSONValue];
@@ -803,12 +977,128 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 }
             }
             
+            
+               [self finishReloadingData];
+            
         }
 
         
     }
 }
 
+
+
+/**
+ *  init refreshView
+ */
+-(void)initRefrshView
+{
+    [self setFooterView];
+}
+
+- (void)finishReloadingData{
+	
+	//  model should call this when its done loading
+	m_bIsLoading = NO;
+    
+    if (refreshView) {
+        [refreshView egoRefreshScrollViewDataSourceDidFinishedLoading:tbDataBank11];
+        
+    }
+    [self setFooterView];
+    // [self removeFooterView];
+    
+    // overide, the actula reloading tableView operation and reseting position operation is done in the subclass
+}
+
+
+
+-(void)setFooterView{
+	//    UIEdgeInsets test = self.aoView.contentInset;
+    // if the footerView is nil, then create it, reset the position of the footer
+    CGFloat height = MAX(tbDataBank11.contentSize.height, tbDataBank11.frame.size.height);
+    if (refreshView && [refreshView superview])
+	{
+        // reset position
+        refreshView.frame = CGRectMake(0.0f,height,tbDataBank11.frame.size.width,
+                                       self.view.bounds.size.height);
+    }else
+	{
+        // create the footerView
+        refreshView = [[EGORefreshTableFooterView alloc] initWithFrame:  CGRectMake(0.0f, height,tbDataBank11.frame.size.width, tbDataBank11.bounds.size.height) arrowImageName:nil textColor:[UIColor grayColor]
+                       ];
+        refreshView.delegate = self;
+        [tbDataBank11 addSubview:refreshView];
+    }
+    if (refreshView)
+	{
+        [refreshView refreshLastUpdatedDate];
+    }
+}
+
+-(void)removeFooterView
+{
+    if (refreshView && [refreshView superview])
+	{
+        [refreshView removeFromSuperview];
+    }
+    
+    
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark UIScrollViewDelegate Methods
+
+
+-(BOOL)needNoteRefreshView
+{
+    
+    return m_bHasNext;
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+/**
+ * egoRefreshTableDidTriggerRefresh
+ *
+ *  @param aRefreshPos pos
+ */
+- (void)egoRefreshTableDidTriggerRefresh:(EGORefreshPos)aRefreshPos
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (m_bHasNext && !m_bIsLoading)
+        {
+            m_bIsLoading = YES;
+            [self requestOrderList];
+            
+            //[request setTag:2];
+        }
+        
+    });
+    
+}
+/**
+ *  ego status return
+ *
+ *  @param view scrollView
+ *
+ *  @return status
+ */
+- (BOOL)egoRefreshTableDataSourceIsLoading:(UIView*)view
+{
+    return m_bIsLoading;
+}
+
+
+- (NSDate*)egoRefreshTableDataSourceLastUpdated:(UIView*)view
+{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
 
 
 @end

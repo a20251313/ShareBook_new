@@ -12,4 +12,6 @@
 
 
 +(NSString*)getStatusStringByStatus:(int)status;
++(void)addHUDviewinView:(UIView*)view;
++(void)hideHUDViewInView:(UIView*)view;
 @end

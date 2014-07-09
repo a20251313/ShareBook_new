@@ -117,6 +117,8 @@
     
     else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        
+     
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
