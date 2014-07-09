@@ -7,7 +7,8 @@
 //
 
 #import "ShareBookMoreAddrViewController.h"
-
+#import "JSONKit.h"
+#import "JSON.h"
 @interface ShareBookMoreAddrViewController (){
 
 
@@ -64,7 +65,7 @@
         if (!m_arrayAddress)
         {
             m_arrayAddress = [[NSMutableArray alloc] init];
-            [m_arrayAddress addObjectsFromArray:@[@"人民广场100号5楼404",@"人民广场100号5楼405",@"人民广场100号5楼406",@"人民广场300号5楼407"]];
+         
         }
         
 //        [self setButtonImage:self.rightButton setImage:@"icon_retreat"];
@@ -102,10 +103,12 @@
         [btnOK setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
         [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:btnOK];
-//        RELEASE(btnOK);
         
-//        [self addlabel_title:@"设置默认地址" frame:btnOK.frame view:btnOK];
+        
+        MagicRequest *request =   [DYBHttpMethod shareBook_address_list_user_id:SHARED.userId sAlert:YES receive:self];
+        [request setTag:2];
+        
+
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -163,7 +166,7 @@ static NSString *cellName = @"cellName";
         //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         DLogInfo(@"%d", indexPath.section);
         UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(10.09f, 10.0f, 300.0, 30.0f)];
-        [labelText setText:m_arrayAddress[indexPath.row]];
+        [labelText setText:[m_arrayAddress[indexPath.row] objectForKey:@"address"]];
         [cell addSubview:labelText];
         RELEASE(labelText);
         
@@ -262,6 +265,51 @@ static NSString *cellName = @"cellName";
     [view addSubview:label1];
     RELEASE(label1);
     
+}
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    
+    if ([request succeed])
+    {
+        //        JsonResponse *response = (JsonResponse *)receiveObj;
+        if (request.tag == 2) {
+            
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    if (!m_arrayAddress)
+                    {
+                        m_arrayAddress = [[NSMutableArray alloc] init];
+                    }
+                    [m_arrayAddress removeAllObjects];
+                    [m_arrayAddress addObjectsFromArray:[[dict valueForKey:@"data"] valueForKey:@"address"]];
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
+            
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+            
+        }
+    }
 }
 
 

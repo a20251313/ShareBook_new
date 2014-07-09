@@ -291,6 +291,17 @@
 
 -(void)doBorrow:(id)sender{
     UIButton *btn = (UIButton *)sender;
+    
+    
+    MagicRequest *request = [DYBHttpMethod book_order_pub_id:[_dictInfo objectForKey:@"pub_id"] sAlert:YES receive:self];
+    [request setTag:3];
+    
+    /*
+    
+    MagicRequest *request = [DYBHttpMethod shareBook_book_reserve_pub_id:[_dictInfo objectForKey:@"pub_id"] content:@"dd" sAlert:YES receive:self];
+    [request setTag:3];*/
+    
+    return;
     if (btn.tag == 101) {
         
         
@@ -305,7 +316,7 @@
     }else{
         
         ShareBookApplyViewController *apply = [[ShareBookApplyViewController alloc]init];
-        apply.dictInfo = _dictInfo;
+       // apply.dictInfo = _dictInfo;
         [self.drNavigationController pushViewController:apply animated:YES];
         RELEASE(apply);
         
@@ -541,8 +552,11 @@
             if (dict) {
               
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                     NSString *strMSG = [dict objectForKey:@"message"];
-                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    NSString    *orderID = [[dict valueForKey:@"data"] objectForKey:@"order_id"];
+                    ShareBookApplyViewController   *apply = [[ShareBookApplyViewController alloc] init];
+                    apply.orderID = orderID;
+                    [self.drNavigationController pushViewController:apply animated:YES];
+                    RELEASE(apply);
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];

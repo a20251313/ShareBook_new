@@ -16,8 +16,11 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "UIImageView+WebCache.h"
+#import "iToast.h"
 
 
+#define TIMEVIEWTAG          112332
+#define TIMEVIEWTAG2         112334
 @interface ShareBookApplyViewController (){
 
     UILabel *labelTime1;
@@ -40,7 +43,7 @@
 @end
 
 @implementation ShareBookApplyViewController
-@synthesize dictInfo,orderID;
+@synthesize orderID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -65,46 +68,6 @@
 
 
 
--(void)setAgreeViewShow
-{
-    
-    BOOL bhide = ([[[dictRR objectForKey:@"order"] objectForKey:@"order_status"] intValue] != 1);
-    
-    if (bhide) {
-        UIView *view = [self.headview viewWithTag:100];
-        view.hidden = YES;
-    }else
-    {
-        
-        UIView *view = [self.headview viewWithTag:100];
-        if (view)
-        {
-              view.hidden = NO;
-        }else
-        {
-            view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20.0f, 100.0f, 44.0f)];
-            [view setTag:100];
-            [view setBackgroundColor:[UIColor redColor]];
-            [self.headview addSubview:view];
-            //                RELEASE(view);
-            
-            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0,  40.0f,44.0f)];
-            [btn1 addTarget:self action:@selector(tongyi) forControlEvents:UIControlEventTouchUpInside];
-            [btn1 setTitle:@"同意" forState:UIControlStateNormal];
-            [view addSubview:btn1];
-            RELEASE(btn1);
-            
-            UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 0.0,  40.0f,44.0f)];
-            [btn2 addTarget:self action:@selector(tongyi1) forControlEvents:UIControlEventTouchUpInside];
-            [btn2 setTitle:@"不" forState:UIControlStateNormal];
-            [view addSubview:btn2];
-            RELEASE(btn2);
-            
-        }
-      
-    }
-    
-}
 
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
@@ -121,24 +84,9 @@
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
 
-        
-        if (self.orderID) {
-            
-            MagicRequest *request = [DYBHttpMethod order_detail_order_id:self.orderID sAlert:YES receive:self];
-            [request setTag:3];
-
-        }else {
-        
-            MagicRequest *request = [DYBHttpMethod book_order_pub_id:[dictInfo objectForKey:@"pub_id"] sAlert:YES receive:self];
-            [request setTag:100];
-        
-        
-        }
-       
-        
-        
+        MagicRequest *request = [DYBHttpMethod order_detail_order_id:self.orderID sAlert:YES receive:self];
+        [request setTag:3];
         arrayDate = [[NSMutableArray alloc]init];
-//        [self.rightButton setHidden:YES];
         bKeyShow = NO;
         [self.view setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
         
@@ -152,124 +100,6 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         };
-        
-        if (!self.orderID) {
-            
-            
-            UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
-            [viewBG setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
-            [self.view addSubview:viewBG];
-            RELEASE(viewBG);
-            
-            
-            UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
-            UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f + self.headHeight, imageIcon.size.width/2, imageIcon.size.height/2)];
-        
-            [imageBook setBackgroundColor:[UIColor clearColor]];
-            [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
-            
-            if ([dictInfo valueForKey:@"image"])
-            {
-                [imageBook setImageWithURL:[NSURL URLWithString:[dictInfo valueForKey:@"image"]]];
-            }
-            [viewBG addSubview:imageBook];
-            [imageBook release];
-            
-            UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + self.headHeight, 240, 20)];
-
-            [labelName setText:@""];
-            
-            if ([dictInfo valueForKey:@"title"])
-            {
-                [labelName setText:[dictInfo valueForKey:@"title"]];
-            }
-            [viewBG addSubview:labelName];
-            [labelName release];
-            
-            UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 20)];
-            
-            if ([dictInfo valueForKey:@"author"])
-            {
-                [labelAuther setText:[NSString stringWithFormat:@"作者：%@",[dictInfo valueForKey:@"author"]]];
-            }
-         
-            [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            
-            [labelAuther setFont:[UIFont systemFontOfSize:15]];
-            [viewBG addSubview:labelAuther];
-            [labelAuther release];
-            
-            UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
-            [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            if ([dictInfo valueForKey:@"publisher"])
-            {
-                [labelPublic setText:[NSString stringWithFormat:@"出版社：%@",[dictInfo valueForKey:@"publisher"]]];
-            }
-          
-            [viewBG addSubview:labelPublic];
-            [labelPublic setFont:[UIFont systemFontOfSize:14]];
-            [labelPublic release];
-            
-            
-            UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
-            [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
-            [viewBG addSubview:labelTime];
-            [labelTime setFont:[UIFont systemFontOfSize:14]];
-            [labelTime release];
-            
-            labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
-            [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-            [labelTime1 setText:[self stringFromDate:[NSDate date]]];
-            [viewBG addSubview:labelTime1];
-            [labelTime1 setFont:[UIFont systemFontOfSize:14]];
-            [labelTime1 release];
-            
-            UIButton *btnChooseTime = [[UIButton alloc]initWithFrame:CGRectMake(280.0f, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 20.0f, 20.0f)];
-            [btnChooseTime setBackgroundColor:[UIColor clearColor]];
-            [btnChooseTime setImage:[UIImage imageNamed:@"calendar"] forState:UIControlStateNormal];
-            [btnChooseTime addTarget:self action:@selector(doChooseTime) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:btnChooseTime];
-            RELEASE(btnChooseTime);
-            
-            
-            
-            _phoneInputNameR = [[DYBInputView alloc]initWithFrame:CGRectMake( 5, CGRectGetMinY(btnChooseTime.frame) + CGRectGetHeight(btnChooseTime.frame) + 10, 250, 40) placeText:@"长宁区天山路145号" textType:0];
-            [_phoneInputNameR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-            //        [_phoneInputNameR.nameField setText:@"1"];
-            [_phoneInputNameR.nameField setTextColor:[UIColor blackColor]];
-            [_phoneInputNameR setBackgroundColor:[UIColor clearColor]];
-            [self.view addSubview:_phoneInputNameR];
-            RELEASE(_phoneInputNameR);
-            
-            
-            UIButton *btnMoreAddr = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(_phoneInputNameR.frame) + CGRectGetMinX(_phoneInputNameR.frame)+ 5 , CGRectGetMinY(btnChooseTime.frame) + CGRectGetHeight(btnChooseTime.frame)+ 10, 55, 30)];
-            [btnMoreAddr addTarget:self action:@selector(doMoreAddr) forControlEvents:UIControlEventTouchUpInside];
-            
-            [btnMoreAddr setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-            [btnMoreAddr setBackgroundColor:[UIColor clearColor]];
-            [self.view addSubview:btnMoreAddr];
-            RELEASE(btnMoreAddr);
-            [self addlabel_title:@"选地址" frame:btnMoreAddr.frame view:btnMoreAddr];
-            
-            tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10-50) isNeedUpdate:YES];
-            [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
-            [self.view addSubview:tbDataBank11];
-            [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-         
-            [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-            
-            RELEASE(tbDataBank11);
-            [self creatDownBar];
-
-            
-            
-        }
-        
-        
-        
-        
-        
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
         DLogInfo(@"rrr");
@@ -281,14 +111,85 @@
 
 
 
+-(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view textColor:(UIColor *)textColor{
+    
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
+    [label1 setText:title];
+    [label1 setTag:100];
+    [label1 setTextAlignment:NSTextAlignmentCenter];
+    [view bringSubviewToFront:label1];
+    [label1 setTextColor:textColor];
+    [label1 setBackgroundColor:[UIColor clearColor]];
+    [view addSubview:label1];
+    RELEASE(label1);
+    
+}
+-(UIButton*)getBtnWithName:(NSString*)btnName sel:(SEL)selector frame:(CGRect)rect
+{
+    
+    
+    UIButton *btnBorrow = [[UIButton alloc]initWithFrame:rect];
+    [btnBorrow setTag:102];
+    [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
+    [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
+    [self addlabel_title:btnName frame:btnBorrow.frame view:btnBorrow textColor:[UIColor whiteColor]];
+    [btnBorrow addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    return [btnBorrow autorelease];
+}
+
+
+-(BOOL)createBtnForSupView:(UIView*)superView
+{
+    int orderStatus = [[[dictRR objectForKey:@"order"] objectForKey:@"order_status"] intValue];
+    order_status = orderStatus;
+    if (order_status < 0)
+    {
+        return NO;
+    }
+    
+    CGFloat fwidth = superView.frame.size.width;
+    switch (orderStatus)
+    {
+        case 0:
+        {
+            if (fromUserID == [SHARED.userId intValue])
+            {
+                UIButton    *btnAggree = [self getBtnWithName:@"确认订单" sel:@selector(MakeSureBorrowBook:) frame:CGRectMake(10,10, fwidth-20, 40)];
+                [superView addSubview:btnAggree];
+                
+                
+            }else
+            {
+                return NO;
+            }
+        }
+            break;
+        default:
+            return NO;
+            break;
+    }
+    return YES;
+}
+
+
+-(NSString*)getDateFormatFormTimeinter:(NSDate*)time
+{
+    return [NSString stringWithFormat:@"%f",[time timeIntervalSince1970]];
+}
+
 
 -(void)creatView:(NSDictionary *)dict{
+    
+    
+    UIView *view = [self.view viewWithTag:1122];
+    [view removeFromSuperview];
     
     
     NSDictionary *dicttt = [[dict objectForKey:@"order"] objectForKey:@"book"];
     UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, self.view.frame.size.height)];
     [viewBG setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
     [self.view addSubview:viewBG];
+    viewBG.tag = 1122;
     RELEASE(viewBG);
     
     
@@ -297,77 +198,66 @@
     [imageBook setBackgroundColor:[UIColor clearColor]];
     [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
     
-    if ([[dicttt valueForKey:@"book_image"] isKindOfClass:[NSString class]])
+    if ([[dicttt valueForKey:@"image"] isKindOfClass:[NSString class]])
     {
-          [imageBook setImageWithURL:[NSURL URLWithString:[dicttt valueForKey:@"book_image"]]];
+        [imageBook setImageWithURL:[NSURL URLWithString:[dicttt valueForKey:@"image"]]];
     }
- 
+    
     [viewBG addSubview:imageBook];
     [imageBook release];
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + 0, 200, 20)];
-    [labelName setText:[dicttt objectForKey:@"book_name"]];
+    [labelName setText:[dicttt objectForKey:@"title"]];
     [viewBG addSubview:labelName];
     [labelName release];
     
-    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 20)];
-    [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicttt objectForKey:@"book_author"]]];
+    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 15)];
+    [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicttt objectForKey:@"author"]]];
     [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     
-    [labelAuther setFont:[UIFont systemFontOfSize:15]];
+    [labelAuther setFont:[UIFont systemFontOfSize:12]];
     [viewBG addSubview:labelAuther];
     [labelAuther release];
     
-    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 20)];
+    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 15)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    [labelPublic setText:[NSString stringWithFormat:@"出版社:"]];
+    [labelPublic setText:[NSString stringWithFormat:@"出版社:%@",[dicttt valueForKey:@"publisher"]]];
     [viewBG addSubview:labelPublic];
-    [labelPublic setFont:[UIFont systemFontOfSize:14]];
+    [labelPublic setFont:[UIFont systemFontOfSize:12]];
     [labelPublic release];
     
     
-    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
+    
+    UILabel *labelState = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 15)];
+    [labelState setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelState setText:[NSString stringWithFormat:@"订单状态:待确认"]];
+    [viewBG addSubview:labelState];
+    [labelState setFont:[UIFont systemFontOfSize:12]];
+    [labelState release];
+    
+    
+    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelState.frame) + CGRectGetHeight(labelState.frame) + 0, 200, 15)];
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
     [viewBG addSubview:labelTime];
-    [labelTime setFont:[UIFont systemFontOfSize:14]];
+    [labelTime setFont:[UIFont systemFontOfSize:12]];
     [labelTime release];
     
-    labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -130, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + 0, 200, 20)];
+    
+    
+    labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -140, CGRectGetMinY(labelState.frame) + CGRectGetHeight(labelState.frame) -2, 200, 20)];
     [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime1 setText:[self stringFromDate:[NSDate date]]];
     [viewBG addSubview:labelTime1];
-    [labelTime1 setFont:[UIFont systemFontOfSize:14]];
+    [labelTime1 setFont:[UIFont systemFontOfSize:12]];
     [labelTime1 release];
     
-    UIButton *btnChooseTime = [[UIButton alloc]initWithFrame:CGRectMake(280.0f, CGRectGetMinY(labelPublic.frame) + CGRectGetHeight(labelPublic.frame) + self.headHeight, 20.0f, 20.0f)];
+    UIButton *btnChooseTime = [[UIButton alloc]initWithFrame:CGRectMake(280.0f, CGRectGetMinY(labelState.frame) + CGRectGetHeight(labelState.frame) + self.headHeight, 20.0f, 20.0f)];
     [btnChooseTime setBackgroundColor:[UIColor clearColor]];
     [btnChooseTime setImage:[UIImage imageNamed:@"calendar"] forState:UIControlStateNormal];
     [btnChooseTime addTarget:self action:@selector(doChooseTime) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnChooseTime];
     RELEASE(btnChooseTime);
-    
-    
-    
-    _phoneInputNameR = [[DYBInputView alloc]initWithFrame:CGRectMake( 5, CGRectGetMinY(btnChooseTime.frame) + CGRectGetHeight(btnChooseTime.frame) + 10 , 250, 40) placeText:@"长宁区天山路145号" textType:0];
-    [_phoneInputNameR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-    //        [_phoneInputNameR.nameField setText:@"1"];
-    [_phoneInputNameR.nameField setDelegate:self];
-    [_phoneInputNameR.nameField setTextColor:[UIColor blackColor]];
-    [_phoneInputNameR setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:_phoneInputNameR];
-    RELEASE(_phoneInputNameR);
-    
-    
-    UIButton *btnMoreAddr = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(_phoneInputNameR.frame) + CGRectGetMinX(_phoneInputNameR.frame)+ 5 , CGRectGetMinY(btnChooseTime.frame) + CGRectGetHeight(btnChooseTime.frame)+ 10, 55, 30)];
-    [btnMoreAddr addTarget:self action:@selector(doMoreAddr) forControlEvents:UIControlEventTouchUpInside];
-    
-    [btnMoreAddr setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-    [btnMoreAddr setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:btnMoreAddr];
-    RELEASE(btnMoreAddr);
-    [self addlabel_title:@"选地址" frame:btnMoreAddr.frame view:btnMoreAddr];
-    
     
     NSArray *rr = [dict objectForKey:@"charts"];
     for (int i = 0; i < rr.count; i++) {
@@ -377,25 +267,60 @@
         
         NSString *content = [dictTime objectForKey:@"content"];
         
-        NSString *index =   [SHARED.userId isEqualToString:[dictTime objectForKey:@"user_id"]] ? @"2" : @"1";
+        NSString *index =   [dictTime objectForKey:@"user_id"];
         
-        NSDictionary *dict44 = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",index, @"index",nil];
-        
+        NSDictionary *dict44 = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",index, @"user_id",nil];
         [arrayDate addObject:dict44];
     }
     
     
+    _phoneInputNameR = [[DYBInputView alloc]initWithFrame:CGRectMake( 5, CGRectGetMinY(labelTime1.frame) + CGRectGetHeight(labelTime1.frame) + 10 , 250, 40) placeText:@"请选择您的地址" textType:0];
+    [_phoneInputNameR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
+    [_phoneInputNameR.nameField setDelegate:self];
+    [_phoneInputNameR.nameField setTextColor:[UIColor blackColor]];
+    [_phoneInputNameR setBackgroundColor:[UIColor clearColor]];
+    [viewBG addSubview:_phoneInputNameR];
+    RELEASE(_phoneInputNameR);
     
     
-    tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 10 -100) isNeedUpdate:YES];
+    UIButton *btnMoreAddr = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(_phoneInputNameR.frame) + CGRectGetMinX(_phoneInputNameR.frame)+ 5 , CGRectGetMinY(labelTime1.frame) + CGRectGetHeight(labelTime1.frame)+ 15, 55, 30)];
+    [btnMoreAddr addTarget:self action:@selector(doMoreAddr) forControlEvents:UIControlEventTouchUpInside];
+    
+    [btnMoreAddr setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
+    [btnMoreAddr setBackgroundColor:[UIColor clearColor]];
+    [viewBG addSubview:btnMoreAddr];
+    RELEASE(btnMoreAddr);
+    [self addlabel_title:@"选地址" frame:btnMoreAddr.frame view:btnMoreAddr];
+    
+    
+    UIView  *bgbtnView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(_phoneInputNameR.frame) + CGRectGetHeight(_phoneInputNameR.frame) + 0, 320, 50)];
+    BOOL  bsuc = [self createBtnForSupView:bgbtnView];
+    [viewBG addSubview:bgbtnView];
+    RELEASE(bgbtnView);
+    
+    CGFloat  fdelHeight = 50;
+    if (!bsuc)
+    {
+        fdelHeight = 0;
+    }
+    
+    if (!tbDataBank11)
+    {
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(bgbtnView.frame) + CGRectGetHeight(bgbtnView.frame) + 10, 320.0f, self.view.frame.size.height -CGRectGetMinY(bgbtnView.frame) + CGRectGetHeight(bgbtnView.frame) -50) isNeedUpdate:YES];
+        [self.view addSubview:tbDataBank11];
+        [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
+        RELEASE(tbDataBank11);
+    }
+    
+    [tbDataBank11 setFrame:CGRectMake(0, CGRectGetMinY(bgbtnView.frame) + fdelHeight + 10+self.headHeight, 320.0f, self.view.frame.size.height-fdelHeight-100-self.headHeight)];
+    [self.view bringSubviewToFront:tbDataBank11];
+    
     [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:tbDataBank11];
-    [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-    RELEASE(tbDataBank11);
+    
     [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [self creatDownBar];
-
+    
     [tbDataBank11 reloadData];
     
 }
@@ -429,37 +354,18 @@
     UIView *viewBG2 = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 0.0f, 320.0f, CGRectGetHeight(self.view.frame))];
     [viewBG2 setBackgroundColor:[UIColor blackColor]];
     [viewBG2 setAlpha:0.7];
-    [viewBG2 setTag:102];
+    [viewBG2 setTag:TIMEVIEWTAG2];
     [self.view addSubview:viewBG2];
     RELEASE(viewBG2);
     
     
     UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 0.0f, 320.0f, CGRectGetHeight(self.view.frame))];
     [viewBG setBackgroundColor:[UIColor clearColor]];
-    [viewBG setTag:101];
+    [viewBG setTag:TIMEVIEWTAG];
     [self.view addSubview:viewBG];
     RELEASE(viewBG);
     
-    
-   /* UIButton *btnCancel = [[UIButton alloc]initWithFrame:CGRectMake( 20 , CGRectGetHeight(self.view.frame) - 216 - 60, 50, 40)];
-    [btnCancel setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-    [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
-    [btnCancel addTarget:self action:@selector(doCancel) forControlEvents:UIControlEventTouchUpInside];
-    [btnCancel setBackgroundColor:[UIColor clearColor]];
-    [viewBG addSubview:btnCancel];
-    RELEASE(btnCancel);
-    [self addlabel_title:@"取消" frame:btnCancel.frame view:btnCancel];
-    
-    
-    
-    UIButton *btnMakeSureTime = [[UIButton alloc]initWithFrame:CGRectMake( 240 , CGRectGetHeight(self.view.frame) - 216 - 60, 50, 40)];
-    [btnMakeSureTime setTitle:@"确定" forState:UIControlStateNormal];
-    [btnMakeSureTime setImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-    [btnMakeSureTime addTarget:self action:@selector(doMakeSureTime) forControlEvents:UIControlEventTouchUpInside];
-    [btnMakeSureTime setBackgroundColor:[UIColor clearColor]];
-    [viewBG addSubview:btnMakeSureTime];
-    RELEASE(btnMakeSureTime);
-    [self addlabel_title:@"确定" frame:btnMakeSureTime.frame view:btnMakeSureTime];*/
+
 
     
     
@@ -522,12 +428,12 @@
 
 -(void)doCancel{
 
-    UIView *view = [self.view viewWithTag:101];
+    UIView *view = [self.view viewWithTag:TIMEVIEWTAG];
     if ( view ) {
         [view removeFromSuperview];
     }
     
-    UIView *view1 = [self.view viewWithTag:102];
+    UIView *view1 = [self.view viewWithTag:TIMEVIEWTAG2];
     if ( view1 ) {
         [view1 removeFromSuperview];
     }
@@ -542,13 +448,13 @@
     
     DLogInfo(@"date -- %@",strDate);
     [labelTime1 setText:strDate];
-    UIView *view = [self.view viewWithTag:101];
+    UIView *view = [self.view viewWithTag:TIMEVIEWTAG];
     if ( view ) {
         [view removeFromSuperview];
     }
     
     
-    UIView *view1 = [self.view viewWithTag:102];
+    UIView *view1 = [self.view viewWithTag:TIMEVIEWTAG2];
     if ( view1 ) {
         [view1 removeFromSuperview];
     }
@@ -559,8 +465,6 @@
 - (NSString *)stringFromDate:(NSDate *)date{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //zzz表示时区，zzz可以删除，这样返回的日期字符将不包含时区信息。
-    
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss "];
     NSString *destDateString = [dateFormatter stringFromDate:date];
 
@@ -572,18 +476,15 @@
 
 -(void)dateChanged:(UIDatePicker *)sender{
 
-
-   // UIDatePicker* control = (UIDatePicker*)sender;
-  //  NSDate* _date = control.date;
-
 }
 
 
--(void)setAddress:(NSString*)address
+-(void)setAddress:(NSDictionary*)addressInfo
 {
-    if (address)
+    self.dicAddress = addressInfo;
+    if (addressInfo)
     {
-        [_phoneInputNameR.nameField setText:address];
+        [_phoneInputNameR.nameField setText:[addressInfo valueForKey:@"address"]];
     }
 }
 -(void)doMoreAddr{
@@ -608,7 +509,6 @@
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
     UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2 - offset, 320.0f, imageBG.size.height/2)];
     [viewBG setUserInteractionEnabled:YES];
-//    [viewBG setBackgroundColor:[UIColor redColor]];
     [viewBG setTag:201];
     [viewBG setImage:[UIImage imageNamed:@"down_options_bg"]];
     [self.view addSubview:viewBG];
@@ -622,7 +522,6 @@
     
     _phoneInputNameRSend = [[DYBInputView alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 250.0f, 30.0f) placeText:@"输入内容" textType:0];
     [_phoneInputNameRSend.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-    //        [_phoneInputNameR.nameField setText:@"1"];
     [_phoneInputNameRSend.nameField setDelegate:self];
     [_phoneInputNameRSend.nameField setTextColor:[UIColor blackColor]];
     [_phoneInputNameRSend setBackgroundColor:[UIColor clearColor]];
@@ -642,26 +541,17 @@
 
 -(void)doSend{
     
-    if (self.orderID) {
+
+    
+
         NSDictionary *dictTime = [dictRR objectForKey:@"order"];
         NSString *strUserID = [dictTime objectForKey:@"from_userid"];
-        
         if ([SHARED.userId isEqualToString:strUserID]) {
             strUserID = [dictTime objectForKey:@"to_userid"];
-        }else{
-        
-            strUserID = [dictInfo valueForKey:@"user_id"];
         }
-        
         MagicRequest *request = [DYBHttpMethod message_send_userid:strUserID content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
-
         [request setTag:1];
-    }else{
-        MagicRequest *request = [DYBHttpMethod message_send_userid:[dictInfo objectForKey:@"user_id"] content:_phoneInputNameRSend.nameField.text type:@"2" mid:self.orderID orderid:self.orderID sAlert:YES receive:self];
-        [request setTag:1];
-    }
-    
-    [_phoneInputNameRSend.nameField resignFirstResponder];
+        [_phoneInputNameRSend.nameField resignFirstResponder];
 }
 
 #pragma mark- 只接受UITableView信号
@@ -672,16 +562,9 @@
     
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
+
         NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
         s = [NSNumber numberWithInteger:arrayDate.count];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -705,17 +588,8 @@
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         ShareBookApplyCell *cell = [[ShareBookApplyCell alloc]init];
-        
-        
         [cell creatCell:[arrayDate objectAtIndex:indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        
-//        UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 60-1, 320.0f, 1)];
-//        [imageLine setImage:[UIImage imageNamed:@"line3"]];
-//        [cell addSubview:imageLine];
-//        [imageLine release];
-        
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
@@ -745,66 +619,38 @@
 {
     UIView *viewBg = [self.view viewWithTag:201];
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
-    //        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
     [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
     
 }
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-   // static CGFloat normalKeyboardHeight = 216.0f;
-    
+
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    
-    
-   // DLogInfo(@"*********keyboardWillChangeFrame info:%@",info);
-   // CGFloat distanceToMove = kbSize.height - normalKeyboardHeight;
-    
-  
     UIView *viewBg = [self.view viewWithTag:201];
- //   CGRect rect = viewBg.frame;
     
     
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
       [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2-kbSize.height, 320.0f, imageBG.size.height/2)];
-    /*
-    if (self.view.frame.size.height - rect.origin.y < 100) {
-        
-        rect.size.height = rect.size.height - kbSize.height  - 60 ;
-        [viewBg setFrame:rect];
-    }else{
-        
-        UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
-//        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
-        [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
-    
-    }*/
-    
-    
-    //自适应代码
+
 }
 
 -(void)handleViewSignal_MagicUITextField:(MagicViewSignal *)signal{
     if ([signal isKindOf:[MagicUITextField TEXTFIELDDIDBEGINEDITING]]) {
         
-//        [scrollView setContentSize:CGSizeMake(320.0f, CGRectGetHeight(self.view.frame))];
-        //        [viewBG setCenter:CGPointMake(160, self.view.frame.size.height/2 -30)];
+
         
     }else if ([signal isKindOf:[MagicUITextField TEXTFIELDDIDENDEDITING]]){
         
-        //        [viewBG setCenter:CGPointMake(160, self.view.frame.size.height/2 +10 )];
+
         
     }else if ([signal isKindOf:[MagicUITextField TEXTFIELDSHOULDRETURN]]){
         
-        //        [viewBG setCenter:CGPointMake(160, self.view.bounds.size.height/2 +10 )];
         MagicUITextField *filed = (MagicUITextField *)[signal source];
         [filed resignFirstResponder];
         
         UIView *viewBg = [self.view viewWithTag:201];
-       // CGRect rect = viewBg.frame;
-        
-            UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
-            //        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
+        UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
             [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
       
 
@@ -833,21 +679,16 @@
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     
-                    NSString *strDate = [self stringFromDate:[NSDate date]];
+                    NSString *strDate = [self getDateFormatFormTimeinter:[NSDate date]];
                     
                     NSString *content = _phoneInputNameRSend.nameField.text;
                     
                     NSString *index = SHARED.userId;
                     
-                    NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",index, @"user_id",nil];
+                    NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",index, @"user_id",nil];
                     [arrayDate addObject:dict];
-                    
-                    
-                    
                     [tbDataBank11 reloadData];
                     [_phoneInputNameRSend.nameField setText:@""];
-
-
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     
@@ -871,18 +712,10 @@
 
                     fromUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
                     toUserID = [[[dictRR objectForKey:@"order"]objectForKey:@"to_userid"] intValue];
-                    [self setRightNavAccordStatus:[[[dictRR objectForKey:@"order"]objectForKey:@"order_status"] intValue]];
-                    
                     [self creatView:dictRR];
                 }
                 else{
-                    NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
-                    if (strOrder && [strOrder length])
-                    {
-                        self.orderID = [strOrder retain];
-                    }
                     NSString *strMSG = [dict objectForKey:@"message"];
-                    
                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:2.0f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                     
@@ -914,26 +747,14 @@
         }else if(request.tag == 2)
         {
             
-            
-            NSDictionary *dict = [request.responseString JSONValue];
-            NSString *strMSG = [dict objectForKey:@"message"];
-            
-            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-        }else if(request.tag == 100)
-        {
             NSDictionary *dict = [request.responseString JSONValue];
             
             int statusCode = [[dict objectForKey:@"response"] intValue];
             if (dict) {
                 if (statusCode == 100) {
                     
-                NSString    *strOrder = [[[dict objectForKey:@"data"] objectForKey:@"order_id"] description];
-                if (strOrder && [strOrder length])
-                {
-                    self.orderID = [strOrder retain];
-                }
-                    [self setRightNavAccordStatus:0];
-                    
+                    [DYBShareinstaceDelegate popViewText:@"确认订单成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self.drNavigationController popViewControllerAnimated:YES];
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -944,66 +765,7 @@
                 }
             }
             
-        }else if(request.tag == 200)
-        {
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            int statusCode = [[dict objectForKey:@"response"] intValue];
-            if (dict) {
-                if (statusCode == 100) {
-                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    [self setRightNavAccordStatus:4];
-                    
-                }
-                else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-            
-        }else if(request.tag == 400)
-        {
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            int statusCode = [[dict objectForKey:@"response"] intValue];
-            if (dict) {
-                if (statusCode == 100) {
-                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    [self setRightNavAccordStatus:5];
-                    
-                }
-                else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-            
-        }else if(request.tag == 500)
-        {
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            int statusCode = [[dict objectForKey:@"response"] intValue];
-            if (dict) {
-                if (statusCode == 100) {
-                    [DYBShareinstaceDelegate popViewText:@"提交成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    [self setRightNavAccordStatus:6];
-                    
-                }
-                else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-            
+
         }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
@@ -1025,193 +787,30 @@
 }
 
 
+-(void)dealloc
+{
+    RELEASE(arrayDate);
+    self.dicAddress = nil;
+    [super dealloc];
+}
+         
+
+
 #pragma mark actions
--(void)tongyi:(id)sender
-{
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
-    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"1" sAlert:YES receive:self];
-    [request setTag:4];
-}
--(void)clickNoAgree:(id)sender
-{
-    NSString    *order = [[[dictRR objectForKey:@"order"] objectForKey:@"order_id"] description];
-    MagicRequest *request = [DYBHttpMethod order_confirm_msg_id:order type:@"2" sAlert:YES receive:self];
-    [request setTag:4];
-    
-}
+
 -(void)MakeSureBorrowBook:(id)sender
 {
-    MagicRequest *request = [DYBHttpMethod book_loan_order_id:self.orderID content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:@"ddd" sAlert:YES receive:self];
+    if ([_phoneInputNameR.nameField.text length] < 1)
+    {
+        iToast  *toast = [[iToast alloc] initWithText:@"请选择您的地址"];
+        [toast setGravity:iToastGravityCenter];
+        [toast show];
+        [toast release];
+        return;
+    }
+    MagicRequest *request = [DYBHttpMethod book_loan_order_id:self.orderID content:_phoneInputNameRSend.nameField.text loan_time:[self stringFromDate:[NSDate date]] address:_phoneInputNameR.nameField.text sAlert:YES receive:self];
     [request setTag:2];
     
-}
--(void)MakeSureReceiveBook:(id)sender
-{
-    MagicRequest *request = [DYBHttpMethod book_order_receiptbook:self.orderID sAlert:YES receive:self];
-    [request setTag:200];
-    
-}
--(void)returnBook:(id)sender
-{
-    MagicRequest *request = [DYBHttpMethod book_order_launchbook:self.orderID sAlert:YES receive:self];
-    [request setTag:400];
-    
-}
--(void)MakeSureReturn:(id)sender
-{
-    MagicRequest *request = [DYBHttpMethod book_order_confirmationbook:self.orderID sAlert:YES receive:self];
-    [request setTag:500];
-    
-}
-
-
--(void)createBtnAccordStatus:(int)orderstatus
-{
-    
-    self.rightButton.hidden = YES;
-    UIView *tt = [self.headview viewWithTag:100];
-    if (!tt) {
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(220.0f, 20, 100.0f, 44.0f)];
-        [view setTag:100];
-        [view setBackgroundColor:[UIColor clearColor]];
-        [self.headview addSubview:view];
-        
-        
-        switch (orderstatus)
-        {
-            case 1:
-            {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 5,  40.0f,35.0f)];
-                [btn1 addTarget:self action:@selector(tongyi:) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"同意" forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-                
-                UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(50.0f, 5,  40.0f,35.0f)];
-                [btn2 addTarget:self action:@selector(clickNoAgree:) forControlEvents:UIControlEventTouchUpInside];
-                [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn2 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [btn2 setTitle:@"不" forState:UIControlStateNormal];
-                [view addSubview:btn2];
-                RELEASE(btn2);
-            }
-                break;
-            case 0:
-            {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(40.0f, 5,  50.0f,35.0f)];
-                [btn1 addTarget:self action:@selector(MakeSureBorrowBook:) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"确认" forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-            }
-                break;//
-            /*
-            case 2:
-            {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 10,  90.0f,44.0f)];
-                [btn1 addTarget:self action:@selector(MakeSureReceiveBook:) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"确认收到书" forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-            }
-                break;//确认收到书
-            case 4:
-            {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 40,  40.0f,44.0f)];
-                [btn1 addTarget:self action:@selector(returnBook:) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"还书" forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-            }
-                break;
-            case 5:
-            {
-                UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 10,  90.0f,44.0f)];
-                [btn1 addTarget:self action:@selector(MakeSureReturn:) forControlEvents:UIControlEventTouchUpInside];
-                [btn1 setTitle:@"确认归还" forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateNormal];
-                [btn1 setBackgroundImage:[UIImage imageNamed:@"top_bt_bg"] forState:UIControlStateHighlighted];
-                [view addSubview:btn1];
-                RELEASE(btn1);
-            }
-                break;//确认收到书确认归还*/
-                
-            default:
-                tt.hidden = YES;
-                break;
-        }
-    }
-    
-}
-
-
--(void)setRightNavAccordStatus:(int)orderStatus
-{
-    
-    UIView *tt = [self.headview viewWithTag:100];
-    order_status = orderStatus;
-    DLogInfo(@"orderStatus:%dmyuserID:%@",orderStatus,SHARED.userId);
-    if (orderStatus == 1 )
-    {
-        
-        if (toUserID  != [SHARED.userId intValue])
-        {
-            tt.hidden = YES;
-            return;
-        }
-        [self createBtnAccordStatus:order_status];
-       
-        
-    }else if (orderStatus == 0)
-    {
-     
-        [self createBtnAccordStatus:order_status];
-        
-    }else if(orderStatus == 2)
-    {
-        if (fromUserID == [SHARED.userId intValue])
-        {
-        
-            [self createBtnAccordStatus:order_status];
-        }else
-        {
-            [self.rightButton setHidden:YES];
-        }
- 
-    }else if(orderStatus == 4)
-    {
-        
-        if (fromUserID == [SHARED.userId intValue])
-        {
-            [self createBtnAccordStatus:order_status];
-        }else
-        {
-            [self.rightButton setHidden:YES];
-        }
-    }else if(orderStatus == 5)
-    {
-        
-        if (toUserID == [SHARED.userId intValue])
-        {
-   
-            [self createBtnAccordStatus:order_status];
-        }else
-        {
-            [self.rightButton setHidden:YES];
-        }
-    }else
-    {
-            UIView  *view = [self.headview viewWithTag:100];
-            view.hidden = YES;
-    }
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
 

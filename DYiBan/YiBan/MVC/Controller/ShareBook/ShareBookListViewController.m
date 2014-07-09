@@ -18,7 +18,10 @@
 #import "ShareBookOrderCommentController.h"
 #import "DYBTwoDimensionCodeViewController.h"
 #import "ShareBookOrderDetailViewController.h"
+#import "DYBDataBankTopRightCornerView.h"
+#import "PublicUtl.h"
 
+#define  RIGHTMENUVIEWTAG 3265523
 @interface ShareBookListViewController (){
 
 
@@ -29,6 +32,9 @@
     int             m_iCurrentPage;
     int             m_ipageNum;
     BOOL            m_bIsLoading;
+    
+    int             m_iOrderStatus;     //图书状态
+    
 
 }
 
@@ -50,6 +56,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
 	// Do any additional setup after loading the view.
 }
 
@@ -59,6 +66,36 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+
+
+- (void)handleViewSignal_DYBDataBankTopRightCornerView:(MagicViewSignal *)signal
+{
+    
+    if ([signal is:[DYBDataBankTopRightCornerView TOUCHSINGLEBTN]]) {
+        
+        UIView *viewR = [self.view viewWithTag:RIGHTMENUVIEWTAG];
+        if (viewR) {
+            [viewR setHidden:YES];
+        }
+        NSNumber *num = (NSNumber *)[signal object];
+        if (m_iOrderStatus == [num intValue]-1)
+        {
+            return;
+        }
+        m_iOrderStatus = [num intValue]-1;
+        m_iCurrentPage = 1;
+        m_ipageNum = 20;
+        m_bHasNext = NO;
+        [m_dataArray removeAllObjects];
+        [self requestOrderList];
+        
+        //        ShareDouViewController
+        
+    }
+    
+    
+}
 
 
 
@@ -122,10 +159,7 @@
         controller.bookName = [[dicData valueForKey:@"book"] valueForKey:@"book_name"];
         [self.drNavigationController pushViewController:controller animated:YES];
         [controller release];
-        /*
-        ShareBookCommentController  *controller = [[ShareBookCommentController alloc] init];
-        controller.pubID = [[dicData valueForKey:@"book"] valueForKey:@"pub_id"];
-        [self.drNavigationController pushViewController:controller animated:YES];*/
+
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKEVULUATEBROWWER]])
     {
         
@@ -187,35 +221,71 @@
     }
 }
 
+
+- (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
+{
+    if ([signal is:[DYBBaseViewController BACKBUTTON]])
+    {
+        [self.drNavigationController popViewControllerAnimated:YES];
+        
+    }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
+        
+        
+    
+        UIView *viewR = [self.view viewWithTag:RIGHTMENUVIEWTAG];
+        if (!viewR) {
+            
+            
+            NSMutableArray  *arrayTitle = [NSMutableArray array];
+            for (int i = 0; i < 8; i++)
+            {
+                [arrayTitle addObject:[PublicUtl getStatusStringByStatus:i]];
+            }
+            DYBDataBankTopRightCornerView *rightV = [[DYBDataBankTopRightCornerView alloc]initWithFrame:CGRectMake(320.0f - 140, self.headHeight, 135, 20*arrayTitle.count) arrayResult:arrayTitle target:self];
+            [rightV setBackgroundColor:[UIColor clearColor]];
+            [rightV setTag:RIGHTMENUVIEWTAG];
+            [self.view addSubview:rightV];
+            RELEASE(rightV);
+
+            
+        }else{
+            
+            viewR.hidden == YES ? [viewR setHidden:NO] : [viewR setHidden:YES];
+            
+        }
+        
+    }
+}
+
+
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
     
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
-        //        [self.rightButton setHidden:YES];
+
         [self.headview setTitle:@"图书"];
         if (self.headTitle)
         {
             [self.headview setTitle:self.headTitle];
         }
-        
-        
-        //        [self.leftButton setHidden:YES];
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
-        //        [self setButtonImage:self.rightButton setImage:@"home"];
+        [self setButtonImage:self.rightButton setImage:@"menu"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
+        m_iOrderStatus = -10;
         
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-        [self.rightButton setHidden:YES];
-        
+        if (self.type == 0)
+        {
+            [self.rightButton setHidden:YES];
+        }
+      
+        m_iOrderStatus = -10;
         [self.view setBackgroundColor:[UIColor whiteColor]];
-        
-//        arraySouce = [[NSMutableArray alloc]initWithObjects:@"上架图书",@"借入图书",@"借出图书",@"旅行中的图书",@"预借中的图书", nil];
-        
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.view.frame.size.height)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [viewBG setBackgroundColor:[UIColor whiteColor]];
@@ -265,30 +335,43 @@
 
 -(void)requestOrderList
 {
+    
+    
     m_bIsLoading = YES;
     MagicRequest *request = nil;
-    switch (self.type)
+    if (m_iOrderStatus < 0)
     {
-        case 0:
-            request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
-            break;
-        case 1:
-            request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"0" sAlert:YES receive:self];
-            break;
-        case 2:
-            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"0" sAlert:YES receive:self];
-            break;
-        case 7:
-        case 3:
-            self.type = 7;
-            request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
-            break;
-            
-        default:
-            break;
+       
+        switch (self.type)
+        {
+            case 0:
+                request = [DYBHttpMethod shareBook_user_booklist_user_id:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] sAlert:YES receive:self];
+                break;
+            case 1:
+                request = [DYBHttpMethod order_list_kind:@"1" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
+                break;
+            case 2:
+                request = [DYBHttpMethod order_list_kind:@"2" page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:nil sAlert:YES receive:self];
+                break;
+            case 7:
+            case 3:
+                self.type = 7;
+                request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:@"7" sAlert:YES receive:self];
+                break;
+                
+            default:
+                break;
+        }
+        
+        request.tag = self.type+1;
+        
+    }else
+    {
+        
+         request = [DYBHttpMethod order_list_kind:nil page:[@(m_iCurrentPage) description] num:[@(m_ipageNum) description] orderType:@"1" orderStatus:[@(m_iOrderStatus) description] sAlert:YES receive:self];
+        request.tag = 40;
     }
-    
-    request.tag = self.type+1;
+
 }
 
 #pragma mark- 只接受UITableView信号
@@ -367,10 +450,23 @@
             
         }else
         {
-            ShareBookOrderDetailViewController *bookApply = [[ShareBookOrderDetailViewController alloc]init];
-            bookApply.orderID = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
-            [self.drNavigationController pushViewController:bookApply animated:YES];
-            RELEASE(bookApply);
+            
+            
+            NSDictionary    *dicOrder = m_dataArray[indexPath.row];
+            if ([[dicOrder valueForKey:@"order_status"] intValue] == 0)
+            {
+                ShareBookApplyViewController *bookApply = [[ShareBookApplyViewController alloc]init];
+                bookApply.orderID = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
+                [self.drNavigationController pushViewController:bookApply animated:YES];
+                RELEASE(bookApply);
+                
+            }else
+            {
+                ShareBookOrderDetailViewController *bookDetail = [[ShareBookOrderDetailViewController alloc]init];
+                bookDetail.orderID = [m_dataArray[indexPath.row] valueForKey:@"order_id"];
+                [self.drNavigationController pushViewController:bookDetail animated:YES];
+                RELEASE(bookDetail);
+            }
             
         }
   
@@ -676,6 +772,37 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                 }
             }
+        }else if (request.tag == 40)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    
+                    
+                    //                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"book_list"];
+                    
+                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] intValue];
+                    m_bIsLoading = NO;
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                    }
+                    [m_dataArray addObjectsFromArray:[[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"order_list"]]];
+                    
+                    [tbDataBank11 reloadData];
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
         }
 
         

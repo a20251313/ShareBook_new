@@ -17,7 +17,7 @@
     switch (status)
     {
         case 0:
-            strReturn = @"订单已完成";
+            strReturn = @"订单未确认";
             break;
         case 1:
             strReturn = @"待书主同意";

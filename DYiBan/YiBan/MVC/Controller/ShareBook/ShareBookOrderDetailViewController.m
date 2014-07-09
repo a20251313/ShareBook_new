@@ -136,8 +136,6 @@
     [btnBorrow setTag:102];
     [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
     [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
-    [btnBorrow setBackgroundColor:[UIColor yellowColor]];
-    
     [self addlabel_title:btnName frame:btnBorrow.frame view:btnBorrow textColor:[UIColor whiteColor]];
     [btnBorrow addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [btnBorrow autorelease];
@@ -148,7 +146,7 @@
 {
     int orderStatus = [[[m_dictOrdeDeatil objectForKey:@"order"] objectForKey:@"order_status"] intValue];
     order_status = orderStatus;
-    if (order_status < 1)
+    if (order_status < 0)
     {
         return NO;
     }
@@ -156,13 +154,29 @@
     CGFloat fwidth = superView.frame.size.width;
     switch (orderStatus)
     {
+        case 0:
+        {
+            if (fromUserID == [SHARED.userId intValue])
+            {
+                UIButton    *btnAggree = [self getBtnWithName:@"确认订单" sel:@selector(makeSureOrder:) frame:CGRectMake(10,10, fwidth-20, 40)];
+                [superView addSubview:btnAggree];
+           
+                
+            }else
+            {
+                return NO;
+            }
+        }
+            break;
         case 1:
         {
             UIButton    *btnAggree = [self getBtnWithName:@"同意借书" sel:@selector(tongyi:) frame:CGRectMake(10, 10, fwidth/2-20, 40)];
             [superView addSubview:btnAggree];
+         
             
             UIButton    *btnRefuse = [self getBtnWithName:@"拒绝" sel:@selector(clickNoAgree:) frame:CGRectMake(fwidth/2+10, 10, fwidth/2-20, 40)];
             [superView addSubview:btnRefuse];
+    
         }
             break;
         case 2:
@@ -171,6 +185,7 @@
             {
                 UIButton    *btnAggree = [self getBtnWithName:@"确认收到图书" sel:@selector(MakeSureReceiveBook:) frame:CGRectMake(10,10, fwidth-20, 40)];
                 [superView addSubview:btnAggree];
+        
                 
             }else
             {
@@ -184,6 +199,7 @@
             {
                 UIButton    *btnAggree = [self getBtnWithName:@"还书" sel:@selector(returnBook:) frame:CGRectMake(10,10, fwidth-20, 40)];
                 [superView addSubview:btnAggree];
+         
                 
             }else
             {
@@ -197,6 +213,7 @@
             {
                 UIButton    *btnAggree = [self getBtnWithName:@"确认还书" sel:@selector(MakeSureReturn:) frame:CGRectMake(10,10, fwidth-20, 40)];
                 [superView addSubview:btnAggree];
+          
                 
             }else
             {
@@ -210,6 +227,7 @@
             {
                 UIButton    *btnAggree = [self getBtnWithName:@"评价" sel:@selector(commentBook:) frame:CGRectMake(10,10, fwidth-20, 40)];
                 [superView addSubview:btnAggree];
+             
                 
             }else
             {
@@ -219,14 +237,13 @@
             break;
         case 7:
         {
-           
-          
             return NO;
             
         }
             break;
             
         default:
+            return NO;
             break;
     }
 
@@ -811,6 +828,12 @@
     controller.bookName = [[[m_dictOrdeDeatil objectForKey:@"order"] objectForKey:@"book"] valueForKey:@"title"];
     [self.drNavigationController pushViewController:controller animated:YES];
     [controller release];
+    
+}
+
+
+-(void)makeSureOrder:(id)sender
+{
     
 }
 

@@ -7,10 +7,19 @@
 //
 
 #import "DYBDataBankTopRightCornerView.h"
-#define BTNWIDTH        90
+#define BINWIDTH        90
 #define BTNTAG          99
 #define MINIMAGEVIEWTAG 199
 #define HIGHIMG         8
+
+
+@interface DYBDataBankTopRightCornerView ()
+{
+
+    CGFloat m_fwidth;
+}
+@end
+
 
 @implementation DYBDataBankTopRightCornerView
 @synthesize arrayResult = _arrayResult,targetObj = _targetObj;
@@ -20,24 +29,27 @@ DEF_SIGNAL(TOUCHSINGLEBTN)
 
 - (id)initWithFrame:(CGRect)frame arrayResult:(NSArray *)result target:(id)target
 {
-    self = [super initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, BTNWIDTH, 88)]; //最少有2个 button
+    
+    self = [super initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 88)]; //最少有2个 button
     _targetObj = target;
     if (self) {
         // Initialization code
+         m_fwidth = frame.size.width;
         [self initViewArrayResult:result];
+        //m_fwidth = frame.size.width;
     }
     return self;
 }
 
 -(void)initViewArrayResult:(NSArray *)result{
 
-    UIImageView *topView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0, BTNWIDTH, HIGHIMG)];
+    UIImageView *topView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0, m_fwidth, HIGHIMG)];
     
     [self addSubview:topView];
     RELEASE(topView);
     [topView setImage:[UIImage imageNamed:@"rightslide_top"]];
     
-    UIImageView *minView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, HIGHIMG, BTNWIDTH, 88)];
+    UIImageView *minView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, HIGHIMG, m_fwidth, 88)];
     [minView setTag:MINIMAGEVIEWTAG];
     [minView setUserInteractionEnabled:YES];
     [minView setImage:[UIImage imageNamed:@"rightslide_mid"]];
@@ -47,7 +59,7 @@ DEF_SIGNAL(TOUCHSINGLEBTN)
     int offset = 44;
     for (int i = 1; i <= result.count; i++) {
         
-        MagicUIButton *btn = [[MagicUIButton alloc]initWithFrame:CGRectMake( 0, offset * (i - 1) + HIGHIMG, BTNWIDTH, 44)];
+        MagicUIButton *btn = [[MagicUIButton alloc]initWithFrame:CGRectMake( 0, offset * (i - 1) + HIGHIMG, m_fwidth, 44)];
         
         [btn addSignal:[DYBDataBankTopRightCornerView TOUCHBTN] forControlEvents:UIControlEventTouchUpInside object:btn];
         [btn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
@@ -76,14 +88,14 @@ DEF_SIGNAL(TOUCHSINGLEBTN)
         }
     }
 
-    [minView setFrame:CGRectMake(0.0f, HIGHIMG,BTNWIDTH ,offset * result.count + HIGHIMG)]; //重新设置minview 高度
+    [minView setFrame:CGRectMake(0.0f, HIGHIMG,m_fwidth ,offset * result.count + HIGHIMG)]; //重新设置minview 高度
 
-    UIImageView *footView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, minView.frame.origin.y + minView.frame.size.height, BTNWIDTH, HIGHIMG)];
+    UIImageView *footView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, minView.frame.origin.y + minView.frame.size.height, m_fwidth, HIGHIMG)];
     [footView setImage:[UIImage imageNamed:@"rightslide_foot"]];
     [self addSubview:footView];
     RELEASE(footView);
     
-    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, BTNWIDTH, footView.frame.origin.y + footView.frame.size.height)];
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, m_fwidth, footView.frame.origin.y + footView.frame.size.height)];
     
     
 }
