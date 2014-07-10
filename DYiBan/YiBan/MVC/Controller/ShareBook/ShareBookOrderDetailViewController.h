@@ -9,9 +9,5 @@
 #import "DYBBaseViewController.h"
 
 @interface ShareBookOrderDetailViewController : DYBBaseViewController<UITextFieldDelegate>
-@property (nonatomic,retain)NSDictionary *dictInfo;
 @property (nonatomic,retain)NSString *orderID;
-
-
--(void)setAddress:(NSString*)address;
 @end

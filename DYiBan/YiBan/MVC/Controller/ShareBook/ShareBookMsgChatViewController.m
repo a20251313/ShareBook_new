@@ -25,16 +25,8 @@
     
     DYBInputView *_phoneInputNameR;
     BOOL bKeyShow;
-    UIDatePicker *datePicker;
     DYBUITableView * tbDataBank11;
     NSMutableArray *arrayDate;
-    
-    NSDictionary *dictRR;
-
-    
-    int      order_status;
-    int      fromUserID;
-    int      toUserID;
 }
 
 @end
@@ -60,7 +52,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -100,7 +91,7 @@
         
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
-        RELEASE(tbDataBank11);
+      
         [self creatDownBar];
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
@@ -126,12 +117,7 @@
 
 -(void)doAddMessage:(NSNotification *)sender{
 
-    
-//initWithObjectsAndKeys:strDate,@"date",content,@"content",index, @"index",nil];
-    
 
-    
-    
     NSDictionary *dict = [sender object];
     NSString *centent = [[dict objectForKey:@"aps"] objectForKey:@"alert"];
     NSString *date = [self stringFromDate:[NSDate date]];
@@ -143,7 +129,7 @@
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease] ;
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *date=[formatter dateFromString:uiDate];
     return date;
@@ -191,7 +177,6 @@
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
     UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2 - offset, 320.0f, imageBG.size.height/2)];
     [viewBG setUserInteractionEnabled:YES];
-//    [viewBG setBackgroundColor:[UIColor redColor]];
     [viewBG setTag:201];
     [viewBG setImage:[UIImage imageNamed:@"down_options_bg"]];
     [self.view addSubview:viewBG];
@@ -266,6 +251,7 @@
         [cell creatCell:[arrayDate objectAtIndex:indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
+
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         
@@ -318,13 +304,9 @@
 
         MagicUITextField *filed = (MagicUITextField *)[signal source];
         [filed resignFirstResponder];
-        
         UIView *viewBg = [self.view viewWithTag:201];
         UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
         [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
-      
-
-        
     }
     
     
@@ -338,11 +320,9 @@
     
     if ([request succeed])
     {
-        //        JsonResponse *response = (JsonResponse *)receiveObj;
+
         if (request.tag == 1)
         {
-            
-            
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -382,7 +362,6 @@
                     NSString *strDate = [self stringFromDate:[NSDate date]];
                      
                      NSString *content = _phoneInputNameRSend.nameField.text;
-                    
                      NSDictionary *dictMessage = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",SHARED.userId, @"user_id",nil];
                      
                     [arrayDate insertObject:dictMessage atIndex:0];
@@ -415,7 +394,6 @@
 
     if ([textField isEqual:[_phoneInputNameRSend nameField]]) {
         [textField resignFirstResponder];
-        
         [self doSend];
     }
     
@@ -425,6 +403,8 @@
 -(void)dealloc
 {
     RELEASE(arrayDate);
+   // RELEASE(tbDataBank11);
+    self.dictInfo = nil;
     [super dealloc];
 }
 

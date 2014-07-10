@@ -34,7 +34,6 @@
     int             m_iPageNum;
     BOOL            m_bHasNext;
     BOOL            m_bIsLoading;
-    
     int             m_iOrderStatus;     //图书状态
     
 
@@ -85,7 +84,10 @@
         {
             return;
         }
+        
+
         m_iOrderStatus = [num intValue]-1;
+        self.headTitle = [PublicUtl getStatusStringByStatus:m_iOrderStatus];
         m_iCurrentPage = 1;
         m_iPageNum = 20;
         m_bHasNext = NO;
@@ -276,7 +278,7 @@
         [self setButtonImage:self.rightButton setImage:@"menu"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
-        m_iOrderStatus = -10;
+     
         
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
@@ -594,7 +596,7 @@
         
         if (self.type != 0)
         {
-            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 40, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 30, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
             if (btnOper)
             {
                 [cell addSubview:btnOper];

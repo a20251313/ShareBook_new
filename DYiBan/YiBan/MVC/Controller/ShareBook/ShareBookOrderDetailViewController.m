@@ -19,29 +19,18 @@
 #import "ShareBookOrderCommentController.h"
 
 @interface ShareBookOrderDetailViewController (){
-
-    UILabel *labelTime1;
     DYBInputView *_phoneInputNameRSend;
-    
-    DYBInputView *_phoneInputNameR;
-    BOOL bKeyShow;
-    UIDatePicker *datePicker;
     DYBUITableView * tbDataBank11;
     NSMutableArray *arrayDate;
-    
     NSMutableDictionary *m_dictOrdeDeatil;
-
-    
     int      order_status;
     int      fromUserID;
-    int      toUserID;
-    
 }
 
 @end
 
 @implementation ShareBookOrderDetailViewController
-@synthesize dictInfo,orderID;
+@synthesize orderID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -89,7 +78,6 @@
 
         
         arrayDate = [[NSMutableArray alloc]init];
-        bKeyShow = NO;
         [self.view setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
         
         [self requestOrderDetails];
@@ -639,7 +627,6 @@
                     [m_dictOrdeDeatil addEntriesFromDictionary:[dict objectForKey:@"data"]];
                     
                     fromUserID = [[[m_dictOrdeDeatil objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
-                    toUserID = [[[m_dictOrdeDeatil objectForKey:@"order"]objectForKey:@"to_userid"] intValue];
                     [self creatView:m_dictOrdeDeatil];
                 }
                 else{

@@ -154,7 +154,7 @@
     NSString *string = [[deviceToken description] stringByReplacingOccurrencesOfString:@"<" withString:@""];
 	string = [string stringByReplacingOccurrencesOfString:@">" withString:@""];
     SHARED.token = [NSString stringWithFormat:@"%@",string];
-    NSSet *arrr = [[NSSet alloc]initWithObjects:@"dddd", nil];
+  //  NSSet *arrr = [[NSSet alloc]initWithObjects:@"dddd", nil];
     [APService setTags:nil alias:SHARED.userId callbackSelector:nil object:nil];
 }
 
@@ -167,7 +167,7 @@
 {
     [APService handleRemoteNotification:userInfo];
     
-    NSMutableDictionary *apsDict = [userInfo objectForKey:@"aps"];
+   // NSMutableDictionary *apsDict = [userInfo objectForKey:@"aps"];
     
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateInactive)
     {
