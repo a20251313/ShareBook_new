@@ -96,7 +96,7 @@
       
         if (!_bEnter) {
             
-            MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"20" lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+            MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"2000" lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
             [request setTag:3];
         }
         
@@ -179,7 +179,7 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+
                     
                     
                     
@@ -239,7 +239,6 @@
 }
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
@@ -436,11 +435,8 @@ static NSString *cellName = @"cellName";
     if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]])
     {
         WOSMapViewController *map = [[WOSMapViewController alloc]init];
-//<<<<<<< HEAD
         map.bShowLeft = YES;
-//=======
         map.bEnter = YES;
-//>>>>>>> FETCH_HEAD
         [self.drNavigationController pushViewController:map animated:YES];
         RELEASE(map);
         

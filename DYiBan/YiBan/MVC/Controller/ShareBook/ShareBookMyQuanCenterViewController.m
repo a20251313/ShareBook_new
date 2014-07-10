@@ -60,6 +60,10 @@
 }
 
 
+
+
+
+
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
     
     DLogInfo(@"name -- %@",signal.name);
@@ -170,7 +174,7 @@
         
         [self addlabel_title:@"创建乐享圈" frame:btnOK.frame view:btnOK];
         
-        [self getCircleList];
+        [self getNearCircleList];
 //        [self creatDownBar];
         
         
@@ -190,6 +194,15 @@
         MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
     }
+}
+-(void)getNearCircleList
+{
+    
+    
+    MagicRequest *request = [DYBHttpMethod book_circle_nearby:SHARED.locationLng lat:SHARED.locationLat page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] range:@"100" sAlert:YES receive:self];
+    [request setTag:100];
+    
+    
 }
 
 -(void)setArrayResult:(NSMutableArray *)NewarrayResult
@@ -239,16 +252,43 @@
                 }
             }
             
-        } else{
+      } else if(request.tag == 100){
+          
+          NSDictionary *dict = [request.responseString JSONValue];
+          
+          if (dict) {
+              BOOL result = [[dict objectForKey:@"result"] boolValue];
+              if (!result) {
+                  
+                  
+                  if (!_arrayResult)
+                  {
+                      _arrayResult = [[NSMutableArray alloc] init];
+                  }
+                  [_arrayResult addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"cricle_list"]];
+                  m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] boolValue];
+                  [self resortDataInfo];
+                  [self finishReloadingData];
+              }
+              else{
+                  NSString *strMSG = [dict objectForKey:@"message"];
+                  
+                  [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                  
+                  
+              }
+          }
+          
+      }else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             
             [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-            
-            
         }
     }
 }
+
+//cricle_list
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
@@ -315,7 +355,6 @@
             NSDictionary *dict1 = [_arrayResult objectAtIndex:indexPath.row];
             
             [makesure.labelAutoQuan1 setText:[dict1 objectForKey:@"circle_name"]];
-#warning need pass a array of IDS
            // makesure.dictResult = dict1;
             [self.drNavigationController popViewControllerAnimated:YES];
             return;
@@ -378,11 +417,8 @@
     if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]])
     {
         WOSMapViewController *map = [[WOSMapViewController alloc]init];
-//<<<<<<< HEAD
         map.bShowLeft = YES;
-//=======
         map.bEnter = YES;
-//>>>>>>> FETCH_HEAD
         [self.drNavigationController pushViewController:map animated:YES];
         RELEASE(map);
         
@@ -533,7 +569,7 @@
         {
             m_bIsLoading = YES;
             m_iCurrentPage++;
-            [self getCircleList];
+            [self getNearCircleList];
         }
         
     });

@@ -17,6 +17,11 @@
 @interface WOSMapViewController ()<CLLocationManagerDelegate>{
     MapViewController*   _mapViewController;
     NSMutableArray *arrayResult;
+    
+    BOOL           m_bHasNext;
+    int            m_iCurrentPage;
+    int            m_iPageNum;
+
     }
 
 @end
@@ -60,7 +65,11 @@
         
         [self.view setBackgroundColor:[UIColor whiteColor]];
 
-        [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
+        if (self.bShowLeft)
+        {
+            [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
+        }
+       
         
         if (_bEnter) {
             
@@ -72,22 +81,33 @@
             [self setButtonImage:self.rightButton setImage:@"icon_list"];
         }
         
+        
+        
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
        
-        
-        
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:@"1" num:@"2000" lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
-        [request setTag:3];
-        
-        
-        
-     
+        m_iPageNum = 20;
+        m_iCurrentPage = 1;
+        if (!self.bShowLeft)
+        {
+            [self.leftButton setHidden:YES];
+        }
         int offset = 0;
         if (!IOS7_OR_LATER) {
             
             offset = 20;
         }
+      
+        
+        if (!_mapViewController)
+        {
+            _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, 0 , 320.0f, self.view.bounds.size.height)];
+            _mapViewController.delegate = self;
+            _mapViewController.target = self;
+            [self.view insertSubview:_mapViewController atIndex:0];
+            
+        }
+        
         
         UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 100 - offset, 280.0f, 44)];
         [btn setBackgroundColor:[UIColor clearColor]];
@@ -101,7 +121,14 @@
     
     else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+   
         
+        if (!arrayResult.count)
+        {
+            m_iCurrentPage = 1;
+            m_bHasNext = NO;
+            [self getCircleList];
+        }
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
@@ -109,6 +136,17 @@
     }
 }
 
+
+-(void)getCircleList
+{
+
+    
+    DLogInfo(@"----------------------\n\ngetCircleList:%@ %@\n\n\n",SHARED.locationLat,SHARED.locationLng);
+    MagicRequest *request = [DYBHttpMethod book_circle_nearby:SHARED.locationLng lat:SHARED.locationLat page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] range:@"100" sAlert:YES receive:self];
+    [request setTag:3];
+
+    
+}
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
@@ -204,23 +242,44 @@
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                     
-                    arrayResult  = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"list" ]];
+                    
+                    if (!arrayResult)
+                    {
+                        arrayResult = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"cricle_list" ]];
                     
                     NSMutableArray *array = [[NSMutableArray alloc]initWithCapacity:1000];
                     
                     for (NSDictionary *dictMap in arrayResult)
                     {
                     
-                    NSDictionary *dic1=[NSDictionary dictionaryWithObjectsAndKeys:[dictMap objectForKey:@"lat"],@"latitude",[dictMap objectForKey:@"lng"],@"longitude",[dictMap objectForKey:@"circle_id"],@"circle_id",nil];
+                        NSDictionary *dic1=[NSDictionary dictionaryWithObjectsAndKeys:[dictMap objectForKey:@"lat"],@"latitude",[dictMap objectForKey:@"lng"],@"longitude",[dictMap objectForKey:@"circle_id"],@"circle_id",nil];
                         [array addObject:dic1];
                     }
                     
-                    _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, 0 , 320.0f, self.view.bounds.size.height )];
-                    _mapViewController.delegate = self;
-                    _mapViewController.target = self;
-                    [self.view insertSubview:_mapViewController atIndex:0];
+                    
+                    if (!_mapViewController)
+                    {
+                        _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, 0 , 320.0f, self.view.bounds.size.height)];
+                        _mapViewController.delegate = self;
+                        _mapViewController.target = self;
+                        [self.view insertSubview:_mapViewController atIndex:0];
+                        
+                    }
+                    
+                    
+                    [_mapViewController setFrame:CGRectMake(0.0f, 0 , 320.0f, self.view.bounds.size.height)];
                     [_mapViewController resetAnnitations:array];
                     _mapViewController.arrayResuce = arrayResult;
+                    
+                    m_bHasNext = [[[dict objectForKey:@"data"] objectForKey:@"havenext"] boolValue];
+                    if (m_bHasNext)
+                    {
+                        m_iCurrentPage++;
+                        [self getCircleList];
+                    }
                     
                    
                 }

@@ -133,6 +133,22 @@
     }
 }
 
+
+
+- (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
+{
+    if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]])
+    {
+        MagicRequest    *request = [DYBHttpMethod book_circle_join:[self.dictInfo valueForKey:@"circle_id"] sAlert:YES receive:self];
+        request.tag = 200;
+    }else if ([signal is:[DYBBaseViewController BACKBUTTON]])
+    {
+        [self.drNavigationController popViewControllerAnimated:YES];
+    }
+    
+}
+
+
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
@@ -313,6 +329,27 @@
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                  
+                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"members"];
+                    arrayResult = [[NSMutableArray alloc]initWithArray:[dict1 allValues]];
+                    [tbDataBank11 reloadData];
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        }else if(request.tag == 100){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                BOOL result = [[dict objectForKey:@"result"] boolValue];
+                if (!result) {
+                    
                     NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"members"];
                     arrayResult = [[NSMutableArray alloc]initWithArray:[dict1 allValues]];
                     [tbDataBank11 reloadData];

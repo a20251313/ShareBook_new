@@ -70,12 +70,9 @@
         WOSMapViewController *map = [[WOSMapViewController alloc]init];
         map.bShowLeft = NO;
         [self.view addSubview:map.view];
-
         [map release];
         
         UIImage *image = [UIImage imageNamed:@"menu_inactive"];
-        
-        
         DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(image.size.width/2, 44, 320.0f - 50, self.view.frame.size.height -44  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor blackColor]];
 //        [self.view addSubview:tbDataBank11];
@@ -144,8 +141,8 @@ static NSString *cellName = @"cellName";
         [signal setReturnValue:cell];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+       // NSDictionary *dict = (NSDictionary *)[signal object];
+      //  NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
         
