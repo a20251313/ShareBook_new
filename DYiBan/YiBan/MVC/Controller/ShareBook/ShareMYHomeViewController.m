@@ -160,7 +160,7 @@
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:50];
+        NSNumber *s = [NSNumber numberWithInteger:55];
         [signal setReturnValue:s];
         
         
@@ -177,7 +177,7 @@
         [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
-        
+        [tbDataBank1 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         NSDictionary    *dict = (NSDictionary *)[signal object];

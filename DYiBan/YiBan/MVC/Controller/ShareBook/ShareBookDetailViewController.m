@@ -17,6 +17,7 @@
 #import "JSON.h"
 #import "UIImageView+WebCache.h"
 #import "ShareBookCircleCell.h"
+#import "ShareBookQuanDetailViewController.h"
 @interface ShareBookDetailViewController ()
 {
     UILabel         *labelNum;
@@ -73,11 +74,12 @@
         [self setButtonImage:self.rightButton setImage:@"top_bt_bg" strTitle:@"书主"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
-        m_iInfoTag = 0;
+      
         
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
 
+        m_iInfoTag = 0;
         [self.view setBackgroundColor:[UIColor whiteColor]];
         MagicRequest *request = [DYBHttpMethod shareBook_book_detail_pub_id:[_dictInfo objectForKey:@"pub_id"] sAlert:YES receive:self];
         [request setTag:2];
@@ -101,7 +103,7 @@
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        
+        tbDataBank11.hidden = YES;
         [self requestBookComment];
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -440,11 +442,18 @@
     
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-      //  NSDictionary *dict = (NSDictionary *)[signal object];
-    //    NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+        NSDictionary *dict = (NSDictionary *)[signal object];
+        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
-        
+        if (m_iInfoTag == 2)
+        {
+            ShareBookQuanDetailViewController *detail = [[ShareBookQuanDetailViewController alloc]init];
+            detail.dictInfo = [arrayCircles objectAtIndex:indexPath.row];
+            [self.drNavigationController pushViewController:detail animated:YES];
+            RELEASE(detail);
+        }
+     
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
         

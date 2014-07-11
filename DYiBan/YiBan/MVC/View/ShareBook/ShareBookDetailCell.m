@@ -45,7 +45,7 @@
     [self addSubview:labelName];
     [labelName release];
     
-    WOSStarView *star = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame) + CGRectGetWidth(labelName.frame), 5, 100, 20) num:4] ;
+    WOSStarView *star = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame) + CGRectGetWidth(labelName.frame), 5, 100, 20) num:[[dicInfo valueForKey:@"points"] intValue]] ;
     [self addSubview:star];
     RELEASE(star);
     

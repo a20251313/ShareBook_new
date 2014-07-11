@@ -42,7 +42,7 @@
     [self addSubview:labelName];
     [labelName release];
     
-    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 10, 25, 240, 20)];
+    UILabel *labelMSG = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 10, 30, 240, 20)];
     [labelMSG setText:[dict objectForKey:@"content"]];
     [labelMSG setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelMSG setFont:[UIFont systemFontOfSize:12]];
@@ -63,7 +63,7 @@
     
     [self setBackgroundColor:[UIColor colorWithRed:246.0f/255 green:246.0f/255 blue:246.0f/255 alpha:1.0f]];
     
-    UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 50-1, 320.0f, 1)];
+    UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 55-1, 320.0f, 1)];
     [imageLine setImage:[UIImage imageNamed:@"line3"]];
     [self addSubview:imageLine];
     [imageLine release];
