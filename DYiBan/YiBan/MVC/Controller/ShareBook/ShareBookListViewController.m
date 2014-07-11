@@ -22,6 +22,7 @@
 #import "PublicUtl.h"
 #import "EGORefreshTableFooterView.h"
 
+
 #define  RIGHTMENUVIEWTAG 3265523
 @interface ShareBookListViewController ()<EGORefreshTableDelegate>{
 
@@ -89,7 +90,7 @@
         m_iOrderStatus = [num intValue]-1;
         self.headTitle = [PublicUtl getStatusStringByStatus:m_iOrderStatus];
         m_iCurrentPage = 1;
-        m_iPageNum = 20;
+        m_iPageNum = 25;
         m_bHasNext = NO;
         [m_dataArray removeAllObjects];
         [self requestOrderList];
@@ -241,7 +242,7 @@
             
             
             NSMutableArray  *arrayTitle = [NSMutableArray array];
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 [arrayTitle addObject:[PublicUtl getStatusStringByStatus:i]];
             }
@@ -325,7 +326,7 @@
         
         
         
-        m_iPageNum = 20;
+        m_iPageNum = 25;
         m_iCurrentPage = 1;
         [m_dataArray removeAllObjects];
  
@@ -682,7 +683,13 @@
     
 }
 
-
+-(void)refreshData
+{
+    [PublicUtl addHUDviewinView:self.view];
+    m_iCurrentPage = 0;
+    [m_dataArray removeAllObjects];
+    [self requestOrderList];
+}
 
 /*if (scrollView.contentOffset.y+(scrollView.frame.size.height) > scrollView.contentSize.height+REFRESH_REGION_HEIGHT  && !_loading) {
 
@@ -712,6 +719,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
         if (request.tag == 1) {
             
             
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -743,6 +751,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             }
         }else if (request.tag == 2)
         {
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -775,6 +784,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             
         }else if (request.tag == 3)
         {
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -805,6 +815,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             [self finishReloadingData];
         }else if (request.tag == 8)
         {
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -841,6 +852,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                   [DYBShareinstaceDelegate popViewText:@"确认收到书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -858,6 +870,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"确认归还图书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -875,6 +888,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                           [DYBShareinstaceDelegate popViewText:@"评论成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                     [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -892,6 +906,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"评论借书人成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                     [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -910,6 +925,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -927,6 +943,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"提醒还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -944,6 +961,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     [DYBShareinstaceDelegate popViewText:@"还书成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
                     
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -955,6 +973,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             }
         }else if (request.tag == 40)
         {
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {

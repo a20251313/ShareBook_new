@@ -158,12 +158,22 @@
             break;
         case 1:
         {
-            UIButton    *btnAggree = [self getBtnWithName:@"同意借书" sel:@selector(tongyi:) frame:CGRectMake(10, 10, fwidth/2-20, 40)];
-            [superView addSubview:btnAggree];
-         
+            if (fromUserID != [SHARED.userId intValue])
+            {
+                UIButton    *btnAggree = [self getBtnWithName:@"同意借书" sel:@selector(tongyi:) frame:CGRectMake(10, 10, fwidth/2-20, 40)];
+                [superView addSubview:btnAggree];
+                
+                
+                UIButton    *btnRefuse = [self getBtnWithName:@"拒绝" sel:@selector(clickNoAgree:) frame:CGRectMake(fwidth/2+10, 10, fwidth/2-20, 40)];
+                [superView addSubview:btnRefuse];
+                
+                
+            }else
+            {
+                return NO;
+            }
             
-            UIButton    *btnRefuse = [self getBtnWithName:@"拒绝" sel:@selector(clickNoAgree:) frame:CGRectMake(fwidth/2+10, 10, fwidth/2-20, 40)];
-            [superView addSubview:btnRefuse];
+        
     
         }
             break;

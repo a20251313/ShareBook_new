@@ -2252,12 +2252,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     [dict setValue:num forKey:@"num"];
     [dict setValue:page forKey:@"page"];
     [dict setValue:orderType forKey:@"order_type"];
-    
-    if (ordet_satus && [ordet_satus intValue] > 0)
-    {
-          [dict setValue:ordet_satus forKeyPath:@"order_status"];
-    }
-  
+    [dict setValue:ordet_satus forKeyPath:@"order_status"];
 //    [dict setValue:content forKey:@"content"];
     [dict setValue:@"order_list" forKey:INTERFACEDOACTION];
     return dict;
