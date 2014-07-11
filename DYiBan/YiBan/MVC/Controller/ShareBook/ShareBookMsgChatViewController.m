@@ -117,14 +117,31 @@
 
 -(void)doAddMessage:(NSNotification *)sender{
 
-
+    
     NSDictionary *dict = [sender object];
     NSString *centent = [[dict objectForKey:@"aps"] objectForKey:@"alert"];
     NSString *date = [self stringFromDate:[NSDate date]];
-    NSString *type = @"2";
-    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"date",type,@"index", nil];
+    NSString *userID = [dict valueForKey:@"ui"];
+    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"time",userID,@"user_id", nil];
     [arrayDate addObject:dictt];
-    [tbDataBank11 reloadData];
+    [self resortByTime];
+}
+
+-(void)resortByTime
+{
+    [arrayDate sortUsingComparator:^NSComparisonResult(id obj1,id obj2){
+        NSString  *strTimeInt1 = [obj1 valueForKey:@"time"];
+        NSString  *strTimeInt2 = [obj2 valueForKey:@"time"];
+        if ([strTimeInt1 doubleValue] >= [strTimeInt2 doubleValue])
+        {
+            return NSOrderedDescending;
+        }else
+        {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+     [tbDataBank11 reloadData];
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -336,7 +353,7 @@
                     }
                     [arrayDate addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"arr"]];
                     
-                    [tbDataBank11 reloadData];
+                    [self resortByTime];
 
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
@@ -364,8 +381,8 @@
                      NSString *content = _phoneInputNameRSend.nameField.text;
                      NSDictionary *dictMessage = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",SHARED.userId, @"user_id",nil];
                      
-                    [arrayDate insertObject:dictMessage atIndex:0];
-                    [tbDataBank11 reloadData];
+                    [arrayDate addObject:dictMessage];
+                    [self resortByTime];
                     [_phoneInputNameRSend.nameField setText:@""];
                     
                     

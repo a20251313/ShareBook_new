@@ -379,20 +379,20 @@
     
     [self creatDownBar];
 
-    [tbDataBank11 reloadData];
+    [self resortByTime];
     
 }
 
 -(void)doAddMessage:(NSNotification *)sender{
 
-
+    
     NSDictionary *dict = [sender object];
     NSString *centent = [[dict objectForKey:@"aps"] objectForKey:@"alert"];
     NSString *date = [self stringFromDate:[NSDate date]];
-    NSString *type = @"2";
-    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"date",type,@"index", nil];
+    NSString *userID = [dict valueForKey:@"ui"];
+    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"time",userID,@"user_id", nil];
     [arrayDate addObject:dictt];
-    [tbDataBank11 reloadData];
+    [self resortByTime];
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -403,6 +403,22 @@
     return date;
 }
 
+-(void)resortByTime
+{
+    [arrayDate sortUsingComparator:^NSComparisonResult(id obj1,id obj2){
+        NSString  *strTimeInt1 = [obj1 valueForKey:@"time"];
+        NSString  *strTimeInt2 = [obj2 valueForKey:@"time"];
+        if ([strTimeInt1 doubleValue] >= [strTimeInt2 doubleValue])
+        {
+            return NSOrderedDescending;
+        }else
+        {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+    [tbDataBank11 reloadData];
+}
 
 
 
@@ -608,8 +624,8 @@
                     NSString *userID = SHARED.userId;
                     
                     NSDictionary *dictTempInfo = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",userID, @"user_id",nil];
-                    [arrayDate insertObject:dictTempInfo atIndex:0];
-                    [tbDataBank11 reloadData];
+                    [arrayDate  addObject:dictTempInfo];
+                    [self resortByTime];
                     [_phoneInputNameRSend.nameField setText:@""];
 
 

@@ -174,7 +174,7 @@
 
 -(NSString*)getDateFormatFormTimeinter:(NSDate*)time
 {
-    return [NSString stringWithFormat:@"%f",[time timeIntervalSince1970]];
+    return [NSString stringWithFormat:@"%lf",[time timeIntervalSince1970]];
 }
 
 
@@ -321,20 +321,21 @@
     
     [self creatDownBar];
     
-    [tbDataBank11 reloadData];
+    [self resortByTime];
     
 }
 
 -(void)doAddMessage:(NSNotification *)sender{
 
-
+ DLogInfo(@"++++++++++++++++++++doAddMessage: [sender userInfo] %@ \n [sender object]:%@",[sender userInfo],[sender object]);
+    
     NSDictionary *dict = [sender object];
     NSString *centent = [[dict objectForKey:@"aps"] objectForKey:@"alert"];
-    NSString *date = [self stringFromDate:[NSDate date]];
-    NSString *type = @"2";
-    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"date",type,@"index", nil];
+    NSString *date = [self getDateFormatFormTimeinter:[NSDate date]];
+    NSString *userID = [dict valueForKey:@"ui"];
+    NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"time",userID,@"user_id", nil];
     [arrayDate addObject:dictt];
-    [tbDataBank11 reloadData];
+    [self resortByTime];
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -343,6 +344,24 @@
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *date=[formatter dateFromString:uiDate];
     return date;
+}
+
+
+-(void)resortByTime
+{
+    [arrayDate sortUsingComparator:^NSComparisonResult(id obj1,id obj2){
+        NSString  *strTimeInt1 = [obj1 valueForKey:@"time"];
+        NSString  *strTimeInt2 = [obj2 valueForKey:@"time"];
+        if ([strTimeInt1 doubleValue] >= [strTimeInt2 doubleValue])
+        {
+            return NSOrderedDescending;
+        }else
+        {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+    [tbDataBank11 reloadData];
 }
 
 
@@ -687,7 +706,7 @@
                     
                     NSDictionary *dict = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",index, @"user_id",nil];
                     [arrayDate addObject:dict];
-                    [tbDataBank11 reloadData];
+                    [self resortByTime];
                     [_phoneInputNameRSend.nameField setText:@""];
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
