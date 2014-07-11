@@ -379,7 +379,7 @@
                     NSString *strDate = [self stringFromDate:[NSDate date]];
                      
                      NSString *content = _phoneInputNameRSend.nameField.text;
-                     NSDictionary *dictMessage = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",SHARED.userId, @"user_id",nil];
+                     NSDictionary *dictMessage = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",SHARED.userId, @"user_id",nil];
                      
                     [arrayDate addObject:dictMessage];
                     [self resortByTime];

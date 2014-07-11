@@ -81,10 +81,7 @@
     NSString *userID = [dict objectForKey:@"user_id"];
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(0,5, 320, 21.0f)];
     [labelTime setBackgroundColor:[UIColor clearColor]];
-    if ([dict objectForKey:@"date"])
-    {
-          [labelTime setText:[self getDateString:[dict objectForKey:@"date"]]];
-    }else if ([dict objectForKey:@"time"])
+    if ([dict objectForKey:@"time"])
     {
             [labelTime setText:[self getDateString:[dict objectForKey:@"time"]]];
     }

@@ -623,7 +623,7 @@
                     NSString *content = _phoneInputNameRSend.nameField.text;
                     NSString *userID = SHARED.userId;
                     
-                    NSDictionary *dictTempInfo = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"date",content,@"content",userID, @"user_id",nil];
+                    NSDictionary *dictTempInfo = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",userID, @"user_id",nil];
                     [arrayDate  addObject:dictTempInfo];
                     [self resortByTime];
                     [_phoneInputNameRSend.nameField setText:@""];
