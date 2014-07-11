@@ -274,80 +274,66 @@
     
     
     UISearchBar *bar = (UISearchBar*)[self.view viewWithTag:3000];
-    if ([bar.text length] < 1)
-    {
-        [self toastWithText:@"请输入搜索关键字"];
-        return NO;
-    }
-    
-    
+
+
     ShareBookDownView  *view1 = (ShareBookDownView*)[self.view viewWithTag:3001];
     NSString    *textrange = [view1 getTextValue];
-    if (textrange.length < 1)
-    {
-        [self toastWithText:@"请选择图书范围!"];
-        return NO;
-    }
+
     ShareBookDownView  *view2 = (ShareBookDownView*)[self.view viewWithTag:3002];
     NSString    *textCate = [view2 getTextValue];
-    if (textCate.length < 1)
-    {
-        [self toastWithText:@"请选择图书类别!"];
-        return NO;
-    }
+
     
  
     
     ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
     NSString    *textState = [view3 getTextValue];
-    if (textState.length < 1)
-    {
-        [self toastWithText:@"请选择图书状态!"];
-        return NO;
-    }
+
     ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
     NSString    *textway = [view4 getTextValue];
-    if (textway.length < 1)
+
+    
+    if ([textway length] ||
+        [textState length] ||
+        [textCate length] ||
+        [textrange length] ||
+        [bar.text length]
+        )
     {
-        [self toastWithText:@"请选择图书借出方式!"];
+        self.dataModel.keyword = bar.text;
+        
+        if ([textrange isEqualToString:@"生活圈"])
+        {
+            self.dataModel.kind = @"1";
+        }else if ([textrange isEqualToString:@"好友"])
+        {
+            self.dataModel.kind = @"2";
+        }
+        
+        if ([textState isEqualToString:@"可借阅"])
+        {
+            self.dataModel.loanstatus= @"1";
+        }else if ([textState isEqualToString:@"不可借阅"])
+        {
+            self.dataModel.loanstatus = @"0";
+        }
+        
+        self.dataModel.tagid = [view2 getChooseIndexValue];
+        
+        if ([textway isEqualToString:@"做客"])
+        {
+            self.dataModel.loanway = @"1";
+        }else if ([textway isEqualToString:@"旅行"])
+        {
+            self.dataModel.loanway = @"2";
+        }
+        
+        
+    }else
+    {
+        [self toastWithText:@"请至少选择一种查询方式!"];
         return NO;
     }
-    
-    /*
-    @property(nonatomic,strong)NSString *cirleID;
-    @property(nonatomic,strong)NSString *loanstatus;
-    @property(nonatomic,strong)NSString *keyword;
-    @property(nonatomic,strong)NSString *loanway;
-    @property(nonatomic,strong)NSString *tagid;
-    @property(nonatomic,strong)NSString *kind;
-    */
-    self.dataModel.keyword = bar.text;
-    
-    if ([textrange isEqualToString:@"生活圈"])
-    {
-        self.dataModel.kind = @"1";
-    }else if ([textrange isEqualToString:@"好友"])
-    {
-        self.dataModel.kind = @"2";
-    }
-    
-    if ([textState isEqualToString:@"可借阅"])
-    {
-        self.dataModel.loanstatus= @"1";
-    }else if ([textState isEqualToString:@"不可借阅"])
-    {
-        self.dataModel.loanstatus = @"0";
-    }
-    
-    self.dataModel.tagid = [view2 getChooseIndexValue];
-    
-    if ([textway isEqualToString:@"做客"])
-    {
-        self.dataModel.loanway = @"1";
-    }else if ([textway isEqualToString:@"旅行"])
-    {
-        self.dataModel.loanway = @"2";
-    }
+
     
     return YES;
 }

@@ -87,52 +87,22 @@
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-        
-        UIImage *image1 = [UIImage imageNamed:@"down_options_bg"];
-        
-        UIImageView *imageNum1 = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 5.0f + self.headHeight + 160, 320.0f, 60)];
-        [imageNum1 setImage:image1];
-        [self.view addSubview:imageNum1];
-        imageNum1.userInteractionEnabled = YES;
-        [imageNum1 release];
-        
-        UILabel *labelNum3  = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 3, 100.0f, 40)];
-        [labelNum3 setText:@"内容简介："];
-        [labelNum3 sizeToFit];
-        [imageNum1 addSubview:labelNum3];
-        RELEASE(labelNum3);
-
-        
-        textContent = [[UITextView alloc]initWithFrame:CGRectMake(110.0f, 3.0f , 210.0f, 53)];
-        [textContent setText:@"图书很好看，图书很好看图书很好看评主评论："];
-        [textContent setBackgroundColor:[UIColor clearColor]];
-        [textContent setFont:[UIFont systemFontOfSize:14]];
-        [textContent setEditable:NO];
-        [imageNum1 addSubview:textContent];
-
-        
-        
-        
+                
         UIImage *image = [UIImage imageNamed:@"down_options_bg"];
-        
-        UIImageView *imageNum = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 5.0f + self.headHeight + 210, 320.0f, 40)];
+        UIImageView *imageNum = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 5.0f + self.headHeight + 160, 320.0f, 40)];
         [imageNum setImage:image];
         [self.view addSubview:imageNum];
         [imageNum release];
         [self createTabListView:imageNum];
     
 
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, 5.0f + self.headHeight + 210 + 40, 320.0f, self.view.frame.size.height-250-self.headHeight-50) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, 5.0f + self.headHeight + 200, 320.0f, self.view.frame.size.height-200-self.headHeight-50) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
         [self requestBookComment];
-       // [self creatDownBar];
-        
-        
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
         DLogInfo(@"rrr");
@@ -143,11 +113,29 @@
 }
 
 
-
+-(void)setSummarContent
+{
+    UITextView  *mytextContent = (UITextView*)[self.view viewWithTag:999];
+    if (!mytextContent)
+    {
+        mytextContent = [[UITextView alloc] initWithFrame:tbDataBank11.frame];
+        [mytextContent setBackgroundColor:[UIColor clearColor]];
+        [mytextContent setFont:[UIFont systemFontOfSize:14]];
+        [mytextContent setEditable:NO];
+        mytextContent.tag = 999;
+        [self.view addSubview:mytextContent];
+        [mytextContent release];
+    }
+    
+    [mytextContent setFrame:tbDataBank11.frame];
+    [mytextContent.superview bringSubviewToFront:mytextContent];
+    [mytextContent setText:[self.dictInfo valueForKey:@"summary"]];
+    mytextContent.hidden = NO;
+    
+}
 -(void)clickSelectInfo:(UIButton*)sender
 {
     m_iInfoTag = sender.tag-10;
-    
     for (int i = 0;i < 3;i++)
     {
         UIButton    *btn = (UIButton*)[sender.superview viewWithTag:10+i];
@@ -155,34 +143,16 @@
     }
     
     [sender setSelected:YES];
-    if (m_iInfoTag != 1)
+    if (m_iInfoTag != 0)
     {
         tbDataBank11.hidden = NO;
          UITextView  *mytextContent = (UITextView*)[self.view viewWithTag:999];
         mytextContent.hidden = YES;
         [tbDataBank11 reloadData];
-        
     }else
     {
         tbDataBank11.hidden = YES;
-        
-        UITextView  *mytextContent = (UITextView*)[self.view viewWithTag:999];
-        if (!mytextContent)
-        {
-            mytextContent = [[UITextView alloc] initWithFrame:tbDataBank11.frame];
-            [mytextContent setText:@"图书很好看，图书很好看图书很好看评主评论："];
-            [mytextContent setBackgroundColor:[UIColor clearColor]];
-            [mytextContent setFont:[UIFont systemFontOfSize:14]];
-            [mytextContent setEditable:NO];
-            mytextContent.tag = 999;
-            [self.view addSubview:mytextContent];
-            [mytextContent release];
-        }
-      
-        [mytextContent setText:[self.dictInfo valueForKey:@"author_intro"]];
-        mytextContent.hidden = NO;
-  
-        
+        [self setSummarContent];
     }
 }
 
@@ -204,24 +174,21 @@
         switch (i+10)
         {
             case 10:
-                [btnTouchType setTitle:@"本书评论" forState:UIControlStateNormal];
+                [btnTouchType setTitle:@"图书简介" forState:UIControlStateNormal];
                 [btnTouchType setSelected:YES];
                 break;
             case 11:
-                [btnTouchType setTitle:@"作者简介" forState:UIControlStateNormal];
+                [btnTouchType setTitle:@"评论列表" forState:UIControlStateNormal];
                 [btnTouchType setSelected:NO];
                 break;
             case 12:
                 [btnTouchType setTitle:@"圈子列表" forState:UIControlStateNormal];
                 [btnTouchType setSelected:NO];
                 break;
-                
             default:
                 break;
         }
-        
         fxpoint += fwidth;
-        
     }
 }
 -(void)creatDownBar{
@@ -233,7 +200,7 @@
   
     if (![strStatus isEqualToString:@"可借阅"] || [strUserID isEqualToString:SHARED.userId])
     {
-        [tbDataBank11 setFrame:CGRectMake(0, 5.0f + self.headHeight + 210 + 40, 320.0f, self.view.frame.size.height-250-self.headHeight)];
+        [tbDataBank11 setFrame:CGRectMake(0, 5.0f + self.headHeight + 160 + 40, 320.0f, self.view.frame.size.height-200-self.headHeight)];
         return;
     }
     
@@ -359,7 +326,7 @@
     
     
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, CGRectGetHeight(labelPublic.frame) + CGRectGetMinY(labelPublic.frame)+5, 150, 20)];
-    [labelTime setText:@"借出次数：3次"];
+    [labelTime setText:[NSString stringWithFormat:@"出版日期：%@",[dict valueForKey:@"pubdate"]]];
     [labelTime setFont:[UIFont systemFontOfSize:13]];
     [self.view addSubview:labelTime];
     [labelTime release];
@@ -391,7 +358,7 @@
     
     [self.view addSubview:labelModle];
     [labelModle release];
-    [textContent setText:[dict valueForKey:@"summary"]];
+
     
 
 }
@@ -537,6 +504,8 @@
                     [arrayCircles addObjectsFromArray:[[[dict objectForKey:@"data"] objectForKey:@"book_detail"] objectForKey:@"circles"]];
                     [self creatDetailView:[[dict objectForKey:@"data"] objectForKey:@"book_detail"]];
                     [self creatDownBar];
+                    [self setSummarContent];
+                    tbDataBank11.hidden = YES;
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     

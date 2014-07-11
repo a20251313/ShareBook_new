@@ -17,6 +17,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "EGORefreshTableFooterView.h"
+#import "EGORefreshTableHeaderView.h"
 #import "ShareBookApplyViewController.h"
 #import "ShareBookMsgChatViewController.h"
 #import "ShareBookOrderDetailViewController.h"
@@ -29,6 +30,7 @@
     
     
     EGORefreshTableFooterView   *refreshView;
+    EGORefreshTableHeaderView   *refreshHeadView;
     
     int             m_itagId;
     int             m_iCurrentPage;
@@ -111,6 +113,8 @@
         [self.view addSubview:tbDataBank1];
         [tbDataBank1 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank1);
+        
+        [self createHeaderView];
   
     }
     
@@ -126,22 +130,28 @@
     }
 }
 
+
+
+-(void)createHeaderView{
+    if (refreshHeadView && [refreshHeadView superview]) {
+        [refreshHeadView removeFromSuperview];
+    }
+	refreshHeadView = [[EGORefreshTableHeaderView alloc] initWithFrame:
+                          CGRectMake(0.0f, 0.0f - tbDataBank1.bounds.size.height,tbDataBank1.frame.size.width, tbDataBank1.bounds.size.height)];
+    refreshHeadView.delegate = self;
+    
+	[tbDataBank1 addSubview:refreshHeadView];
+    
+    [refreshHeadView refreshLastUpdatedDate];
+}
+
 #pragma mark- 只接受UITableView信号
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
-        NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:arrayResult.count];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
+        NSNumber *s = [NSNumber numberWithInteger:arrayResult.count];
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -163,20 +173,15 @@
     }else if([signal is:[MagicUITableView TABLECELLFORROW]])/*cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
         ShareMessagerCell *cell = [[ShareMessagerCell alloc]init];
-        DLogInfo(@"%d", indexPath.section);
         [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
-        
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
         
-    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        DLogInfo(@"TABLEDIDSELECT:%@ \n\n",arrayResult[indexPath.row]);
-      
+    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
+        NSDictionary    *dict = (NSDictionary *)[signal object];
+        NSIndexPath     *indexPath = [dict objectForKey:@"indexPath"];
         NSDictionary    *dicData = arrayResult[indexPath.row];
         int kind = [[dicData valueForKey:@"kind"] intValue];
         if (kind == 1)
@@ -209,7 +214,17 @@
         {
             [refreshView egoRefreshScrollViewDidScroll:tbDataBank1];
         }
+        if (refreshHeadView)
+        {
+            [refreshHeadView egoRefreshScrollViewDidScroll:tbDataBank1];
+        }
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        
+        
+        if (refreshHeadView)
+        {
+            [refreshHeadView egoRefreshScrollViewDidEndDragging:tbDataBank1];
+        }
         if (![self needNoteRefreshView])
         {
             
@@ -296,7 +311,7 @@
                 break;
             case 4:
             {
-                ShareBookMyQuanCenterViewController *quan = [[ShareBookMyQuanCenterViewController alloc]init];
+                ShareBookMyQuanCenterViewController *quan = [[ShareBookMyQuanCenterViewController alloc] init];
                 [self.drNavigationController pushViewController:quan animated:YES];
                 RELEASE(quan);
             
@@ -340,6 +355,11 @@
         //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 1) {
             
+            
+            if (m_iCurrentPage == 1)
+            {
+                [arrayResult removeAllObjects];
+            }
             
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -430,6 +450,10 @@
         [refreshView egoRefreshScrollViewDataSourceDidFinishedLoading:tbDataBank1];
         
     }
+    
+    if (refreshHeadView) {
+        [refreshHeadView egoRefreshScrollViewDataSourceDidFinishedLoading:tbDataBank1];
+    }
     [self setFooterView];
     // [self removeFooterView];
     
@@ -494,7 +518,14 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if (m_bHasNext && !m_bIsLoading)
+        if (aRefreshPos == EGORefreshHeader && !m_bIsLoading)
+        {
+            m_bIsLoading = YES;
+            m_iCurrentPage = 1;
+            MagicRequest *request = [DYBHttpMethod message_contractslist:SHARED.userId page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
+            [request setTag:1];
+            
+        }else if (m_bHasNext && !m_bIsLoading)
         {
             m_bIsLoading = YES;
             m_iCurrentPage++;

@@ -14,7 +14,7 @@
 	<string>cn.loopool.sharebook</string>
 	<key>CFBundleIdentifier - 2</key>
 	<string>com.irnovation.books</string>
-	<key>CFBundleIdentifier - 3</key>
+	<key>CFBundleIdentifier - 4</key>
 	<string>cn.loopool.sharebook</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
@@ -73,7 +73,5 @@
 	<false/>
 	<key>infobundle</key>
 	<string>cn.loopool.sharebook</string>
-	<key>infobundle2</key>
-	<string>com.jingfu.huituban</string>
 </dict>
 </plist>

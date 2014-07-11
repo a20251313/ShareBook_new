@@ -2351,10 +2351,10 @@
 		B52549EC184724A000F5B645 /* WOS */ = {
 			isa = PBXGroup;
 			children = (
-				B5A2B37D186AA61700774D94 /* MapViewController.m */,
 				B5A2B37E186AA61700774D94 /* CustomMapCalloutView */,
 				B5A2B388186AA61800774D94 /* MapViewController.xib */,
 				B5A2B389186AA61800774D94 /* MapViewController.h */,
+				B5A2B37D186AA61700774D94 /* MapViewController.m */,
 				B598F439184EC6A3009F283D /* FScrollView */,
 			);
 			path = WOS;

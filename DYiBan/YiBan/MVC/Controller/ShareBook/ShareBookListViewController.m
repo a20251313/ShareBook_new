@@ -275,7 +275,12 @@
             [self.headview setTitle:self.headTitle];
         }
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
-        [self setButtonImage:self.rightButton setImage:@"menu"];
+        
+        if (self.type != 0)
+        {
+         [self setButtonImage:self.rightButton setImage:@"menu"];
+        }
+       
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
      
@@ -1056,7 +1061,6 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
 
 -(BOOL)needNoteRefreshView
 {
-    
     return m_bHasNext;
 }
 
