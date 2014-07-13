@@ -94,7 +94,7 @@
         [btnOK setTag:102];
         [btnOK setImage:image forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
+        [btnOK addTarget:self action:@selector(doGetValiteCode:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnOK];
         RELEASE(btnOK);
         
@@ -127,7 +127,7 @@
         [btnOK1 setTag:102];
         [btnOK1 setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK1 addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
+        [btnOK1 addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnOK1];
         RELEASE(btnOK1);
         
@@ -165,6 +165,16 @@
 }
 
 
+
+-(void)doCommitCode:(id)sender
+{
+    
+}
+
+-(void)doGetValiteCode:(id)sender
+{
+    
+}
 
 
 @end

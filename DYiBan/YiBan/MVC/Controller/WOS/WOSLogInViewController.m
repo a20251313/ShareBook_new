@@ -18,6 +18,7 @@
 #import "Magic_Database.h"
 #import "ShareBookMissPWViewController.h"
 #import "APService.h"
+#import "PublicUtl.h"
 
 @interface WOSLogInViewController (){
 
@@ -292,6 +293,8 @@
 
 -(void)addOKLogin{
 
+    
+    [PublicUtl addHUDviewinView:self.view];
     MagicRequest *request = [DYBHttpMethod shareBook_security_login_username:_phoneInputName.nameField.text password:_phoneInputAddr.nameField.text sAlert:YES receive:self];
     [request setTag:2];
 
@@ -436,7 +439,8 @@
 -(void)addOK{
     
     DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
-   [self.drNavigationController pushViewController:vc animated:YES];
+    [self.drNavigationController pushViewController:vc animated:YES];
+    SHARED.userId = nil;
 //    [vc];
 //    MagicRequest *request = [DYBHttpMethod wosLongin_nickName:_phoneInputName.nameField.text passwd:_phoneInputAddr.nameField.text sAlert:YES receive:self];
 //    [request setTag:2];
@@ -450,9 +454,12 @@
     
     if ([request succeed])
     {
+        
+        
+        
 //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 2) {
-            
+            [PublicUtl hideHUDViewInView:self.view];
         
        NSDictionary *dict = [request.responseString JSONValue];
         
