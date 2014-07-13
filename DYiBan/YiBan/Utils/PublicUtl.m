@@ -8,6 +8,7 @@
 
 #import "PublicUtl.h"
 #import "MBProgressHUD.h"
+#import "iToast.h"
 @implementation PublicUtl
 
 
@@ -64,5 +65,13 @@
             [subView hide:YES];
         }
     }
+}
+
++(void)showText:(NSString*)text Gravity:(iToastGravity)gravity
+{
+    iToast  *toast = [[iToast alloc] initWithText:text];
+    [toast setGravity:gravity];
+    [toast show];
+    [toast release];
 }
 @end

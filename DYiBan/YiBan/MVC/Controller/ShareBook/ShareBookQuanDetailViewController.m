@@ -16,8 +16,9 @@
 
 #import "JSONKit.h"
 #import "JSON.h"
+#import "PublicUtl.h"
 
-@interface ShareBookQuanDetailViewController (){
+@interface ShareBookQuanDetailViewController ()<UIActionSheetDelegate>{
 
     BOOL bShowBook;
     DYBUITableView * tbDataBank11;
@@ -68,7 +69,8 @@
         //        [self.leftButton setHidden:YES];
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
         
-        [self setButtonImage:self.rightButton setImage:@"icon+"];
+        [self setButtonImage:self.rightButton setImage:@"menu"];
+        
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
@@ -135,12 +137,16 @@
 
 
 
+
 - (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
 {
     if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]])
     {
-        MagicRequest    *request = [DYBHttpMethod book_circle_join:[self.dictInfo valueForKey:@"circle_id"] sAlert:YES receive:self];
-        request.tag = 200;
+        
+        UIActionSheet   *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"加入该圈子"
+                                                    otherButtonTitles:@"退出该圈子", nil];
+        [sheet showInView:self.view];
+     
     }else if ([signal is:[DYBBaseViewController BACKBUTTON]])
     {
         [self.drNavigationController popViewControllerAnimated:YES];
@@ -363,6 +369,17 @@
                 }
             }
             
+        } else if(request.tag == 200){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+            //    int statusCode = [[dict objectForKey:@"response"] intValue];
+                NSString *strMSG = [dict objectForKey:@"message"];
+                
+                [PublicUtl showText:strMSG Gravity:iToastGravityBottom];
+            }
+            
         } else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
@@ -373,6 +390,20 @@
         }
     }
 }
-
+#pragma mark UIActionSheetDelegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if (buttonIndex == 0)
+    {
+        MagicRequest    *request = [DYBHttpMethod book_circle_join:[self.dictInfo valueForKey:@"circle_id"] sAlert:YES receive:self];
+        request.tag = 200;
+    }else if(buttonIndex == 1)
+    {
+        MagicRequest    *request = [DYBHttpMethod book_circle_quit:[self.dictInfo valueForKey:@"circle_id"] sAlert:YES receive:self];
+        request.tag = 200;
+    }
+    
+}
 
 @end

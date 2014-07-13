@@ -101,77 +101,7 @@
         [self.view addSubview:scrollView];
         RELEASE(scrollView);
         
-        viewResgin = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, 400)];
-        [viewResgin setTag:102];
-        [viewResgin setHidden:YES];
-        [scrollView addSubview:viewResgin];
-        [viewResgin release];
-        
-        
-        
-        
-        UIImageView *imageViewNameR= [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT )];
-        [imageViewNameR setImage:[UIImage imageNamed:@"input_bg"]];
-        [viewResgin addSubview:imageViewNameR];
-        RELEASE(imageViewNameR);
-        
-        
-        _phoneInputNameR = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"用户名" textType:0];
-        [_phoneInputNameR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-        //        [_phoneInputNameR.nameField setText:@"1"];
-        [_phoneInputNameR.nameField setTextColor:[UIColor yellowColor]];
-        [_phoneInputNameR setBackgroundColor:[UIColor redColor]];
-        [viewResgin addSubview:_phoneInputNameR];
-        RELEASE(_phoneInputNameR);
-        
-        
-        UIImageView *imageViewName2R = [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, INPUTWIDTH, INPUTHEIGHT)];
-        [imageViewName2R setImage:[UIImage imageNamed:@"input_bg"]];
-        [viewResgin addSubview:imageViewName2R];
-        RELEASE(imageViewName2R);
-        
-        _phoneInputAddrR = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, INPUTWIDTH, INPUTHEIGHT) placeText:@"密码" textType:0];
-        [_phoneInputAddrR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor clearColor] CGColor]];
-        //        [_phoneInputAddrR.nameField setText:@"1"];
-        [_phoneInputAddrR.nameField setTextColor:[UIColor whiteColor]];
-        [_phoneInputAddrR setBackgroundColor:[UIColor clearColor]];
-        [viewResgin addSubview:_phoneInputAddrR];
-        RELEASE(_phoneInputAddrR);
-        
-        
-      DYBInputView *  _phoneInputAddrR1 = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40 *2, INPUTWIDTH, INPUTHEIGHT) placeText:@"密码" textType:0];
-        [_phoneInputAddrR1.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor clearColor] CGColor]];
-        //        [_phoneInputAddrR.nameField setText:@"1"];
-        [_phoneInputAddrR1.nameField setTextColor:[UIColor whiteColor]];
-        [_phoneInputAddrR1 setBackgroundColor:[UIColor clearColor]];
-        [viewResgin addSubview:_phoneInputAddrR1];
-        RELEASE(_phoneInputAddrR1);
-        
-        UIImageView *imageViewName3R = [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40 + 20 +INPUTHEIGHT , INPUTWIDTH, INPUTHEIGHT)];
-        [imageViewName3R setImage:[UIImage imageNamed:@"input_bg"]];
-        [viewResgin addSubview:imageViewName3R];
-        RELEASE(imageViewName3R);
-        
-        _phoneInputMORF = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  +40 + 20 +INPUTHEIGHT, INPUTWIDTH, INPUTHEIGHT) placeText:@"密码" textType:0];
-        [_phoneInputMORF.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor clearColor] CGColor]];
-        [_phoneInputMORF.nameField setText:@"0"];
-        [_phoneInputMORF.nameField setTextColor:[UIColor whiteColor]];
-        [_phoneInputMORF setBackgroundColor:[UIColor clearColor]];
-        [viewResgin addSubview:_phoneInputMORF];
-        RELEASE(_phoneInputMORF);
-        
-        
-        UIButton *btnBackR = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputMORF.frame) + CGRectGetMinY(_phoneInputMORF.frame) + 20 + 10, 300, 44)];
-        [btnBackR setBackgroundColor:[UIColor clearColor]];
-        [btnBackR setImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
-        [btnBackR addTarget:self action:@selector(addRisgin) forControlEvents:UIControlEventTouchUpInside];
-        [self addlabel_title:@"注册" frame:btnBackR.frame view:btnBackR];
-        [viewResgin addSubview:btnBackR];
-        [btnBackR release];
-        
-        
-        
-        
+   
         viewLogin = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, 400)];
         
         [viewLogin setTag:101];
@@ -217,6 +147,7 @@
         [_phoneInputAddr.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
         //        [_phoneInputAddr.nameField setText:@"1"];
         [_phoneInputAddr.nameField setTextColor:[UIColor blackColor]];
+        [_phoneInputAddr.nameField setSecureTextEntry:YES];
         [_phoneInputAddr setBackgroundColor:[UIColor whiteColor]];
         [viewLogin addSubview:_phoneInputAddr];
         RELEASE(_phoneInputAddr);
@@ -225,6 +156,8 @@
         [_phoneInputAddr1.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
         //        [_phoneInputAddr.nameField setText:@"1"];
         [_phoneInputAddr1.nameField setTextColor:[UIColor blackColor]];
+        [_phoneInputAddr1.nameField setSecureTextEntry:YES];
+        
         [_phoneInputAddr1 setBackgroundColor:[UIColor whiteColor]];
         [viewLogin addSubview:_phoneInputAddr1];
         RELEASE(_phoneInputAddr1);

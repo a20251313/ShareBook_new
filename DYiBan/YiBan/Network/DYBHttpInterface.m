@@ -2057,7 +2057,7 @@
 
 }
 
-+ (NSMutableDictionary *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent{
++ (NSMutableDictionary *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent tag_ids:(NSString*)tag_ids{
 
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
     [dict setValue:book_id forKey:@"book_id"];
@@ -2072,6 +2072,7 @@
     [dict setValue:sskey forKey:@"sskey"];
     [dict setValue:address forKey:@"address"];
     [dict setValue:rent forKey:@"rent"];
+    [dict setValue:tag_ids forKey:@"tag_ids"];
 //    [dict setValue:isbn forKey:@"isbn"];
     if (!circle_id) {
         circle_id = @"";

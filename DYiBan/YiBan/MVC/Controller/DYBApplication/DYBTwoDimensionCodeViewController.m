@@ -29,6 +29,8 @@
     MagicUILabel *labeText;
     MagicUIButton *selectbtn[2];
     int selectIndex;
+    
+    BOOL        m_bIsShowAlert;
 }
 
 @end
@@ -327,14 +329,26 @@ DEF_SIGNAL(WEBBUTTON) //注册按钮
 //        if (!request) {//无网路
 //            [DYBShareinstaceDelegate loadFinishAlertView:@"检查网络是否连接！" target:self];
 //        }
-        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"已扫描到条形码维码"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        if (m_bIsShowAlert)
+        {
+            return;
+        }
+        
+        m_bIsShowAlert = YES;
+        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"已经扫到条码"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         alerView.tag = 103;
         [alerView show];
         [alerView release];
         
     }else {
         
-        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"已扫描到条形码维码"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        if (m_bIsShowAlert)
+        {
+            return;
+        }
+         m_bIsShowAlert = YES;
+        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"已经扫到条码"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         alerView.tag = 103;
         [alerView show];
         [alerView release];
@@ -379,6 +393,7 @@ DEF_SIGNAL(WEBBUTTON) //注册按钮
         }
     }else if (alertView.tag == 103){
     
+        
         if (buttonIndex == 0) {
             
             
@@ -467,6 +482,7 @@ DEF_SIGNAL(WEBBUTTON) //注册按钮
         }
         if (request.tag == 3) {
             
+            m_bIsShowAlert = NO;
             JsonResponse *response = (JsonResponse *)receiveObj;
             if ([response response] ==khttpsucceedCode)
             {

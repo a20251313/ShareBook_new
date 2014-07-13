@@ -1655,9 +1655,9 @@
 }
 
 
-+ (MagicRequest *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent sAlert:(BOOL)isAlert receive:(id)receive{
++ (MagicRequest *)shareBook_book_upload_book_id:(NSString *)book_id lent_way:(NSString *)lent_way deposit_type:(NSString *)deposit_type deposit:(NSString *)deposit loan_period:(NSString *)loan_period public:(NSString *)_public remark:(NSString *)remark lat:(NSString *)lat lng:(NSString *)lng sskey:(NSString *)sskey address:(NSString *)address circle_id:(NSString *)circle_id rent:(NSString*)rent tag_ids:(NSString*)tag_ids sAlert:(BOOL)isAlert receive:(id)receive{
 
-    NSMutableDictionary *dict = [DYBHttpInterface shareBook_book_upload_book_id:book_id lent_way:lent_way deposit_type:deposit_type deposit:deposit loan_period:loan_period public:_public remark:remark lat:lat lng:lng sskey:sskey address:address circle_id:circle_id rent:(NSString*)rent];
+    NSMutableDictionary *dict = [DYBHttpInterface shareBook_book_upload_book_id:book_id lent_way:lent_way deposit_type:deposit_type deposit:deposit loan_period:loan_period public:_public remark:remark lat:lat lng:lng sskey:sskey address:address circle_id:circle_id rent:(NSString*)rent tag_ids:(NSString*)tag_ids];
     DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
     MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
     return dre;

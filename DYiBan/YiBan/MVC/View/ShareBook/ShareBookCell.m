@@ -190,6 +190,11 @@ DEF_SIGNAL(FINISHSWIP)
 -(void)creatCell:(NSDictionary *)dict{
     
     
+    if (swipView)
+    {
+        [swipView removeFromSuperview];
+        swipView = nil;
+    }
     if (self.cellType == ShareBookCellTypeDefault)
     {
         [self crateCellDefault:dict];

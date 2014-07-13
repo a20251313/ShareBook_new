@@ -15,14 +15,15 @@
 
 #define YDIMG(__name)  [UIImage imageNamed:__name]
 
-@interface ShareBookMakeSureUpBookViewController (){
+@interface ShareBookMakeSureUpBookViewController ()<UIActionSheetDelegate>{
 
 
     UIImageView *viewBG;
-    
+    UILabel      *lableCate;
     int          lent_way;  //借出方式
     int           m_ideposit;  //押金
     int           m_iperiod;    //loan_period
+    int           m_iBookCate;      //2 大众，1 少儿
 }
 
 @end
@@ -208,25 +209,56 @@
         RELEASE(labelNumDou);
         
         
-        
-        
-        
         UILabel *labelNumTime = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100.0f, 20.0f)];
         [labelNumTime setBackgroundColor:[UIColor clearColor]];
-        [labelNumTime setText:@"30天"];
+        [labelNumTime setText:@"10天"];
           labelNumTime.tag = 1004;
         [viewBG addSubview:labelNumTime];
         RELEASE(labelNumTime);
         
         
-        UILabel *labelAutoQuan = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 180.0f, 20.0f)];
+        
+        UILabel *labelBookCate = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 180.0f, 20.0f)];
+        [labelBookCate setBackgroundColor:[UIColor clearColor]];
+        [labelBookCate setText:@"图书类别："];
+        [labelBookCate setBackgroundColor:[UIColor clearColor]];
+        [viewBG addSubview:labelBookCate];
+        RELEASE(labelBookCate);
+        
+        
+        
+        lableCate = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 100, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 80.0f, 20.0f)];
+        [lableCate setBackgroundColor:[UIColor clearColor]];
+        [lableCate setText:@"大众"];
+        [lableCate setBackgroundColor:[UIColor clearColor]];
+        [viewBG addSubview:lableCate];
+        RELEASE(lableCate);
+        
+        
+        
+        
+        
+        
+        UIButton *btnCate = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMinX(lableCate.frame) + CGRectGetWidth(lableCate.frame) + 20,CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 15 , 70, 30)];
+        [btnCate setTitle:@"更改" forState:UIControlStateNormal];
+        [btnCate setBackgroundImage:[UIImage imageNamed:@"bt_click1"] forState:UIControlStateNormal];
+        [btnCate addTarget:self action:@selector(doModifyCate:) forControlEvents:UIControlEventTouchUpInside];
+        [btnCate setBackgroundColor:[UIColor clearColor]];
+        [viewBG addSubview:btnCate];
+        RELEASE(btnCate);
+        
+        
+        
+        
+        
+        UILabel *labelAutoQuan = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelBookCate.frame) + CGRectGetMinY(labelBookCate.frame) + 20 , 180.0f, 20.0f)];
         [labelAutoQuan setBackgroundColor:[UIColor clearColor]];
         [labelAutoQuan setText:@"上传圈子："];
         [labelAutoQuan setBackgroundColor:[UIColor clearColor]];
         [viewBG addSubview:labelAutoQuan];
         RELEASE(labelAutoQuan);
         
-        labelAutoQuan1 = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 100, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 130.0f, 20.0f)];
+        labelAutoQuan1 = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 100, CGRectGetHeight(labelBookCate.frame) + CGRectGetMinY(labelBookCate.frame) + 20 , 130.0f, 20.0f)];
         [labelAutoQuan1 setBackgroundColor:[UIColor clearColor]];
         [labelAutoQuan1 setText:@"请选择圈子"];
         [labelAutoQuan1 setBackgroundColor:[UIColor clearColor]];
@@ -234,16 +266,17 @@
         RELEASE(labelAutoQuan1);
         
         
-        UIButton *btnQuan = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelAutoQuan1.frame) + CGRectGetWidth(labelAutoQuan1.frame) + 30,CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 10 , 50, 40)];
-        [btnQuan setTitle:@"更多" forState:UIControlStateNormal];
+        UIButton *btnQuan = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelAutoQuan1.frame) + CGRectGetWidth(labelAutoQuan1.frame),CGRectGetHeight(labelBookCate.frame) + CGRectGetMinY(labelBookCate.frame) + 10 , 100, 30)];
+        [btnQuan setTitle:@"添加圈子" forState:UIControlStateNormal];
         [btnQuan addTarget:self action:@selector(doQuan) forControlEvents:UIControlEventTouchUpInside];
-        [btnQuan setBackgroundColor:[UIColor redColor]];
+       // [btnQuan setBackgroundColor:[UIColor redColor]];
+        [btnQuan setBackgroundImage:[UIImage imageNamed:@"bt_click1"] forState:UIControlStateNormal];
         [viewBG addSubview:btnQuan];
         RELEASE(btnQuan);
 
         
         
-        UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 + 50 , 180.0f, 20.0f)];
+        UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelAutoQuan.frame) + CGRectGetMinY(labelAutoQuan.frame) + 20  , 180.0f, 20.0f)];
         [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
         [labelAutoLogin setText:@"是否以秘钥方式上传："];
         [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
@@ -252,6 +285,7 @@
         
         m_iperiod = 10;
         m_ideposit = 10;
+        m_iBookCate = 2;
         
 //        UIButton *btnAutoLogin = [[UIButton alloc]initWithFrame:CGRectMake(200.0f, CGRectGetHeight(labelNumTime.frame) + CGRectGetMinY(labelNumTime.frame) + 20 , 20.0f, 20.0f)];
 //        [btnAutoLogin setBackgroundColor:[UIColor clearColor]];
@@ -269,7 +303,7 @@
         UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(labelAutoLogin.frame) + CGRectGetMinY(labelAutoLogin.frame) + 20, 280.0f, 40.0f)];
         [btnOK setTag:102];
         [btnOK setImage:image1 forState:UIControlStateNormal];
-        [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
+        [btnOK addTarget:self action:@selector(doMakeUpload:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnOK];
         RELEASE(btnOK);
         
@@ -292,6 +326,18 @@
         
     }
 }
+
+
+
+-(void)doModifyCate:(id)sender
+{
+    
+    UIActionSheet   *sheet = [[UIActionSheet alloc] initWithTitle:@"图书类别" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"大众" otherButtonTitles:@"少儿", nil];
+    [sheet showInView:self.view];
+    [sheet release];
+}
+
+
 
 -(void)doQuan{
 
@@ -399,7 +445,8 @@
 }
 
 
--(void)doChoose{
+-(void)doMakeUpload:(id)sender
+{
 
     if (!self.arrayResult.count) {
         
@@ -410,7 +457,7 @@
     
     DLogInfo(@"doChoose cirleIDs:%@",cirleIDs);
     NSDictionary *dict = [_dictInfo objectForKey:@"book"];
-    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:[NSString stringWithFormat:@"%d",lent_way] deposit_type:@"1" deposit:[NSString stringWithFormat:@"%d",m_ideposit]  loan_period:[NSString stringWithFormat:@"%d",m_iperiod]  public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"1" sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:[NSString stringWithFormat:@"%d",lent_way] deposit_type:@"1" deposit:[NSString stringWithFormat:@"%d",m_ideposit]  loan_period:[NSString stringWithFormat:@"%d",m_iperiod]  public:@"1" remark:@"eeeee" lat:@"dd" lng:@"ddd" sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"1" tag_ids:[@(m_iBookCate) description] sAlert:YES receive:self];
     [request setTag:2];
 
 
@@ -461,7 +508,7 @@
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
+           //     BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
@@ -486,6 +533,20 @@
             
         }
     }
+}
+#pragma mark UIActionSheetdelegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        m_iBookCate = 2;
+        [lableCate setText:@"大众"];
+    }else if (buttonIndex == 1)
+    {
+        m_iBookCate = 1;
+        [lableCate setText:@"少儿"];
+    }
+    
 }
 
 @end

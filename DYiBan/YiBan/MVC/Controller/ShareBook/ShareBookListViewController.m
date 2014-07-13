@@ -584,7 +584,20 @@
         
     
         NSDictionary    *dicdata = m_dataArray[indexPath.row];
-        ShareBookCell *cell = [[ShareBookCell alloc]init];
+        ShareBookCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
+        if (!cell)
+        {
+            cell = [[ShareBookCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        }else
+        {
+            for (UIButton *btn in cell.subviews)
+            {
+                if ([btn isKindOfClass:[UIButton class]])
+                {
+                    [btn removeFromSuperview];
+                }
+            }
+        }
         cell.tb  = tbDataBank11;
         
         if (self.type != 0)

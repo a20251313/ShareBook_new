@@ -23,11 +23,13 @@
     NSMutableArray *arrayReturnSouce;
     EGORefreshTableFooterView   *refreshView;
     
+    
     int             m_itagId;
     int             m_iCurrentPage;
     int             m_iPageNum;
     BOOL            m_bHasNext;
     BOOL            m_bIsLoading;
+    BOOL            m_bNeedRemove;
 }
 
 @end
@@ -193,7 +195,8 @@
     
     m_itagId =  sender.tag-10;
     m_bHasNext = NO;
-    [arrayReturnSouce removeAllObjects];
+    m_bNeedRemove = YES;
+   // [arrayReturnSouce removeAllObjects];
     m_iCurrentPage = 1;
     m_iPageNum = 20;
     switch (sender.tag-10)
@@ -288,7 +291,12 @@
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        ShareBookCell *cell = [[ShareBookCell alloc]init];
+        ShareBookCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
+        if (!cell)
+        {
+             cell = [[ShareBookCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        }
+      
         cell.tb  = tbDataBank11;
         cell.indexPath = indexPath;
         [cell creatCell:[arrayReturnSouce objectAtIndex:indexPath.row]];
@@ -382,6 +390,12 @@
                     if (!arrayReturnSouce)
                     {
                         arrayReturnSouce = [[NSMutableArray alloc] init];
+                    }
+                    
+                    if (m_bNeedRemove)
+                    {
+                        [arrayReturnSouce removeAllObjects];
+                        m_bNeedRemove = NO;
                     }
                     [arrayReturnSouce addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"book_list"]];
                     m_bHasNext = [[[dict valueForKey:@"data"] objectForKey:@"havenext"] boolValue];
