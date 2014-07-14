@@ -329,12 +329,7 @@ static NSString *cellName = @"cellName";
         [self.view addSubview:label];
     }
     label.hidden = isHide;
-    
-    
     [label setText:@"搜索结果为空"];
-    
-    
-    
 }
 
 /**

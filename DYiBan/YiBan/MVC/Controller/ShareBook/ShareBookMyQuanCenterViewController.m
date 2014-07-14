@@ -27,6 +27,10 @@
     int             m_iPageNum;
     BOOL            m_bHasNext;
     BOOL            m_bIsLoading;
+    
+    
+    NSMutableArray  *m_arraySearch;
+    BOOL            m_bIsSearch;
 }
 
 @end
@@ -109,6 +113,7 @@
 
         UISearchBar *searchView = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f,self.headHeight, 320, 44) ];
         searchView.delegate = self;
+        searchView.showsCancelButton = YES;
         /*backgroundColor:[UIColor clearColor] placeholder:@"文件名" isHideOutBackImg:NO isHideLeftView:NO];*/
         for (UIView *subview in [searchView subviews]) {
             if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
@@ -311,6 +316,10 @@
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
         NSNumber *s;
         s = [NSNumber numberWithInteger:_arrayResult.count];
+        if (m_bIsSearch)
+        {
+            s = [NSNumber numberWithInt:m_arraySearch.count];
+        }
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -336,7 +345,16 @@
        
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        NSDictionary *dictt = [_arrayResult objectAtIndex:indexPath.row];
+        
+        NSDictionary *dictt =  nil;
+        if (m_bIsSearch)
+        {
+            dictt = [m_arraySearch objectAtIndex:indexPath.row];
+        }else
+        {
+            dictt =    [_arrayResult objectAtIndex:indexPath.row];
+        }
+     
         
         ShareBookCircleCell *cell = [[ShareBookCircleCell alloc] init];
         cell.isHasDistance = YES;
@@ -361,12 +379,22 @@
         }
         
         ShareBookQuanDetailViewController *detail = [[ShareBookQuanDetailViewController alloc]init];
-        detail.dictInfo = [_arrayResult objectAtIndex:indexPath.row];
+        if (m_bIsSearch)
+        {
+            detail.dictInfo = [m_arraySearch objectAtIndex:indexPath.row];
+        }else
+        {
+            detail.dictInfo =    [_arrayResult objectAtIndex:indexPath.row];
+        }
         [self.drNavigationController pushViewController:detail animated:YES];
         RELEASE(detail);
         
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        if (m_bIsSearch)
+        {
+            return;
+        }
         if (![self needNoteRefreshView])
         {
             [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:tbDataBank11];
@@ -378,6 +406,11 @@
             [refreshView egoRefreshScrollViewDidScroll:tbDataBank11];
         }
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]]){
+        if (m_bIsSearch)
+        {
+            return;
+        }
+        
         if (![self needNoteRefreshView])
         {
             
@@ -624,11 +657,81 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
   //  MagicRequest    *request = [DYBHttpMethod sharebook_c];
+    NSString    *searchText = searchBar.text;
+    
+    if ([searchText length])
+    {
+        if (!m_arraySearch)
+        {
+            m_arraySearch = [[NSMutableArray alloc] init];
+        }
+        
+        [m_arraySearch removeAllObjects];
+        
+        searchText = [NSString stringWithFormat:@"*%@*",searchText];
+        for (NSDictionary *dicInfo in _arrayResult)
+        {
+            NSString    *strName = [dicInfo valueForKey:@"circle_name"];
+            NSPredicate *searchPre = [NSPredicate predicateWithFormat:@"self LIKE %@",searchText];
+            if ([searchPre evaluateWithObject:strName])
+            {
+                [m_arraySearch addObject:dicInfo];
+            }
+        }
+
+        m_bIsSearch = YES;
+        if (m_arraySearch.count)
+        {
+              [self setNoDataViewHide:YES];
+        }else
+        {
+              [self setNoDataViewHide:NO];
+            DLogInfo(@"searchBarSearchButtonClicked no data");
+        }
+
+        [tbDataBank11 reloadData];
+        [self setFooterView];
+        
+    }
+    
     [searchBar resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
+     m_bIsSearch = NO;
+    [tbDataBank11 reloadData];
+    [self setFooterView];
+    [self setNoDataViewHide:YES];
     [searchBar resignFirstResponder];
+}
+
+
+
+-(void)setNoDataViewHide:(BOOL)isHide
+{
+    UILabel *label = (UILabel*)[self.view viewWithTag:10001];
+    
+    if (!label && !isHide)
+    {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.frame.size.height-40)/2, self.view.frame.size.width, 40)];
+        [label setTag:10001];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor grayColor]];
+        [label setFont:[UIFont systemFontOfSize:20]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        
+        [self.view addSubview:label];
+    }
+    label.hidden = isHide;
+    [label setText:@"相关数据为空"];
+}
+
+-(void)dealloc
+{
+    RELEASE(m_arraySearch);
+    self.arrayResult = nil;
+    RELEASE(refreshView);
+    [super dealloc];
 }
 @end
