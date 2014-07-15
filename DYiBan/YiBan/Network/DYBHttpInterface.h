@@ -594,4 +594,9 @@
 + (NSMutableDictionary *)shareBook_feed_delcomment:(NSString *)comment_id;
 + (NSMutableDictionary *)shareBook_book_shelf:(NSString *)pubID;
 
+/**
+ *绑定手机号接口security_verifyauthcode
+ */
++ (NSMutableDictionary *)security_verifyauthcode:(NSString *)phone authCode:(NSString*)authCode;
+
 @end

@@ -75,17 +75,15 @@
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
 //       [self.rightButton setHidden:YES];
         
-          [self setButtonImage:self.rightButton setImage:@"btMobile"];
+        //[self setButtonImage:self.rightButton setImage:@"btMobile"];
         //        [self.view setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0f]];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
         [self.view setBackgroundColor:[UIColor clearColor]];
-        //        bg
         viewBG = [[UIImageView alloc]initWithFrame:self.view.frame];
         [viewBG setTag:100];
-        //        [viewBG setBackgroundColor:ColorBG];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [self.view insertSubview:viewBG atIndex:0];
         RELEASE(viewBG);
@@ -300,19 +298,19 @@
             if (dict) {
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-//                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
-//                    [btn setTag:10];
-////                    [self doChange:btn];
-                    
-                    [self.drNavigationController popViewControllerAnimated:YES];
-                }
-//                else{
+                    SHARED.userId = [[dict valueForKey:@"data"] objectForKey:@"userid"];
+                    SHARED.sessionID = [[dict valueForKey:@"data"] objectForKey:@"sessID"];
+                    ShareBookMobileViewController *mobile = [[ShareBookMobileViewController alloc]init];
+                    [self.drNavigationController pushViewController:mobile animated:YES];
+                    RELEASE(mobile);
+                }else
+                {
                     NSString *strMSG = [dict objectForKey:@"message"];
-                    
                     [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
-                    
-//                }
+                }
+                
+                
             }
             
         } else{

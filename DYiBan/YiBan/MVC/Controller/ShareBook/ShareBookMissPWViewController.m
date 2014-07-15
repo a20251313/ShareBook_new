@@ -221,8 +221,6 @@
         
         
         UIButton *btnGetCode = [[UIButton alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, 130.0f, 40.0f)];
-//        [btnGetCode setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//        [btnGetCode setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
         [btnGetCode setBackgroundColor:[UIColor clearColor]];
         [btnGetCode setTitle:@"获得验证码" forState:UIControlStateNormal];
         [btnGetCode addTarget:self action:@selector(doGetCode) forControlEvents:UIControlEventTouchUpInside];

@@ -9,11 +9,16 @@
 #import "ShareBookMobileViewController.h"
 #import "DYBInputView.h"
 #import "CALayer+Custom.h"
-
+#import "JSON.h"
 
 
 
 @interface ShareBookMobileViewController ()
+{
+    DYBInputView  *_phoneInputPhoneNumber;
+    DYBInputView  *_phoneInputAuthCode;
+    UIButton      *_btnGetCode;
+}
 
 @end
 
@@ -79,51 +84,49 @@
         [self.view addSubview:labelName];
         RELEASE(labelName);
         
-        DYBInputView  *_phoneInputName = [[DYBInputView alloc]initWithFrame:CGRectMake(100,self.headHeight + 10, 200, 35) placeText:@"输入手机号码" textType:0];
-        [_phoneInputName.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
+        _phoneInputPhoneNumber = [[DYBInputView alloc]initWithFrame:CGRectMake(100,self.headHeight + 10, 200, 35) placeText:@"输入手机号码" textType:0];
+        [_phoneInputPhoneNumber.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
         //        [_phoneInputName.nameField setText:@"1"];
-        [_phoneInputName.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputName setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:_phoneInputName];
-        RELEASE(_phoneInputName);
+        [_phoneInputPhoneNumber.nameField setTextColor:[UIColor blackColor]];
+        [_phoneInputPhoneNumber setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:_phoneInputPhoneNumber];
+        RELEASE(_phoneInputPhoneNumber);
         
         
         
         UIImage *image = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputName.frame) + CGRectGetMinY(_phoneInputName.frame) + 20, 280.0f, 40.0f)];
-        [btnOK setTag:102];
-        [btnOK setImage:image forState:UIControlStateNormal];
+        _btnGetCode = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputPhoneNumber.frame) + CGRectGetMinY(_phoneInputPhoneNumber.frame) + 20, 280.0f, 40.0f)];
+        [_btnGetCode setTag:102];
+        [_btnGetCode setImage:image forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK addTarget:self action:@selector(doGetValiteCode:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btnOK];
-        RELEASE(btnOK);
+        [_btnGetCode addTarget:self action:@selector(doGetValiteCode:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_btnGetCode];
+        RELEASE(_btnGetCode);
         
-        [self addlabel_title:@"获得验证码" frame:btnOK.frame view:btnOK];
-        
-        
+        [self addlabel_title:@"获得验证码" frame:_btnGetCode.frame view:_btnGetCode];
         
         
-        UILabel *labelJINWEI = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnOK.frame) + CGRectGetMinY(btnOK.frame) + 20, 100.0f, 40.0f)];
+        
+        
+        UILabel *labelJINWEI = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_btnGetCode.frame) + CGRectGetMinY(_btnGetCode.frame) + 20, 100.0f, 40.0f)];
         [labelJINWEI setText:@"验证码："];
         [self.view addSubview:labelJINWEI];
         RELEASE(labelJINWEI);
         [labelJINWEI setBackgroundColor:[UIColor clearColor]];
 
-        
-      
-        DYBInputView  *_phoneInputName1 = [[DYBInputView alloc]initWithFrame:CGRectMake(100,CGRectGetHeight(btnOK.frame) + CGRectGetMinY(btnOK.frame) + 20, 200, 35) placeText:@"输入验证码" textType:0];
-        [_phoneInputName1.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
+        _phoneInputAuthCode = [[DYBInputView alloc]initWithFrame:CGRectMake(100,CGRectGetHeight(_btnGetCode.frame) + CGRectGetMinY(_btnGetCode.frame) + 20, 200, 35) placeText:@"输入验证码" textType:0];
+        [_phoneInputAuthCode.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
         //        [_phoneInputName.nameField setText:@"1"];
-        [_phoneInputName1.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputName1 setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:_phoneInputName1];
-        RELEASE(_phoneInputName1);
+        [_phoneInputAuthCode.nameField setTextColor:[UIColor blackColor]];
+        [_phoneInputAuthCode setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:_phoneInputAuthCode];
+        RELEASE(_phoneInputAuthCode);
 
         
         
         
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputName1.frame) + CGRectGetMinY(_phoneInputName1.frame) + 50, 280.0f, 40.0f)];
+        UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 280.0f, 40.0f)];
         [btnOK1 setTag:102];
         [btnOK1 setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
@@ -168,12 +171,74 @@
 
 -(void)doCommitCode:(id)sender
 {
+    MagicRequest    *request = [DYBHttpMethod security_verifyauthcode:_phoneInputPhoneNumber.nameField.text acuthcode:_phoneInputAuthCode.nameField.text isAlert:YES receive:self];
+    request.tag =  101;
+   
     
 }
 
 -(void)doGetValiteCode:(id)sender
 {
+    MagicRequest    *request = [DYBHttpMethod security_authcode:_phoneInputPhoneNumber.nameField.text type:@"0" isAlert:YES receive:self];
+    request.tag =  100;
     
+}
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    
+    if ([request succeed])
+    {
+       
+      if(request.tag == 100){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
+                {
+                    
+
+                }else
+                {
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                }
+                
+                
+            }
+            
+      }if(request.tag == 100){
+          
+          NSDictionary *dict = [request.responseString JSONValue];
+          
+          if (dict) {
+              if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
+              {
+                  
+                  [self.drNavigationController popToRootViewControllerAnimated:YES];
+              }else
+              {
+                  NSString *strMSG = [dict objectForKey:@"message"];
+                  [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                  
+              }
+              
+              
+          }
+          
+      } else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
+            
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+            
+        }
+    }
 }
 
 

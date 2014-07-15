@@ -761,6 +761,19 @@
 }
 
 /**
+ *绑定手机号接口security_verifyauthcode 
+ */
++ (NSMutableDictionary *)security_verifyauthcode:(NSString *)phone authCode:(NSString*)authCode{
+    
+    NSMutableDictionary *dict = AUTORELEASE([[NSMutableDictionary alloc] initWithCapacity:2]);
+    [dict setValue:phone forKey:@"phone"];
+    [dict setValue:authCode forKey:@"authcode"];
+    [dict setValue:@"security_verifyauthcode" forKey:INTERFACEDOACTION];
+    
+    return dict;
+}
+
+/**
  *验证码修改用户手机接口security_resetphone
  */
 + (NSMutableDictionary *)security_resetphone:(NSString *)authcode phone:(NSString *)phone password:(NSString *)password{

@@ -2079,6 +2079,14 @@
     return dre;
     
 }
++(MagicRequest *)security_verifyauthcode:(NSString *)phone authCode:(NSString *)authCode sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface security_verifyauthcode:phone acuthcode:authCode];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
 @end
 
 
