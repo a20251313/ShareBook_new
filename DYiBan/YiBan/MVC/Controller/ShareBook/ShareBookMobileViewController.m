@@ -11,13 +11,15 @@
 #import "CALayer+Custom.h"
 #import "JSON.h"
 
-
+#define TIMETOGETAUTHCODE       30
 
 @interface ShareBookMobileViewController ()
 {
     DYBInputView  *_phoneInputPhoneNumber;
     DYBInputView  *_phoneInputAuthCode;
     UIButton      *_btnGetCode;
+    int           m_iSecond;
+    NSTimer       *m_Timer;
 }
 
 @end
@@ -103,7 +105,7 @@
         [self.view addSubview:_btnGetCode];
         RELEASE(_btnGetCode);
         
-        [self addlabel_title:@"获得验证码" frame:_btnGetCode.frame view:_btnGetCode];
+        [self addlabel_title:@"获取验证码" frame:_btnGetCode.frame view:_btnGetCode];
         
         
         
@@ -126,23 +128,23 @@
         
         
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 280.0f, 40.0f)];
+        UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
         [btnOK1 setTag:102];
         [btnOK1 setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
         [btnOK1 addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnOK1];
         RELEASE(btnOK1);
-        
         [self addlabel_title:@"提交验证码" frame:btnOK1.frame view:btnOK1];
         
-        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,200 , 320.0f , self.view.frame.size.height -100 - 60 - 100  ) isNeedUpdate:YES];
-        [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
-        //        [self.view addSubview:tbDataBank11];
-        [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
-        //        RELEASE(tbDataBank11);
+        UIButton *btnOK2 = [[UIButton alloc]initWithFrame:CGRectMake(180.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
+        [btnOK2 setTag:103];
+        [btnOK2 setImage:image1 forState:UIControlStateNormal];
+        [btnOK2 addTarget:self action:@selector(doIngore:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnOK2];
+        RELEASE(btnOK2);
         
-        
+        [self addlabel_title:@"略过" frame:btnOK2.frame view:btnOK2];
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -155,6 +157,14 @@
 
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
     
+    
+    for (UIView *subview in view.subviews)
+    {
+        if (subview.tag == 100)
+        {
+            [subview removeFromSuperview];
+        }
+    }
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame))];
     [label1 setText:title];
     [label1 setTag:100];
@@ -166,32 +176,92 @@
     RELEASE(label1);
     
 }
+- (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
+{
+    if ([signal is:[DYBBaseViewController BACKBUTTON]])
+    {
+        [self stoTimer];
+        [self.drNavigationController popViewControllerAnimated:YES];
+    }
+    if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]])
+    {
+
+        
+    }
+}
 
 
 
 -(void)doCommitCode:(id)sender
 {
+    [PublicUtl addHUDviewinView:self.view];
     MagicRequest    *request = [DYBHttpMethod security_verifyauthcode:_phoneInputPhoneNumber.nameField.text acuthcode:_phoneInputAuthCode.nameField.text isAlert:YES receive:self];
     request.tag =  101;
    
-    
 }
+
+-(void)doIngore:(id)sender
+{
+    [self stoTimer];
+    [self.drNavigationController popToRootViewControllerAnimated:YES];
+}
+
+
 
 -(void)doGetValiteCode:(id)sender
 {
+    [PublicUtl addHUDviewinView:self.view];
+    [self startTimer];
     MagicRequest    *request = [DYBHttpMethod security_authcode:_phoneInputPhoneNumber.nameField.text type:@"0" isAlert:YES receive:self];
     request.tag =  100;
     
 }
 
 
+-(void)stoTimer
+{
+    if (m_Timer)
+    {
+        [m_Timer invalidate];
+        [m_Timer release];
+        m_Timer = nil;
+    }
+     m_iSecond = TIMETOGETAUTHCODE;
+}
+-(void)startTimer
+{
+    [self stoTimer];
+    m_iSecond = TIMETOGETAUTHCODE;
+    m_Timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(timeRun:) userInfo:nil repeats:YES];
+    [m_Timer fire];
+    [m_Timer retain];
+
+    
+}
+
+-(void)timeRun:(id)sender
+{
+    if (m_iSecond <= 0)
+    {
+        [self stoTimer];
+        [_btnGetCode setEnabled:YES];
+        [self addlabel_title:@"获取验证码" frame:_btnGetCode.frame view:_btnGetCode];
+        
+    }else
+    {
+        m_iSecond--;
+        [_btnGetCode setEnabled:NO];
+        [self addlabel_title:[NSString stringWithFormat:@"获取验证码(%d)",m_iSecond] frame:_btnGetCode.frame view:_btnGetCode];
+    }
+    
+}
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
 {
     
     if ([request succeed])
     {
-       
+        [PublicUtl hideHUDViewInView:self.view];
       if(request.tag == 100){
             
             NSDictionary *dict = [request.responseString JSONValue];
@@ -211,20 +281,21 @@
                 
             }
             
-      }if(request.tag == 100){
+      }if(request.tag == 101){
           
+          
+          [PublicUtl hideHUDViewInView:self.view];
           NSDictionary *dict = [request.responseString JSONValue];
           
           if (dict) {
               if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
               {
-                  
+                 // [self stoTimer];
                   [self.drNavigationController popToRootViewControllerAnimated:YES];
               }else
               {
                   NSString *strMSG = [dict objectForKey:@"message"];
                   [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                  
               }
               
               
@@ -239,6 +310,17 @@
             
         }
     }
+}
+
+-(void)dealloc
+{
+    if (m_Timer)
+    {
+     
+        [m_Timer invalidate];
+        [m_Timer release];
+    }
+    [super dealloc];
 }
 
 

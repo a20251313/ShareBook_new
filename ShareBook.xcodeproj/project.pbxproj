@@ -696,7 +696,6 @@
 		B5D5AE9718BC365F005E4732 /* 用户信息(上架图书）.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B5D5AE8518BC365F005E4732 /* 用户信息(上架图书）.jpg */; };
 		B5D5AE9818BC365F005E4732 /* 用户信息.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B5D5AE8618BC365F005E4732 /* 用户信息.jpg */; };
 		B5D5AEB918BC7B51005E4732 /* ShareBookMyQuanCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D5AEB818BC7B51005E4732 /* ShareBookMyQuanCenterViewController.m */; };
-		B5D5AEBC18BC830B005E4732 /* ShareBookMyCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D5AEBB18BC830B005E4732 /* ShareBookMyCenterViewController.m */; };
 		B5D5AEBF18BC8383005E4732 /* ShareBookOtherCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D5AEBE18BC8383005E4732 /* ShareBookOtherCenterViewController.m */; };
 		B5D94F1B186966D00014B0E1 /* WOSOrderListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D94F1A186966D00014B0E1 /* WOSOrderListCell.m */; };
 		B5D9DC681834A71E002B1C74 /* DYBAudioProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D9DC671834A71E002B1C74 /* DYBAudioProgressView.m */; };
@@ -1963,8 +1962,6 @@
 		B5D5AE8618BC365F005E4732 /* 用户信息.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "用户信息.jpg"; sourceTree = "<group>"; };
 		B5D5AEB718BC7B51005E4732 /* ShareBookMyQuanCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookMyQuanCenterViewController.h; sourceTree = "<group>"; };
 		B5D5AEB818BC7B51005E4732 /* ShareBookMyQuanCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookMyQuanCenterViewController.m; sourceTree = "<group>"; };
-		B5D5AEBA18BC830A005E4732 /* ShareBookMyCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShareBookMyCenterViewController.h; path = DYiBan/YiBan/MVC/Controller/ShareBookMyCenterViewController.h; sourceTree = SOURCE_ROOT; };
-		B5D5AEBB18BC830B005E4732 /* ShareBookMyCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareBookMyCenterViewController.m; path = DYiBan/YiBan/MVC/Controller/ShareBookMyCenterViewController.m; sourceTree = SOURCE_ROOT; };
 		B5D5AEBD18BC8383005E4732 /* ShareBookOtherCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOtherCenterViewController.h; sourceTree = "<group>"; };
 		B5D5AEBE18BC8383005E4732 /* ShareBookOtherCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOtherCenterViewController.m; sourceTree = "<group>"; };
 		B5D94F19186966D00014B0E1 /* WOSOrderListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSOrderListCell.h; sourceTree = "<group>"; };
@@ -3923,8 +3920,6 @@
 				B5D5AEB818BC7B51005E4732 /* ShareBookMyQuanCenterViewController.m */,
 				862776571944915400792FE9 /* ShareBookChooseQuanCenterViewController.h */,
 				862776581944915400792FE9 /* ShareBookChooseQuanCenterViewController.m */,
-				B5D5AEBA18BC830A005E4732 /* ShareBookMyCenterViewController.h */,
-				B5D5AEBB18BC830B005E4732 /* ShareBookMyCenterViewController.m */,
 				B5D5AEBD18BC8383005E4732 /* ShareBookOtherCenterViewController.h */,
 				B5D5AEBE18BC8383005E4732 /* ShareBookOtherCenterViewController.m */,
 				B5B7F3AF18BF29A100E07580 /* ShareBookResignViewController.h */,
@@ -4425,7 +4420,6 @@
 				B58CB0631829CF6A00F73D66 /* ASIDataDecompressor.m in Sources */,
 				B58CB0641829CF6A00F73D66 /* ASIDownloadCache.m in Sources */,
 				B58CB0651829CF6A00F73D66 /* ASIFormDataRequest.m in Sources */,
-				B5D5AEBC18BC830B005E4732 /* ShareBookMyCenterViewController.m in Sources */,
 				B58CB0661829CF6A00F73D66 /* ASIHTTPRequest.m in Sources */,
 				B58CB0671829CF6A00F73D66 /* ASIInputStream.m in Sources */,
 				B58CB0681829CF6A00F73D66 /* ASINetworkQueue.m in Sources */,

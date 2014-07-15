@@ -20,10 +20,15 @@
 #import "APService.h"
 #import "PublicUtl.h"
 
+
+#define ISREMBERPWD             @"ISREMBERPWD"
+#define USERNAMEFORLOGIN        @"USERNAMEFORLOGIN"
+#define USERPWDFORLOGIN         @"USERPWDFORLOGIN"
+
 @interface WOSLogInViewController (){
 
-    DYBInputView *_phoneInputName;
-    DYBInputView *_phoneInputAddr;
+    DYBInputView *_inputUserName;
+    DYBInputView *_inputPWD;
     UIButton *btnLogin;
     UIButton *btnResgin;
     UIImageView *viewBG ;
@@ -39,6 +44,8 @@
 
 	TencentOAuth* _tencentOAuth;
     NSMutableArray *_permissions;
+    
+    UIButton        *btnRemberPwd;
 }
 
 @end
@@ -79,47 +86,23 @@
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
         [self.view setBackgroundColor:[UIColor clearColor]];
-//        bg
         viewBG = [[UIImageView alloc]initWithFrame:self.view.frame];
         [viewBG setTag:100];
-//        [viewBG setBackgroundColor:ColorBG];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [self.view insertSubview:viewBG atIndex:0];
         RELEASE(viewBG);
         
-//        btnLogin = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 44.0f, 320/2,20)];
-//        [btnLogin setBackgroundColor:[UIColor blackColor]];
-//        [btnLogin setTitle:@"登陆" forState:UIControlStateNormal];
-//        [btnLogin setTitleColor:ColorTextYellow forState:UIControlStateNormal];
-//        [btnLogin addTarget:self action:@selector(doChange:) forControlEvents:UIControlEventTouchUpInside];
-//        [btnLogin setTag:10];
-//        [viewBG addSubview:btnLogin];
-//        RELEASE(btnLogin);
-        
+
         UIImageView *imageViewMid = [[UIImageView alloc]initWithFrame:CGRectMake(320/2, 0, 1, 20)];
         [imageViewMid setImage:[UIImage imageNamed:@"line"]];
         [viewBG addSubview:imageViewMid];
         RELEASE(imageViewMid);
-        
-//        btnResgin = [[UIButton alloc]initWithFrame:CGRectMake(320/2+1 , 44.0f, 320/2,20)];
-//        [btnResgin setBackgroundColor:[UIColor blackColor]];
-//        [btnResgin setTitle:@"注册" forState:UIControlStateNormal];
-//        [btnResgin setTag:11];
-//        [btnResgin addTarget:self action:@selector(doChange:) forControlEvents:UIControlEventTouchUpInside];
-//        [viewBG addSubview:btnResgin];
-//        RELEASE(btnResgin);
-        
-        
+
         scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, CGRectGetHeight(self.view.frame))];
         
         [self.view addSubview:scrollView];
         RELEASE(scrollView);
-        
-    
 
-        
-        
-        
         viewLogin = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, 400)];
         
         [viewLogin setTag:101];
@@ -134,13 +117,13 @@
         RELEASE(imageViewName);
         
         
-        _phoneInputName = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"用户名" textType:0];
-        [_phoneInputName.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
-        [_phoneInputName.nameField setText:@"test2"];
-        [_phoneInputName.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputName setBackgroundColor:[UIColor whiteColor]];
-        [viewLogin addSubview:_phoneInputName];
-        RELEASE(_phoneInputName);
+        _inputUserName = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"用户名" textType:0];
+        [_inputUserName.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
+     //   [_inputUserName.nameField setText:@"test2"];
+        [_inputUserName.nameField setTextColor:[UIColor blackColor]];
+        [_inputUserName setBackgroundColor:[UIColor whiteColor]];
+        [viewLogin addSubview:_inputUserName];
+        RELEASE(_inputUserName);
         
         
         UIImageView *imageViewName2 = [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, INPUTWIDTH, INPUTHEIGHT)];
@@ -148,21 +131,21 @@
         [viewLogin addSubview:imageViewName2];
         RELEASE(imageViewName2);
         
-        _phoneInputAddr = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, INPUTWIDTH, INPUTHEIGHT) placeText:@"密码" textType:0];
-        [_phoneInputAddr.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
-        [_phoneInputAddr.nameField setText:@"11111"];
-        [_phoneInputAddr.nameField setSecureTextEntry:YES];
-        [_phoneInputAddr.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputAddr setBackgroundColor:[UIColor whiteColor]];
-        [viewLogin addSubview:_phoneInputAddr];
-        RELEASE(_phoneInputAddr);
+        _inputPWD = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, INPUTWIDTH, INPUTHEIGHT) placeText:@"密码" textType:0];
+        [_inputPWD.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
+       // [_inputPWD.nameField setText:@"11111"];
+        [_inputPWD.nameField setSecureTextEntry:YES];
+        [_inputPWD.nameField setTextColor:[UIColor blackColor]];
+        [_inputPWD setBackgroundColor:[UIColor whiteColor]];
+        [viewLogin addSubview:_inputPWD];
+        RELEASE(_inputPWD);
 
         
         [self addViewforAutoLogin];
         
         
         
-        UIButton *btnBack= [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 40 + 10, 300, 44)];
+        UIButton *btnBack= [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 40 + 10, 300, 44)];
         [btnBack setBackgroundColor:[UIColor clearColor]];
         [btnBack setImage:[UIImage imageNamed:@"bt1_click"] forState:UIControlStateNormal];
         [btnBack setImage:[UIImage imageNamed:@"bt1_click"] forState:UIControlStateSelected];
@@ -224,8 +207,6 @@
                          nil] retain];
         
         NSString *appid = @"101046123";
-//        titleLabel.text = [NSString stringWithFormat:@"Demo 1 with appid:%@",appid];
-        
         _tencentOAuth = [[TencentOAuth alloc] initWithAppId:appid
                                                 andDelegate:self];
         
@@ -241,25 +222,50 @@
     }
 }
 
+-(void)loadRemberInfo
+{
+
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKeyPath:ISREMBERPWD])
+    {
+        [_inputUserName.nameField setText:[[NSUserDefaults standardUserDefaults] valueForKey:USERNAMEFORLOGIN]];
+        [_inputPWD.nameField setText:[[NSUserDefaults standardUserDefaults] valueForKey:USERPWDFORLOGIN]];
+    }else
+    {
+        [btnRemberPwd setSelected:NO];
+    }
+    
+}
+
 -(void)addViewforAutoLogin{
-    UIButton *btnAutoLogin = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 , 20.0f, 20.0f)];
-    [btnAutoLogin setBackgroundColor:[UIColor clearColor]];
-    [btnAutoLogin setImage:[UIImage imageNamed:@"check_01"] forState:UIControlStateNormal];
-    [btnAutoLogin setImage:[UIImage imageNamed:@"check_02"] forState:UIControlStateSelected];
-    [viewLogin addSubview:btnAutoLogin];
-    [btnAutoLogin addTarget:self action:@selector(atuoLogin:) forControlEvents:UIControlEventTouchUpInside];
-    
-    RELEASE(btnAutoLogin);
     
     
-    UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 30, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 , 100.0f, 20.0f)];
+    
+    btnRemberPwd = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 20 , 20.0f, 20.0f)];
+    [btnRemberPwd setBackgroundColor:[UIColor clearColor]];
+    [btnRemberPwd setImage:[UIImage imageNamed:@"check_01"] forState:UIControlStateNormal];
+    [btnRemberPwd setImage:[UIImage imageNamed:@"check_02"] forState:UIControlStateSelected];
+    [viewLogin addSubview:btnRemberPwd];
+    [btnRemberPwd addTarget:self action:@selector(atuoLogin:) forControlEvents:UIControlEventTouchUpInside];
+    RELEASE(btnRemberPwd);
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKeyPath:ISREMBERPWD])
+    {
+        [btnRemberPwd setSelected:YES];
+    }else
+    {
+         [btnRemberPwd setSelected:NO];
+    }
+    [self loadRemberInfo];
+    
+    UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f + 30, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 20 , 100.0f, 20.0f)];
     [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
     [labelAutoLogin setText:@"记住密码"];
     [viewLogin addSubview:labelAutoLogin];
     RELEASE(labelAutoLogin);
     
     
-    UIButton *btnMissPW = [[UIButton alloc]initWithFrame:CGRectMake(30.0f + 150, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 0 + 20 , 20.0f, 20.0f)];
+    UIButton *btnMissPW = [[UIButton alloc]initWithFrame:CGRectMake(30.0f + 150, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 0 + 20 , 20.0f, 20.0f)];
     [btnMissPW setBackgroundColor:[UIColor clearColor]];
     [btnMissPW setImage:[UIImage imageNamed:@"icon_q"] forState:UIControlStateNormal];
     [viewLogin addSubview:btnMissPW];
@@ -269,7 +275,7 @@
     RELEASE(btnMissPW);
     
     
-    UILabel *labelMissPW = [[UILabel alloc]initWithFrame:CGRectMake(10.0f + 200, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 , 100.0f, 20.0f)];
+    UILabel *labelMissPW = [[UILabel alloc]initWithFrame:CGRectMake(10.0f + 200, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 20 , 100.0f, 20.0f)];
     [labelMissPW setBackgroundColor:[UIColor clearColor]];
 
     [labelMissPW setText:@"忘记密码"];
@@ -295,7 +301,7 @@
 
     
     [PublicUtl addHUDviewinView:self.view];
-    MagicRequest *request = [DYBHttpMethod shareBook_security_login_username:_phoneInputName.nameField.text password:_phoneInputAddr.nameField.text sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_security_login_username:_inputUserName.nameField.text password:_inputPWD.nameField.text sAlert:YES receive:self];
     [request setTag:2];
 
 
@@ -307,7 +313,7 @@
     
     for (int i = 0; i< 3; i++) {
         
-        UIButton *btnLoginOther = [[UIButton alloc]initWithFrame:CGRectMake(20.0f + (imageIcon.size.width/2 + 20)* i  + 40, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 0 + 20 + 200, imageIcon.size.width/2, imageIcon.size.height/2)];
+        UIButton *btnLoginOther = [[UIButton alloc]initWithFrame:CGRectMake(20.0f + (imageIcon.size.width/2 + 20)* i  + 40, CGRectGetHeight(_inputPWD.frame) + CGRectGetMinY(_inputPWD.frame) + 0 + 20 + 200, imageIcon.size.width/2, imageIcon.size.height/2)];
         [btnLoginOther setTag:10 + i];
         [btnLoginOther addTarget:self action:@selector(onClickTencentOAuth:) forControlEvents:UIControlEventTouchUpInside];
         [btnLoginOther setBackgroundColor:[UIColor clearColor]];
@@ -340,12 +346,15 @@
     if (btn.selected) {
         
         [btn setSelected:NO];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:ISREMBERPWD];
         
     }else{
 
-        [btn setSelected:YES];
+    [btn setSelected:YES];
+             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:ISREMBERPWD];
     
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
 
@@ -483,6 +492,9 @@
             // 注册推送
                 [APService setTags:nil alias:SHARED.userId callbackSelector:nil object:nil];
 
+                [[NSUserDefaults standardUserDefaults] setObject:_inputUserName.nameField.text forKey:USERNAMEFORLOGIN];
+                  [[NSUserDefaults standardUserDefaults] setObject:_inputPWD.nameField.text forKey:USERPWDFORLOGIN];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
                 

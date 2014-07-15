@@ -179,7 +179,7 @@
         
         [self addlabel_title:@"创建乐享圈" frame:btnOK.frame view:btnOK];
         
-        [self getNearCircleList];
+        [self getCircleList];
 //        [self creatDownBar];
         
         
@@ -194,11 +194,10 @@
 
 -(void)getCircleList
 {
-    if (!_bEnter) {
-        
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+
+    MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
-    }
+    
 }
 -(void)getNearCircleList
 {
@@ -602,7 +601,7 @@
         {
             m_bIsLoading = YES;
             m_iCurrentPage++;
-            [self getNearCircleList];
+            [self getCircleList];
         }
         
     });

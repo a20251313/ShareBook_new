@@ -86,7 +86,7 @@
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
        
-        m_iPageNum = 20;
+        m_iPageNum = 1000;
         m_iCurrentPage = 1;
         if (!self.bShowLeft)
         {
@@ -140,11 +140,20 @@
 -(void)getCircleList
 {
 
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+        [request setTag:100];
+
+    
+}
+
+-(void)getCircleNearList
+{
+    
     
     DLogInfo(@"----------------------\n\ngetCircleList:%@ %@\n\n\n",SHARED.locationLat,SHARED.locationLng);
     MagicRequest *request = [DYBHttpMethod book_circle_nearby:SHARED.locationLng lat:SHARED.locationLat page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] range:@"100" sAlert:YES receive:self];
     [request setTag:3];
-
+    
     
 }
 -(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view{
@@ -234,7 +243,7 @@
     
     if ([request succeed])
     {
-       if(request.tag == 3){
+       if(request.tag == 100){
             
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -248,7 +257,7 @@
                         arrayResult = [[NSMutableArray alloc] init];
                     }
                     
-                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"cricle_list" ]];
+                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"list" ]];
                     
                     NSMutableArray *array = [[NSMutableArray alloc]initWithCapacity:1000];
                     

@@ -203,7 +203,7 @@
         
     }
     
-    
+    [PublicUtl addHUDviewinView:self.view];
    MagicRequest *request =   [DYBHttpMethod shareBook_security_reg_username:_phoneInputName.nameField.text password:_phoneInputAddr.nameField.text phone_num:@"" nickName:_phoneInputNameR.nameField.text  sAlert:YES receive:self];
 //    MagicRequest *request = [DYBHttpMethod shareBook_security_reg_username:_phoneInputNameR.nameField.text passwd:_phoneInputAddrR.nameField.text sex:_phoneInputMORF.nameField.text sAlert:YES receive:self];
     [request setTag:3];
@@ -280,7 +280,7 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
+
                     
                     
                 }else{
@@ -292,7 +292,7 @@
                 }
             }
         }else if(request.tag == 3){
-            
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
