@@ -400,6 +400,14 @@
     request.tag = 4000;
     
 }
+
+-(void)soldOut:(UIButton*)sender
+{
+    NSDictionary  *dicData = m_dataArray[sender.tag];
+    MagicRequest    *request = [DYBHttpMethod book_shelf:[dicData valueForKey:@"pub_id"] sAlert:YES receive:self];
+    request.tag = 9000;
+    
+}
 -(void)commentBooK:(UIButton*)sender
 {
     
@@ -474,6 +482,8 @@
             break;
             
         default:
+            sel = @selector(soldOut:);
+            strTitle = @"下架";
             break;
     }
     
@@ -621,6 +631,15 @@
                 [cell addSubview:btnOper];
                 btnOper.tag = indexPath.row;
             }
+        }else
+        {
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 30, 100, 30) status:@"100" fromuserID:@"11"];
+            if (btnOper)
+            {
+                [cell addSubview:btnOper];
+                btnOper.tag = indexPath.row;
+            }
+            
         }
         DLogInfo(@"%d", indexPath.section);
         [tbDataBank11.muD_dicfferIndexForCellView setValue:cell forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
@@ -911,26 +930,7 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
                     
                 }
             }
-        }else if (request.tag == 3000)
-        {
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            if (dict) {
-                
-                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
-                    [DYBShareinstaceDelegate popViewText:@"评论借书人成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                     [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
-                    
-                }else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-        }
-        else if (request.tag == 3000)
+        }else  if (request.tag == 3000)
         {
             NSDictionary *dict = [request.responseString JSONValue];
             
@@ -1019,6 +1019,25 @@ scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, REFRESH_REGION_HEIGHT, 0.
             
                [self finishReloadingData];
             
+        }else if (request.tag == 9000)
+        {
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
+                {
+                    [PublicUtl showText:@"图书下架成功" Gravity:iToastGravityBottom];
+                    [self performSelector:@selector(refreshData) withObject:nil afterDelay:0.5f];
+                }else
+                {
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
         }
 
         

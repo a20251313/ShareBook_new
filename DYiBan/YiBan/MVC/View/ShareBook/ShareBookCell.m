@@ -92,7 +92,7 @@ DEF_SIGNAL(FINISHSWIP)
     
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
-    [imageBook setBackgroundColor:[UIColor redColor]];
+  //  [imageBook setBackgroundColor:[UIColor redColor]];
     [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
     [imageBook release];
@@ -226,7 +226,7 @@ DEF_SIGNAL(FINISHSWIP)
 
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
     UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
-    [imageBook setBackgroundColor:[UIColor redColor]];
+    //[imageBook setBackgroundColor:[UIColor redColor]];
     [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
     [imageBook release];

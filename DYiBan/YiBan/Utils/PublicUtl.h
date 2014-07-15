@@ -15,4 +15,5 @@
 +(void)addHUDviewinView:(UIView*)view;
 +(void)hideHUDViewInView:(UIView*)view;
 +(void)showText:(NSString*)text Gravity:(iToastGravity)gravity;
++(void)addlabel_title:(NSString *)title frame:(CGRect)frame view:(UIView *)view textColor:(UIColor *)textColor;
 @end

@@ -180,7 +180,7 @@
     [imageIcon release];
     
 
-    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 10.0f + self.headHeight, 100, 20)];
+    UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageIcon.frame) + CGRectGetWidth(imageIcon.frame)+ 5, 10.0f + self.headHeight, 260, 20)];
     [labelAuther setFont:[UIFont systemFontOfSize:15]];
     [labelAuther setText:[NSString stringWithFormat:@"用户名：%@",[dict objectForKey:@"username"]]];
     [self.view addSubview:labelAuther];

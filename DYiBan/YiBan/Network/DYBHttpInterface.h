@@ -592,5 +592,6 @@
 + (NSMutableDictionary *)shareBook_feed_del:(NSString *)feedID;
 + (NSMutableDictionary *)shareBook_feed_addcomment:(NSString *)feedID content:(NSString*)content;
 + (NSMutableDictionary *)shareBook_feed_delcomment:(NSString *)comment_id;
++ (NSMutableDictionary *)shareBook_book_shelf:(NSString *)pubID;
 
 @end

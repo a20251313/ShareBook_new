@@ -552,4 +552,6 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_feed_delcomment:(NSString *)comment_id sAlert:(BOOL)isAlert receive:(id)receive;
 
++(MagicRequest *)book_shelf:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive;
+
 @end

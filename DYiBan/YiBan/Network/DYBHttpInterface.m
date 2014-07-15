@@ -2569,5 +2569,14 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     return dict;
 }
 
+//book_shelf
++ (NSMutableDictionary *)shareBook_book_shelf:(NSString *)pubID
+{
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:pubID forKey:@"pub_id"];
+    [dict setValue:@"book_shelf" forKey:INTERFACEDOACTION];
+    return dict;
+}
+
 
 @end

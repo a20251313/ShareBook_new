@@ -2071,6 +2071,14 @@
     return dre;
     
 }
++(MagicRequest *)book_shelf:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface shareBook_book_shelf:pub_id];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
 @end
 
 
