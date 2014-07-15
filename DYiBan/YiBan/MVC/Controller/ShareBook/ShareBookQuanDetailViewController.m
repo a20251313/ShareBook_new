@@ -120,6 +120,7 @@
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight ,320  , self.view.frame.size.height - 40 - self.headHeight  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
+        tbDataBank11.separatorColor = [UIColor clearColor];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank11);
         
@@ -256,12 +257,21 @@
             [cell creatCell:[arrayResultBook objectAtIndex:indexPath.row]];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [signal setReturnValue:cell];
+            
+            UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 89, tbDataBank11.frame.size.width, 1)];
+            lineView.image = [UIImage imageNamed:@"line3"];
+            [cell addSubview:lineView];
+            RELEASE(lineView);
         }else{
         
             ShareGiveDouCell *cell = [[ShareGiveDouCell alloc]init];
             [cell creatCell: [arrayResult objectAtIndex:indexPath.row]];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [signal setReturnValue:cell];
+            UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 49, tbDataBank11.frame.size.width, 1)];
+            lineView.image = [UIImage imageNamed:@"line3"];
+            [cell addSubview:lineView];
+            RELEASE(lineView);
         }
         
         

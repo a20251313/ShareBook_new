@@ -301,6 +301,10 @@
     {
         self.dataModel.keyword = bar.text;
         
+        if ([bar.text length] < 1)
+        {
+            self.dataModel.keyword = nil;
+        }
         if ([textrange isEqualToString:@"生活圈"])
         {
             self.dataModel.kind = @"1";

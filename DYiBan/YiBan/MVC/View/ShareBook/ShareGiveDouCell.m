@@ -29,9 +29,20 @@
 
 -(void)creatCell:(NSDictionary *)dict{
 
+    
+    
+    NSString *strUrl = [dict valueForKey:@"pic"];
     UIImageView *imageIcon = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 40.0f, 40.0f)];
     [imageIcon setImage:[UIImage imageNamed:@"system-avatar"]];
-    [imageIcon setBackgroundColor:[UIColor redColor]];
+   // [imageIcon setBackgroundColor:[UIColor redColor]];
+  //  [imageIcon setImageWithURL:<#(NSURL *)#> placeholderImage:<#(UIImage *)#>];
+    
+    
+    if ([strUrl length] > 3)
+    {
+        [imageIcon setImageWithURL:[DYBShareinstaceDelegate getImageString:[dict objectForKey:@"pic"] ]placeholderImage:[UIImage imageNamed:@"system-avatar"]];
+    }
+  
     [self addSubview:imageIcon];
     [imageIcon release];
 
