@@ -233,7 +233,7 @@
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
-        int high = bShowBook == YES ? 90 : 50;
+        int high = bShowBook == YES ? [ShareBookCell ShareBookCellHeight] : 50;
         NSNumber *s = [NSNumber numberWithInteger:high];
         [signal setReturnValue:s];
         

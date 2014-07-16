@@ -175,7 +175,7 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:90];
+        NSNumber *s = [NSNumber numberWithInteger:[ShareBookCell ShareBookCellHeight]];
         [signal setReturnValue:s];
         
         

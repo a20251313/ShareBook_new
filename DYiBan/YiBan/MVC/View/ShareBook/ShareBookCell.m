@@ -17,7 +17,7 @@
 #import "UIImageView+WebCache.h"
 #import "PublicUtl.h"
 
-#define ShareBookCellCELLHEIGHT          90
+#define ShareBookCellCELLHEIGHT          110
 
 @interface ShareBookCell ()
 
@@ -50,7 +50,10 @@ DEF_SIGNAL(CANCEL)
 DEF_SIGNAL(FINISHSWIP)
 
 
-
++(CGFloat)ShareBookCellHeight
+{
+    return ShareBookCellCELLHEIGHT;
+}
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -91,7 +94,7 @@ DEF_SIGNAL(FINISHSWIP)
     dicInfo = dict;
     
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
-    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
+    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 15.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
   //  [imageBook setBackgroundColor:[UIColor redColor]];
     [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
@@ -164,8 +167,8 @@ DEF_SIGNAL(FINISHSWIP)
     [labelModel release];
     
     
-    
-    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 40, fypoint, 120, 15)];
+    fypoint += 15+2;
+    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 120, 15)];
     
     [labelStatus setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelStatus setBackgroundColor:[UIColor clearColor]];
@@ -220,12 +223,14 @@ DEF_SIGNAL(FINISHSWIP)
     NSString    *strImageKey = @"book_image";
     NSString    *strauthorKey = @"book_author";
     NSString    *strPublisherKey = @"publisher";
-    NSString    *strLentWay = @"loan_way";
+   // NSString    *strLentWay = @"loan_way";
     NSString    *strNameKey = @"book_name";
+    NSString    *strLentTime = @"loan_time";
+    NSString    *strAddress = @"address";
 
 
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
-    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
+    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 15.0f, imageIcon.size.width/2, imageIcon.size.height/2)];
     //[imageBook setBackgroundColor:[UIColor redColor]];
     [imageBook setImageWithURL:[DYBShareinstaceDelegate getImageString:[dicInfo objectForKey:strImageKey]] placeholderImage:imageIcon];
     [swipView addSubview:imageBook];
@@ -268,7 +273,7 @@ DEF_SIGNAL(FINISHSWIP)
     
     fypoint += 15+2;
     UILabel *labelowner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
-    [labelowner setText:[ NSString stringWithFormat:@"书主：%@",[dicInfo objectForKey:@"username"]]];
+    [labelowner setText:[ NSString stringWithFormat:@"借阅方式：%@",[dict objectForKey:strLentTime]]];
     [labelowner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelowner setBackgroundColor:[UIColor clearColor]];
     [labelowner setFont:[UIFont systemFontOfSize:12]];
@@ -290,20 +295,17 @@ DEF_SIGNAL(FINISHSWIP)
     [labelModel setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelModel setBackgroundColor:[UIColor clearColor]];
     
-    NSString    *strTempLentWay = @"借出方式:做客";
-    if ([[dicInfo valueForKey:strLentWay] intValue] == 2)
-    {
-        strTempLentWay = @"借出方式:旅行";
-    }
-    [labelModel setText:strTempLentWay];
+   
+
+    [labelModel setText:[NSString stringWithFormat:@"地址:%@",[dict valueForKey:strAddress]]];
     [swipView addSubview:labelModel];
     [labelModel setFont:[UIFont systemFontOfSize:12]];
     [labelModel sizeToFit];
     [labelModel release];
     
     
-    
-    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelModel.frame) + CGRectGetMinX(labelModel.frame) + 40, fypoint, 120, 15)];
+    fypoint += 15+2;
+    UILabel *labelStatus = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2, fypoint, 120, 15)];
     
     [labelStatus setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelStatus setBackgroundColor:[UIColor clearColor]];

@@ -42,4 +42,5 @@ typedef enum
 AS_SIGNAL(FINISHSWIP)
 AS_SIGNAL(CANCEL)
 -(void)creatCell:(NSDictionary *)dict;
++(CGFloat)ShareBookCellHeight;
 @end

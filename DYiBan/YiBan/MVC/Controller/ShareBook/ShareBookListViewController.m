@@ -577,7 +577,7 @@
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:90];
+        NSNumber *s = [NSNumber numberWithInteger:[ShareBookCell ShareBookCellHeight]];
         [signal setReturnValue:s];
         
         
@@ -625,7 +625,7 @@
         
         if (self.type != 0)
         {
-            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 30, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 40, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
             if (btnOper)
             {
                 [cell addSubview:btnOper];
@@ -633,7 +633,7 @@
             }
         }else
         {
-            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(200, 30, 100, 30) status:@"100" fromuserID:@"11"];
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 40, 100, 30) status:@"100" fromuserID:@"11"];
             if (btnOper)
             {
                 [cell addSubview:btnOper];
