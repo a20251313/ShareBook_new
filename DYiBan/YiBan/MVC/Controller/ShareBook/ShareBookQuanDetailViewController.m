@@ -258,10 +258,7 @@
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [signal setReturnValue:cell];
             
-            UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 89, tbDataBank11.frame.size.width, 1)];
-            lineView.image = [UIImage imageNamed:@"line3"];
-            [cell addSubview:lineView];
-            RELEASE(lineView);
+
         }else{
         
             ShareGiveDouCell *cell = [[ShareGiveDouCell alloc]init];

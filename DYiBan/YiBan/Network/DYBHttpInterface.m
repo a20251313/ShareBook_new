@@ -2591,5 +2591,15 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
     return dict;
 }
 
+// user_list
++ (NSMutableDictionary *)shareBook_user_list:(NSString *)userID
+{
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:userID forKey:@"user_id"];
+    [dict setValue:@"user_list" forKey:INTERFACEDOACTION];
+    return dict;
+}
+
+
 
 @end

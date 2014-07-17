@@ -554,5 +554,6 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 
 +(MagicRequest *)book_shelf:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive;
 +(MagicRequest *)security_verifyauthcode:(NSString *)phone authCode:(NSString *)authCode sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)shareBook_UserList:(NSString *)userID sAlert:(BOOL)isAlert receive:(id)receive;
 
 @end

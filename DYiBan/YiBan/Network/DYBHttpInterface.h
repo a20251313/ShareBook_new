@@ -599,4 +599,8 @@
  */
 + (NSMutableDictionary *)security_verifyauthcode:(NSString *)phone authCode:(NSString*)authCode;
 
+
+// user_list
++ (NSMutableDictionary *)shareBook_user_list:(NSString *)userID;
+
 @end

@@ -12,6 +12,7 @@
 
 #import "JSONKit.h"
 #import "JSON.h"
+#import "ShareUserListViewController.h"
 
 
 @interface ShareBookFriendListViewController (){
@@ -174,6 +175,24 @@
     }
     [tbDataBank11 reloadData];
 }
+
+
+
+- (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
+{
+    if ([signal is:[DYBBaseViewController BACKBUTTON]])
+    {
+        [self.drNavigationController popViewControllerAnimated:YES];
+        
+    }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
+        
+     
+        ShareUserListViewController *userList = [[ShareUserListViewController alloc] init];
+        [self.drNavigationController pushViewController:userList animated:YES];
+        RELEASE(userList);
+    }
+}
+
 
 #pragma mark- 只接受UITableView信号
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal

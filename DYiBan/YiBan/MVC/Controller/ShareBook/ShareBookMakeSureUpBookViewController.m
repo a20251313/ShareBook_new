@@ -12,6 +12,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "ShareBookChooseQuanCenterViewController.h"
+#import "ShareBookListViewController.h"
 
 #define YDIMG(__name)  [UIImage imageNamed:__name]
 
@@ -483,21 +484,12 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-                    //JsonResponse *response = (JsonResponse *)receiveObj; //登陆成功，记下
-                    
-                    //                    SHARED.sessionID = response.sessID;
-                    //
-                    //                    self.DB.FROM(USERMODLE)
-                    //                    .SET(@"userInfo", request.responseString)
-                    //                    .SET(@"userIndex",[dict objectForKey:@"user_id"])
-                    //                    .INSERT();
-                    
-                    //                    SHARED.userId = [dict objectForKey:@"user_id"]; //设置userid 全局变量
-                    
-                    //                    DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
-                    //
-                    //                    [self.drNavigationController pushViewController:vc animated:YES];
                     [DYBShareinstaceDelegate popViewText:@"上传成功" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    ShareBookListViewController *booklist = [[ShareBookListViewController alloc] init];
+                    [self.drNavigationController pushViewController:booklist animated:YES];
+                    RELEASE(booklist);
+                    
+                
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     

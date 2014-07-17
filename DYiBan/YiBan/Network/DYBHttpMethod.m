@@ -2087,6 +2087,20 @@
     return dre;
     
 }
+
+
++(MagicRequest *)shareBook_UserList:(NSString *)userID sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface  shareBook_user_list:userID];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
+
+
+//// user_list
+//+ (NSMutableDictionary *)shareBook_user_list:(NSString *)userID;
 @end
 
 

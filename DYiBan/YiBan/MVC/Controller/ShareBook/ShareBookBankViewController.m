@@ -547,39 +547,7 @@
 }
 
 
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-#pragma mark UIScrollViewDelegate Methods
 
-//- (void)scrollViewDidScroll:(UIScrollView *)newscrollView{
-//    
-//    
-//    if (![self needNoteRefreshView])
-//    {
-//        
-//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
-//        return;
-//    }
-//	
-//	if (refreshView)
-//	{
-//        [refreshView egoRefreshScrollViewDidScroll:newscrollView];
-//    }
-//}
-//
-//- (void)scrollViewDidEndDragging:(UIScrollView *)newscrollView willDecelerate:(BOOL)decelerate{
-//	
-//    
-//    if (![self needNoteRefreshView])
-//    {
-//        [refreshView egoRefreshScrollViewDataSourceAllDataIsFinished:newscrollView];
-//        return;
-//    }
-//	if (refreshView)
-//	{
-//        [refreshView egoRefreshScrollViewDidEndDragging:newscrollView];
-//    }
-//}
 
 
 
