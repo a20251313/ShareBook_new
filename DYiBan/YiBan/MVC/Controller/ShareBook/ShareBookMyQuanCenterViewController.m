@@ -37,7 +37,7 @@
 
 @implementation ShareBookMyQuanCenterViewController
 
-@synthesize  bEnter = _bEnter,arrayResult=_arrayResult,bselct,makesure;
+@synthesize  isMuyQuanzi = _isMuyQuanzi,arrayResult=_arrayResult,bselct,makesure;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -84,11 +84,9 @@
         [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
         //        [self.leftButton setHidden:YES];
         
-        if (_bEnter) {
-            
-            [self.headview setTitle:@"附近的圈子"];
+        if (_isMuyQuanzi) {
+            [self.headview setTitle:@"我的圈子"];
             [self.rightButton setHidden:YES];
-            
         }else{
             
             [self setButtonImage:self.rightButton setImage:@"icon_map"];
@@ -195,7 +193,12 @@
 -(void)getCircleList
 {
 
-    MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+    NSString    *type = @"1";
+    if (self.isMuyQuanzi)
+    {
+        type = @"2";
+    }
+    MagicRequest *request = [DYBHttpMethod shareBook_circle_list:type page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
     
 }
@@ -450,7 +453,7 @@
     {
         WOSMapViewController *map = [[WOSMapViewController alloc]init];
         map.bShowLeft = YES;
-        map.bEnter = YES;
+        map.bIsMyQuan = YES;
         [self.drNavigationController pushViewController:map animated:YES];
         RELEASE(map);
         

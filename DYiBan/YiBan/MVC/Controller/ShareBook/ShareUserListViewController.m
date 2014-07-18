@@ -142,7 +142,7 @@
             cell = [[ShareUserInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
             
             
-            UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-40)/2, 100, 40)];
+            UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-35)/2, 100, 35)];
             [btnBorrow setTag:102];
             [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
             [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];

@@ -28,7 +28,7 @@
 
 @implementation WOSMapViewController
 
-@synthesize iType,dictMap = _dictMap ,bEnter = _bEnter;
+@synthesize iType,dictMap = _dictMap ,bIsMyQuan = _bIsMyQuan;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -71,7 +71,7 @@
         }
        
         
-        if (_bEnter) {
+        if (_bIsMyQuan) {
             
             [self.rightButton setHidden:YES];
             [self.headview setTitle:@"圈子"];
@@ -161,7 +161,13 @@
     
     DLogInfo(@"getCircleList lat:%@ lng:%@",SHARED.locationLat,SHARED.locationLng);
 
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+    
+    NSString    *type = @"2";
+    if (self.bIsMyQuan)
+    {
+        type = @"1";
+    }
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:type page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:100];
 
     
@@ -249,8 +255,6 @@
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
         
         ShareBookMyQuanCenterViewController *mapList = [[ShareBookMyQuanCenterViewController alloc]init];
-        mapList.bEnter = YES;
-        mapList.arrayResult = arrayResult;
         [mapList setTitle:@"附近的圈子"];
         [self.drNavigationController pushViewController:mapList animated:YES];
         RELEASE(mapList);

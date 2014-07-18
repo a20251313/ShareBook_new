@@ -9,7 +9,7 @@
 #import "ShareUserInfoCell.h"
 
 
-#define ShareUserInfoCellCustomHeight   90
+#define ShareUserInfoCellCustomHeight   50
 @implementation ShareUserInfoCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -58,13 +58,13 @@
     [self.contentView addSubview:imageIcon];
     [imageIcon release];
 
-    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 10.0f, 260.0, 20.0f)];
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 5.0f, 260.0, 20.0f)];
     [self.contentView addSubview:labelName];
     [labelName setText:[dict objectForKey:@"username"]];
     [labelName release];
     
     
-    UILabel *labelSex = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 31.0f, 100.0, 20.0f)];
+    UILabel *labelSex = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, 28.0f, 100.0, 20.0f)];
     [self.contentView addSubview:labelSex];
     if ([[dict objectForKey:@"sex"] intValue] == 0)
     {
@@ -76,6 +76,8 @@
     [labelSex release];
     
     
+    
+    /*
     UIImage *iamageG = [UIImage imageNamed:@"bg_good"];
     UIImageView *imageViewGood = [[UIImageView alloc]initWithFrame:CGRectMake(50, CGRectGetHeight(labelSex.frame) + CGRectGetMinY(labelSex.frame), iamageG.size.width/2, iamageG.size.height/2)];
     [imageViewGood setImage:[UIImage imageNamed:@"bg_good"]];
@@ -99,7 +101,7 @@
     [labelDad setText:[dict objectForKey:@"bad_credit"]];
     [imageViewBad addSubview:labelDad];
     RELEASE(labelDad);
-    [labelDad setBackgroundColor:[UIColor clearColor]];
+    [labelDad setBackgroundColor:[UIColor clearColor]];*/
     
     
     UIImageView *imageLine = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, [ShareUserInfoCell ShareUserInfoCellHeight]-1, 320.0f, 1)];

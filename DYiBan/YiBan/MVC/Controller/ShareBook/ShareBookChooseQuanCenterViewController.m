@@ -436,7 +436,7 @@
     {
         WOSMapViewController *map = [[WOSMapViewController alloc]init];
         map.bShowLeft = YES;
-        map.bEnter = YES;
+        map.bIsMyQuan = YES;
         [self.drNavigationController pushViewController:map animated:YES];
         RELEASE(map);
         

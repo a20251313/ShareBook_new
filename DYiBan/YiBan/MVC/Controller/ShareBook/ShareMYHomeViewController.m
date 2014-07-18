@@ -312,6 +312,7 @@
             case 4:
             {
                 ShareBookMyQuanCenterViewController *quan = [[ShareBookMyQuanCenterViewController alloc] init];
+                quan.isMuyQuanzi = YES;
                 [self.drNavigationController pushViewController:quan animated:YES];
                 RELEASE(quan);
             

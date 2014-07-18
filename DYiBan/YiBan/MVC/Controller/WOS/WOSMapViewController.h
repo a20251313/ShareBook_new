@@ -16,6 +16,6 @@
 @property (nonatomic,retain) NSDictionary *dictMap;
 
 @property (nonatomic,assign)BOOL bShowLeft;
-@property (nonatomic,assign) BOOL bEnter;
+@property (nonatomic,assign) BOOL bIsMyQuan;
 
 @end

@@ -9,7 +9,7 @@
 #import "DYBBaseViewController.h"
 #import "ShareBookMakeSureUpBookViewController.h"
 @interface ShareBookMyQuanCenterViewController : DYBBaseViewController
-@property (nonatomic,assign)BOOL bEnter;
+@property (nonatomic,assign)BOOL isMuyQuanzi;
 @property (nonatomic,retain)NSMutableArray *arrayResult;
 @property (nonatomic,assign)BOOL bselct;
 @property (nonatomic,retain)ShareBookMakeSureUpBookViewController *makesure;
