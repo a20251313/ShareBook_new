@@ -521,6 +521,8 @@
          SHARED.locationLng = [NSString stringWithFormat:@"%f",newLocation.coordinate.longitude];
          
      }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUserLocation" object:nil];
 }
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     NSLog(@"%@",error);

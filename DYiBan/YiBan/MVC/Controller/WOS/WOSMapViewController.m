@@ -86,11 +86,16 @@
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
        
+        
+        
+    
         m_iPageNum = 1000;
         m_iCurrentPage = 1;
         if (!self.bShowLeft)
         {
             [self.leftButton setHidden:YES];
+            
+           
         }
         int offset = 0;
         if (!IOS7_OR_LATER) {
@@ -137,8 +142,24 @@
 }
 
 
+
+-(void)getCircleListByInfo:(NSNotification*)note
+{
+    m_iCurrentPage = 1;
+    [self getCircleList];
+}
 -(void)getCircleList
 {
+    if ([SHARED.locationLat intValue] == 0 && [SHARED.locationLng intValue] == 0)
+    {
+         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCircleListByInfo:) name:@"UpdateUserLocation" object:nil];
+    }else
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
+    
+    DLogInfo(@"getCircleList lat:%@ lng:%@",SHARED.locationLat,SHARED.locationLng);
 
         MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:100];
@@ -289,7 +310,7 @@
                     if (m_bHasNext)
                     {
                         m_iCurrentPage++;
-                      //  [self getCircleList];
+                        [self getCircleList];
                     }
                     
                    

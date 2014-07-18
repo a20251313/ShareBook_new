@@ -94,7 +94,7 @@
         [viewBG setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
-        arraySouce = [[NSArray alloc]initWithObjects:@"全部",@"大众",@"其他", nil];
+        arraySouce = [[NSArray alloc]initWithObjects:@"全部",@"少儿",@"大众", nil];
         
         [self creatSelectType:arraySouce];
         
