@@ -4996,8 +4996,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Irnovation";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Irnovation";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Ruinan Information Technology Co., Ltd. (WRHL46JH92)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Ruinan Information Technology Co., Ltd. (WRHL46JH92)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5016,8 +5016,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = ShareBook;
-				PROVISIONING_PROFILE = "88926261-CF6F-4E40-8981-1A24FDD302A3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "88926261-CF6F-4E40-8981-1A24FDD302A3";
+				PROVISIONING_PROFILE = "36f69f14-3762-44a0-b582-72284f5596d5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "36f69f14-3762-44a0-b582-72284f5596d5";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

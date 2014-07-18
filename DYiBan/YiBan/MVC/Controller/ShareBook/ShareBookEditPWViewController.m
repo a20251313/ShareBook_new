@@ -261,7 +261,7 @@
                     
                     
                 }
-            }
+            
         }
     }else if(request.tag == 100){
         
@@ -270,13 +270,16 @@
         if (dict) {
             
             if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                NSString *strMSG = [dict objectForKey:@"message"];
                 
+                [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                  [self.drNavigationController popViewControllerAnimated:YES];
             }else{
                 NSString *strMSG = [dict objectForKey:@"message"];
                 
                 [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                 
-                [self.drNavigationController popToRootViewControllerAnimated:YES];
+              
                 
                 
             }
@@ -290,5 +293,8 @@
             
         }
     }
+        
+    }
+    
 }
 @end
