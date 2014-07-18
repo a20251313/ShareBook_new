@@ -127,7 +127,7 @@
         ShareBookDownView *downView3 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelType.frame) + CGRectGetMinY(labelType.frame)+ 20, 200, 30)];
         [self.view addSubview:downView3];
         
-        NSArray *array3 = [NSArray arrayWithObjects:@"可借阅",@"不可借阅", nil];
+        NSArray *array3 = [NSArray arrayWithObjects:@"不可借",@"可借阅",@"已借出", nil];
         downView3.arrayResult = array3;
         downView3.tag = 3003;
         [downView3 viewDidLoad];
@@ -316,9 +316,12 @@
         if ([textState isEqualToString:@"可借阅"])
         {
             self.dataModel.loanstatus= @"1";
-        }else if ([textState isEqualToString:@"不可借阅"])
+        }else if ([textState isEqualToString:@"不可借"])
         {
             self.dataModel.loanstatus = @"0";
+        }else if ([textState isEqualToString:@"已借出"])
+        {
+            self.dataModel.loanstatus = @"2";
         }
         
         self.dataModel.tagid = [view2 getChooseIndexValue];
@@ -355,7 +358,6 @@
 -(void)dealloc
 {
     self.dataModel = nil;
-    
     [super dealloc];
 }
 @end

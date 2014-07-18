@@ -172,15 +172,12 @@
         RELEASE(labelOtherLogin);
         
         
-        [self addOtherLogin];
+        //[self addOtherLogin];
         
-        UIView *viewRigen = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 400)];
-        [viewRigen setHidden:YES];
-        [scrollView addSubview:viewRigen];
-        RELEASE(viewRigen);
+
         
         
-        
+        /*
         _permissions = [[NSMutableArray arrayWithObjects:
                          kOPEN_PERMISSION_GET_USER_INFO,
                          kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
@@ -208,7 +205,7 @@
         
         NSString *appid = @"101046123";
         _tencentOAuth = [[TencentOAuth alloc] initWithAppId:appid
-                                                andDelegate:self];
+                                                andDelegate:self];*/
         
         
     }

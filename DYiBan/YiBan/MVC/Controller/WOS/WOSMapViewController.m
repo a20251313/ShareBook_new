@@ -140,7 +140,7 @@
 -(void)getCircleList
 {
 
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:100];
 
     
@@ -259,6 +259,8 @@
                     
                     [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"list" ]];
                     
+                    [self resortDataInfo];
+                    
                     NSMutableArray *array = [[NSMutableArray alloc]initWithCapacity:1000];
                     
                     for (NSDictionary *dictMap in arrayResult)
@@ -287,7 +289,7 @@
                     if (m_bHasNext)
                     {
                         m_iCurrentPage++;
-                        [self getCircleList];
+                      //  [self getCircleList];
                     }
                     
                    
@@ -310,6 +312,31 @@
             
         }
     }
+}
+
+
+-(void)resortDataInfo
+{
+    [arrayResult sortUsingComparator:^NSComparisonResult(id obj1,id obj2)
+     {
+         NSString    *strOne = [[obj1 valueForKey:@"distance_num"] lowercaseString];
+         NSString    *strTwo = [[obj2 valueForKey:@"distance_num"] lowercaseString];
+         strOne = [strOne stringByReplacingOccurrencesOfString:@"km" withString:@""];
+         strTwo = [strTwo stringByReplacingOccurrencesOfString:@"km" withString:@""];
+         strOne = [strOne stringByReplacingOccurrencesOfString:@"," withString:@""];
+         strTwo = [strTwo stringByReplacingOccurrencesOfString:@"," withString:@""];
+         if ([strOne floatValue] < [strTwo floatValue])
+         {
+             return NSOrderedDescending;
+         }else
+         {
+             return NSOrderedAscending;
+         }
+         return NSOrderedSame;
+     }];
+    
+
+
 }
 
 - (void)dealloc

@@ -149,6 +149,7 @@
                     [toast setGravity:iToastGravityBottom];
                     [toast show];
                     [toast release];
+                    [self.drNavigationController popViewControllerAnimated:YES];
                     
                 }else
                 {

@@ -9,7 +9,6 @@
 #import "ShareDouViewController.h"
 #import "ShareBookDouCell.h"
 #import "ShareBookApplyViewController.h"
-#import "ShareFriendListViewController.h"
 #import "NSString+SBJSON.h"
 
 @interface ShareDouViewController ()
@@ -306,10 +305,10 @@ static NSString *cellName = @"cellName";
     UIButton *btn = (UIButton *)sender;
     if (btn.tag == 101) {
         
-        ShareFriendListViewController *friend = [[ShareFriendListViewController alloc]init];
-        [self.drNavigationController pushViewController:friend animated:YES];
-        RELEASE(friend);
-        
+//        ShareFriendListViewController *friend = [[ShareFriendListViewController alloc]init];
+//        [self.drNavigationController pushViewController:friend animated:YES];
+//        RELEASE(friend);
+//        
         
     }else{
         

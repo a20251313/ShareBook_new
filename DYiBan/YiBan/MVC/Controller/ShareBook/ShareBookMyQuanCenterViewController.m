@@ -195,7 +195,7 @@
 -(void)getCircleList
 {
 
-    MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"1" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_circle_list:@"2" page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
     
 }

@@ -13,13 +13,12 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "ShareUserListViewController.h"
-
+#import "ShareUserInfoCell.h"
 
 @interface ShareBookFriendListViewController (){
 
     DYBUITableView *tbDataBank11;
     NSMutableArray *arrayResult;
-    NSMutableArray *arrayBooks;
 }
 
 @end
@@ -84,8 +83,7 @@
         
 //        bShowBook = NO;
         DLogInfo(@"%@",SHARED.userId);
-        MagicRequest *request = [DYBHttpMethod shareBook_user_friendlist_user_id:SHARED.userId sAlert:YES receive:self];
-        [request setTag:2];
+    
         
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
@@ -93,40 +91,19 @@
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-        
-        UIButton *btnLeft = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 160.0f, 40.0f)];
-        [btnLeft setTag:101];
-        //        [btnLeft setBackgroundColor:[UIColor redColor]];
-        [btnLeft setImage:[UIImage imageNamed:@"bg02"] forState:UIControlStateNormal];
-        [btnLeft setImage:[UIImage imageNamed:@"bg02_2"] forState:UIControlStateSelected];
-        [btnLeft addTarget:self action:@selector(doChoose:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btnLeft];
-//        RELEASE(btnLeft);
-//        [btnLeft setSelected:YES];
-        [self addlabel_title:@"全部成员" frame:btnLeft.frame view:btnLeft];
-        
-        
-        UIButton *btnRight = [[UIButton alloc]initWithFrame:CGRectMake(160.0f, self.headHeight, 160.0f, 40.0f)];
-        [btnRight setTag:102];
-        //        [btnRight setBackgroundColor:[UIColor yellowColor]];
-        [btnRight setImage:[UIImage imageNamed:@"bg02"] forState:UIControlStateNormal];
-        [btnRight setImage:[UIImage imageNamed:@"bg02_2"] forState:UIControlStateSelected];
-        [btnRight addTarget:self action:@selector(doChoose:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:btnRight];
-//        RELEASE(btnRight);
-        [self addlabel_title:@"全部书籍" frame:btnRight.frame view:btnRight];
-        
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight ,320  , self.view.frame.size.height - self.headHeight  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
-        [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
+       // [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
+        [tbDataBank11 setSeparatorColor:[UIColor clearColor]];
         RELEASE(tbDataBank11);
         
-        //        [self creatDownBar];
         
+   
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        [self getNewFriendList];
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
@@ -200,8 +177,7 @@
     
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
+  
         NSNumber *s;
         
         s = [NSNumber numberWithInteger:arrayResult.count];
@@ -215,7 +191,7 @@
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
 //        int high = bShowBook == YES ? 90 : 50;
-        NSNumber *s = [NSNumber numberWithInteger:50];
+        NSNumber *s = [NSNumber numberWithInteger:[ShareUserInfoCell ShareUserInfoCellHeight]];
         [signal setReturnValue:s];
         
         
@@ -229,30 +205,44 @@
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-////        if (bShowBook) {
-//            ShareBookCell *cell = [[ShareBookCell alloc]init];
-//            [cell creatCell];
-//            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-//            [signal setReturnValue:cell];
-////        }else{
-//
-            ShareGiveDouCell *cell = [[ShareGiveDouCell alloc]init];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        ShareUserInfoCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
+        if (!cell)
+        {
+            cell = [[ShareUserInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            
+            
+            UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-40)/2, 100, 40)];
+            [btnBorrow setTag:102];
+            [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
+            [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
+            [btnBorrow addTarget:self action:@selector(clickDeleteFriend:) forControlEvents:UIControlEventTouchUpInside];
+            [PublicUtl addlabel_title:@"删除好友" frame:btnBorrow.bounds view:btnBorrow textColor:[UIColor whiteColor]];
+            [cell addSubview:btnBorrow];
+            btnBorrow.tag = indexPath.row;
+            [btnBorrow release];
+            
+        }else
+        {
+            for (UIButton  *btnAdd in cell.subviews)
+            {
+                if ([btnAdd isKindOfClass:[UIButton class]])
+                {
+                    btnAdd.tag = indexPath.row;
+                }
+            }
+        }
+        
             [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
             [signal setReturnValue:cell];
-//        }
-//        
+       
         
         
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
+        
+      
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
-//        if (bShowBook) {
-//            ShareBookDetailViewController *bookDetail = [[ShareBookDetailViewController alloc]init];
-//            [self.drNavigationController pushViewController:bookDetail animated:YES];
-//            RELEASE(bookDetail);
-//        }else{
+        [tbDataBank11 deselectRowAtIndexPath:indexPath animated:YES];
             ShareBookOtherCenterViewController *otherCenter = [[ShareBookOtherCenterViewController alloc]init];
         otherCenter.dictInfo = [arrayResult objectAtIndex:indexPath.row];
             [self.drNavigationController pushViewController:otherCenter animated:YES];
@@ -274,6 +264,27 @@
     
     
 }
+
+
+-(void)getNewFriendList
+{
+    MagicRequest *request = [DYBHttpMethod shareBook_user_friendlist_user_id:SHARED.userId sAlert:YES receive:self];
+    [request setTag:2];
+}
+-(void)deleteFriend:(NSDictionary*)dicInfo
+{
+    [PublicUtl addHUDviewinView:self.view];
+    MagicRequest    *request = [DYBHttpMethod book_friend_del_user_id:[dicInfo objectForKey:@"user_id"] sAlert:YES receive:self];
+    request.tag = 200;
+}
+
+-(void)clickDeleteFriend:(UIButton*)sender
+{
+    NSDictionary    *dicInfo = arrayResult[sender.tag];
+    [self deleteFriend:dicInfo];
+    
+}
+
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
 {
     
@@ -289,9 +300,12 @@
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-           
-                    
-                    arrayResult = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"] objectForKey:@"user_list"]];
+                    if (!arrayResult)
+                    {
+                        arrayResult = [[NSMutableArray alloc] init];
+                    }
+                    [arrayResult removeAllObjects];
+                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"user_list"]];
                     [tbDataBank11 reloadData];
                     
                 }else{
@@ -302,14 +316,16 @@
                     
                 }
             }
-        }else if(request.tag == 3){
+        }else if(request.tag == 200){
             
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
-           
+                    [PublicUtl showText:@"删除成功" Gravity:iToastGravityBottom];
+                    [self getNewFriendList];
                 }
                 else{
                     NSString *strMSG = [dict objectForKey:@"message"];

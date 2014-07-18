@@ -10,9 +10,21 @@
 #import "ShareGiveDouCell.h"
 #import "ShareDouSendViewController.h"
 #import "JSON.h"
+#import "EGORefreshTableFooterView.h"
+#import "ShareUserInfoCell.h"
 
 @interface ShareUserListViewController ()
 
+{
+    EGORefreshTableFooterView   *refreshView;
+    int             m_iCurrentPage;
+    int             m_iPageNum;
+    BOOL            m_bHasNext;
+    BOOL            m_bIsLoading;
+    
+    DYBUITableView * tbDataBank11;
+    NSMutableArray  *m_arrayLists;
+}
 @end
 
 @implementation ShareUserListViewController
@@ -48,9 +60,6 @@
     {
         //        [self.rightButton setHidden:YES];
         [self.headview setTitle:@"用户列表"];
-        
-        //        [self setButtonImage:self.leftButton setImage:@"back"];
-        //        [self setButtonImage:self.rightButton setImage:@"home"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
 //        [self.leftButton setHidden:YES];
@@ -69,11 +78,14 @@
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-        
-        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,self.headHeight , 320.0f , self.view.frame.size.height  ) isNeedUpdate:YES];
+
+
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,self.headHeight , 320.0f , self.view.frame.size.height  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
-        [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
+        
+        //[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]
+        [tbDataBank11 setSeparatorColor:[UIColor clearColor]];
         RELEASE(tbDataBank11);
         
         
@@ -93,23 +105,14 @@
 
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
-        //        NSDictionary *dict = (NSDictionary *)[signal object];
-        //        NSNumber *_section = [dict objectForKey:@"section"];
+  
         NSNumber *s;
-        
-        //        if ([_section intValue] == 0) {
-        s = [NSNumber numberWithInteger:10];
-        //        }else{
-        //            s = [NSNumber numberWithInteger:[_arrStatusData count]];
-        //        }
-        
+        s = [NSNumber numberWithInteger:m_arrayLists.count];
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
@@ -118,7 +121,7 @@ static NSString *cellName = @"cellName";
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
         
-        NSNumber *s = [NSNumber numberWithInteger:50];
+        NSNumber *s = [NSNumber numberWithInteger:[ShareUserInfoCell ShareUserInfoCellHeight]];
         [signal setReturnValue:s];
         
         
@@ -132,10 +135,36 @@ static NSString *cellName = @"cellName";
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        ShareGiveDouCell *cell = [[ShareGiveDouCell alloc]init];
         
-        //        NSDictionary *dictInfoFood = Nil;
-        //        [cell creatCell:dictInfoFood];
+        ShareUserInfoCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
+        if (!cell)
+        {
+            cell = [[ShareUserInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            
+            
+            UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-40)/2, 100, 40)];
+            [btnBorrow setTag:102];
+            [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
+            [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
+            [btnBorrow addTarget:self action:@selector(clickAddFriend:) forControlEvents:UIControlEventTouchUpInside];
+            [PublicUtl addlabel_title:@"加为好友" frame:btnBorrow.bounds view:btnBorrow textColor:[UIColor whiteColor]];
+            [cell addSubview:btnBorrow];
+            btnBorrow.tag = indexPath.row;
+            [btnBorrow release];
+            
+        }else
+        {
+            for (UIButton  *btnAdd in cell.subviews)
+            {
+                if ([btnAdd isKindOfClass:[UIButton class]])
+                {
+                    btnAdd.tag = indexPath.row;
+                }
+            }
+        }
+
+        
+        [cell creatCell:m_arrayLists[indexPath.row]];
         DLogInfo(@"%d", indexPath.section);
         
         
@@ -145,8 +174,8 @@ static NSString *cellName = @"cellName";
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        
-
+        NSDictionary    *dicInfo = m_arrayLists[indexPath.row];
+        [self addFriend:dicInfo];
         
     }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
         
@@ -163,8 +192,19 @@ static NSString *cellName = @"cellName";
 }
 
 
+-(void)addFriend:(NSDictionary*)dicInfo
+{
+    [PublicUtl addHUDviewinView:self.view];
+    MagicRequest    *request = [DYBHttpMethod book_friend_add_user_id:[dicInfo objectForKey:@"user_id"] sAlert:YES receive:self];
+    request.tag = 200;
+}
 
+-(void)clickAddFriend:(UIButton*)sender
+{
+    NSDictionary    *dicInfo = m_arrayLists[sender.tag];
+    [self addFriend:dicInfo];
 
+}
 
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
@@ -185,7 +225,30 @@ static NSString *cellName = @"cellName";
                 
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
 
+                    if (m_arrayLists == nil)
+                    {
+                        m_arrayLists = [[NSMutableArray alloc] init];
+                    }
                     
+                    [m_arrayLists addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"user_list"]];
+                    [tbDataBank11 reloadData];
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if(request.tag == 200){
+            [PublicUtl hideHUDViewInView:self.view];
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                    [PublicUtl showText:@"添加好友成功" Gravity:iToastGravityBottom];
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     

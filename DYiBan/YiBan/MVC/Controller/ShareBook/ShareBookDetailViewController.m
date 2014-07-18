@@ -10,7 +10,6 @@
 #import "Magic_UITableView.h"
 #import "WOSOrderCell.h"
 #import "ShareBookDetailCell.h"
-#import "ShareFriendListViewController.h"
 #import "ShareBookApplyViewController.h"
 #import "ShareBookOtherCenterViewController.h"
 #import "JSONKit.h"
