@@ -6,20 +6,20 @@
 //  Copyright (c) 2014年 Tomgg. All rights reserved.
 //
 
-#import "ShareBookMissPWViewController.h"
+#import "ShareBookEditPWViewController.h"
 #import "DYBInputView.h"
 #import "CALayer+Custom.h"
 #import "JSONKit.h"
 #import "JSON.h"
 #import "PublicUtl.h"
 
-@interface ShareBookMissPWViewController (){
+@interface ShareBookEditPWViewController (){
 
-    DYBInputView *_phoneInput;
+
     UIImageView *viewBG ;
     UIScrollView *scrollView;
     UIView *viewLogin;
-    DYBInputView * _phoneInputAuthCode;
+    DYBInputView * _phoneInputOldPwd;
     DYBInputView * _phoneInputNewPwd;
     DYBInputView * _phoneConfirmNewPwd;
 
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation ShareBookMissPWViewController
+@implementation ShareBookEditPWViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,7 +57,7 @@
     //    22 29 36
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
-        [self.headview setTitle:@"重置密码"];
+        [self.headview setTitle:@"修改密码"];
         
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
@@ -103,71 +103,28 @@
         RELEASE(imageViewName);
         
         
-        _phoneInput = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"请输入手机号码" textType:0];
-        [_phoneInput.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
+        _phoneInputOldPwd = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"请输入旧密码" textType:0];
+        [_phoneInputOldPwd.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor]];
         //        [_phoneInputName.nameField setText:@"1"];
-        [_phoneInput.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInput setBackgroundColor:[UIColor whiteColor]];
-        [viewLogin addSubview:_phoneInput];
-        RELEASE(_phoneInput);
+        [_phoneInputOldPwd.nameField setTextColor:[UIColor blackColor]];
+        [_phoneInputOldPwd.nameField setSecureTextEntry:YES];
+        [_phoneInputOldPwd setBackgroundColor:[UIColor whiteColor]];
+        [viewLogin addSubview:_phoneInputOldPwd];
+        RELEASE(_phoneInputOldPwd);
         
 
         
-        UIView *viewBGbtn = [[UIView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, 130.0f, 40.0f)];
-        [viewBGbtn setBackgroundColor:[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]];
-        
-        viewBGbtn.layer.cornerRadius = 10;//设置那个圆角的有多圆
-        viewBGbtn.layer.borderWidth = 10;//设置边框的宽度，当然可以不要
-        viewBGbtn.layer.borderColor = [[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f] CGColor];//设置边框的颜色
-        viewBGbtn.layer.masksToBounds = YES;//设为NO去试试
-
-        [viewLogin addSubview:viewBGbtn];
-        RELEASE(viewBGbtn);
-        
-        
-        
-        UIButton *btnGetCode = [[UIButton alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, 130.0f, 40.0f)];
-        [btnGetCode setBackgroundColor:[UIColor clearColor]];
-        [btnGetCode setTitle:@"获得验证码" forState:UIControlStateNormal];
-        [btnGetCode addTarget:self action:@selector(doGetCode) forControlEvents:UIControlEventTouchUpInside];
-        [viewLogin addSubview:btnGetCode];
-        RELEASE(btnGetCode);
-        
-        UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(150.0f,  0 +INPUTHEIGHT  + 40, 160.0f, 40.0f)];
-        [labelText setText:@"通过手机获得验证码每天上线3次"];
-        [labelText setFont:[UIFont systemFontOfSize:14]];
-        [labelText setBackgroundColor:[UIColor clearColor]];
-        labelText.lineBreakMode = NSLineBreakByWordWrapping;
-        labelText.numberOfLines = 0;
-        [labelText setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-        [viewLogin addSubview:labelText];
-        RELEASE(labelText)
-        
-        
-        
-         _phoneInputAuthCode = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40*2 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"请输入验证码" textType:0];
-        [_phoneInputAuthCode.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
-        //        [_phoneInputAddr.nameField setText:@"1"];
-        [_phoneInputAuthCode.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputAuthCode setBackgroundColor:[UIColor whiteColor]];
-        [viewLogin addSubview:_phoneInputAuthCode];
-        RELEASE(_phoneInputAuthCode);
-
-        
-        
-        
-        _phoneInputNewPwd = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT*2+5  + 40*2 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"请输入新密码" textType:0];
+         _phoneInputNewPwd = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 25+INPUTHEIGHT, INPUTWIDTH, INPUTHEIGHT) placeText:@"请输入新密码" textType:0];
         [_phoneInputNewPwd.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
         //        [_phoneInputAddr.nameField setText:@"1"];
         [_phoneInputNewPwd.nameField setTextColor:[UIColor blackColor]];
-        [_phoneInputNewPwd.nameField setSecureTextEntry:YES];
         [_phoneInputNewPwd setBackgroundColor:[UIColor whiteColor]];
+        [_phoneInputNewPwd.nameField setSecureTextEntry:YES];
         [viewLogin addSubview:_phoneInputNewPwd];
         RELEASE(_phoneInputNewPwd);
+
         
-        
-        
-        _phoneConfirmNewPwd = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT*3+5*2  + 40*2 + 20, INPUTWIDTH, INPUTHEIGHT) placeText:@"确认新密码" textType:0];
+        _phoneConfirmNewPwd = [[DYBInputView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 30+INPUTHEIGHT*2,INPUTWIDTH, INPUTHEIGHT) placeText:@"确认新密码" textType:0];
         [_phoneConfirmNewPwd.layer AddborderByIsMasksToBounds:YES cornerRadius:3 borderWidth:1 borderColor:[[UIColor colorWithRed:188.0f/255 green:188.0f/255 blue:188.0f/255 alpha:1.0f]  CGColor]];
         //        [_phoneInputAddr.nameField setText:@"1"];
         [_phoneConfirmNewPwd.nameField setTextColor:[UIColor blackColor]];
@@ -176,15 +133,13 @@
         [viewLogin addSubview:_phoneConfirmNewPwd];
         RELEASE(_phoneConfirmNewPwd);
         
-        
-        
-        
+
         UIButton *btnBack= [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneConfirmNewPwd.frame) + CGRectGetMinY(_phoneConfirmNewPwd.frame) + 20 , 300, 44)];
         [btnBack setBackgroundColor:[UIColor clearColor]];
         [btnBack setImage:[UIImage imageNamed:@"bt_click 2"] forState:UIControlStateNormal];
         [btnBack setImage:[UIImage imageNamed:@"bt_click 2"] forState:UIControlStateSelected];
         [btnBack addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
-        [self addlabel_title:@"确认提交" frame:btnBack.frame view:btnBack];
+        [self addlabel_title:@"确认修改" frame:btnBack.frame view:btnBack];
         [viewLogin addSubview:btnBack];
         [btnBack release];
         
@@ -206,12 +161,11 @@
   
     
     [self.view endEditing:YES];
-    if ([_phoneInputAuthCode.nameField.text length] < 1)
+    if ([_phoneInputOldPwd.nameField.text length] < 1)
     {
-        [PublicUtl showText:@"请输入验证码" Gravity:iToastGravityCenter];
+        [PublicUtl showText:@"请输入旧密码" Gravity:iToastGravityCenter];
         return;
-    }
-    else if ([_phoneInputNewPwd.nameField.text length] < 1)
+    }else if ([_phoneInputNewPwd.nameField.text length] < 1)
     {
         [PublicUtl showText:@"请输入新密码" Gravity:iToastGravityCenter];
         return;
@@ -222,28 +176,12 @@
     }
 
     [PublicUtl addHUDviewinView:self.view];
-    MagicRequest    *request = [DYBHttpMethod shareBook_ecurity_resetpwd:_phoneInput.nameField.text authCode:_phoneInputAuthCode.nameField.text newPwd:_phoneInputNewPwd.nameField.text sAlert:YES receive:self];
+    MagicRequest    *request = [DYBHttpMethod shareBook_user_editpwd:_phoneInputOldPwd.nameField.text newPwd:_phoneInputNewPwd.nameField.text sAlert:YES receive:self];
     request.tag = 100;
 
 }
 
--(void)doGetCode{
 
-    [self.view endEditing:YES];
-    if (_phoneInput.nameField.text == nil)
-    {
-        [PublicUtl showText:@"请输入手机号码" Gravity:iToastGravityCenter];
-        return;
-    }
-    else if ([_phoneInput.nameField.text length] < 11)
-    {
-        [PublicUtl showText:@"手机号码不合法，请重新输入" Gravity:iToastGravityCenter];
-        return;
-    }
-    [PublicUtl addHUDviewinView:self.view];
-    MagicRequest *request = [DYBHttpMethod security_authcode:_phoneInput.nameField.text type:@"1" isAlert:YES receive:self];
-    [request setTag:2];
-}
 
 
 

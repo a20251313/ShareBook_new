@@ -555,5 +555,7 @@ sAlert:(BOOL)isAlert receive:(id)receive;
 +(MagicRequest *)book_shelf:(NSString *)pub_id sAlert:(BOOL)isAlert receive:(id)receive;
 +(MagicRequest *)security_verifyauthcode:(NSString *)phone authCode:(NSString *)authCode sAlert:(BOOL)isAlert receive:(id)receive;
 +(MagicRequest *)shareBook_UserList:(NSString *)userID sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)shareBook_ecurity_resetpwd:(NSString *)phoneNumber authCode:(NSString*)authCode newPwd:(NSString*)newPwd sAlert:(BOOL)isAlert receive:(id)receive;
++(MagicRequest *)shareBook_user_editpwd:(NSString *)oldPwd newPwd:(NSString*)newPwd sAlert:(BOOL)isAlert receive:(id)receive;
 
 @end

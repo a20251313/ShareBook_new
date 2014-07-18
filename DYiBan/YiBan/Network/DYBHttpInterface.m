@@ -2601,5 +2601,29 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 }
 
 
+//security_resetpwd
+
+
++ (NSMutableDictionary *)shareBook_security_resetpwd:(NSString *)phoneNumber authCode:(NSString*)authCode newPwd:(NSString*)newPwd
+{
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:phoneNumber forKey:@"phone"];
+    [dict setValue:authCode forKey:@"authcode"];
+    [dict setValue:newPwd forKey:@"password"];
+    [dict setValue:@"security_resetpwd" forKey:INTERFACEDOACTION];
+    return dict;
+}
+
+//user_editpwd
+
++ (NSMutableDictionary *)shareBook_user_editpwd:(NSString *)oldPwd newPwd:(NSString*)newPwd
+{
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:oldPwd forKey:@"oldpwd"];
+    [dict setValue:newPwd forKey:@"newpwd"];
+    [dict setValue:@"user_editpwd" forKey:INTERFACEDOACTION];
+    return dict;
+}
+
 
 @end

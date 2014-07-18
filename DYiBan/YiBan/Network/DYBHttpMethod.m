@@ -2099,8 +2099,28 @@
 }
 
 
-//// user_list
-//+ (NSMutableDictionary *)shareBook_user_list:(NSString *)userID;
+//+ (NSMutableDictionary *)shareBook_security_resetpwd:(NSString *)phoneNumber authCode:(NSString*)authCode newPwd:(NSString*)newPwd
+
+
++(MagicRequest *)shareBook_ecurity_resetpwd:(NSString *)phoneNumber authCode:(NSString*)authCode newPwd:(NSString*)newPwd sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface  shareBook_security_resetpwd:phoneNumber authCode:authCode newPwd:newPwd];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
+
+//+ (NSMutableDictionary *)shareBook_user_editpwd:(NSString *)oldPwd newPwd:(NSString*)newPwd
+
++(MagicRequest *)shareBook_user_editpwd:(NSString *)oldPwd newPwd:(NSString*)newPwd sAlert:(BOOL)isAlert receive:(id)receive{
+    
+    NSMutableDictionary *dict = [DYBHttpInterface  shareBook_user_editpwd:oldPwd newPwd:newPwd];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+    
+}
 @end
 
 

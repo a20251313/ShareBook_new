@@ -603,4 +603,7 @@
 // user_list
 + (NSMutableDictionary *)shareBook_user_list:(NSString *)userID;
 
++ (NSMutableDictionary *)shareBook_security_resetpwd:(NSString *)phoneNumber authCode:(NSString*)authCode newPwd:(NSString*)newPwd;
++ (NSMutableDictionary *)shareBook_user_editpwd:(NSString *)oldPwd newPwd:(NSString*)newPwd;
+
 @end
