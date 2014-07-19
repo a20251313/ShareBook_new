@@ -458,8 +458,9 @@
     NSString    *cirleIDs = [self.arrayResult componentsJoinedByString:@","];
     
     DLogInfo(@"doChoose cirleIDs:%@",cirleIDs);
+    m_ideposit = 0;
     NSDictionary *dict = [_dictInfo objectForKey:@"book"];
-    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:[NSString stringWithFormat:@"%d",lent_way] deposit_type:@"1" deposit:[NSString stringWithFormat:@"%d",m_ideposit]  loan_period:[NSString stringWithFormat:@"%d",m_iperiod]  public:@"1" remark:@"eeeee" lat:SHARED.locationLat lng:SHARED.locationLng sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"1" tag_ids:[@(m_iBookCate) description] sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod shareBook_book_upload_book_id:[dict objectForKey:@"id"] lent_way:[NSString stringWithFormat:@"%d",lent_way] deposit_type:@"1" deposit:[NSString stringWithFormat:@"%d",m_ideposit]  loan_period:[NSString stringWithFormat:@"%d",m_iperiod]  public:@"1" remark:@"eeeee" lat:SHARED.locationLat lng:SHARED.locationLng sskey:@"11" address:@"ddd" circle_id:cirleIDs rent:@"0" tag_ids:[@(m_iBookCate) description] sAlert:YES receive:self];
     
     //[@(m_iBookCate) description]
     [request setTag:2];
