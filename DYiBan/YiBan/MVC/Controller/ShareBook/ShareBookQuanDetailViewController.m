@@ -83,9 +83,7 @@
         
         
         
-        MagicRequest *request = [DYBHttpMethod shareBook_circle_detail_circle_id:[_dictInfo objectForKey:@"circle_id"]  sAlert:YES receive:self];
-        [request setTag:3];
-        
+      
         
         
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
@@ -123,7 +121,7 @@
         tbDataBank11.separatorColor = [UIColor clearColor];
        // [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank11);
-        
+        [self getCircleDetail];
 //        [self creatDownBar];
         
         
@@ -134,6 +132,13 @@
         
         
     }
+}
+
+-(void)getCircleDetail
+{
+    MagicRequest *request = [DYBHttpMethod shareBook_circle_detail_circle_id:[_dictInfo objectForKey:@"circle_id"]  sAlert:YES receive:self];
+    [request setTag:3];
+    
 }
 
 
@@ -306,6 +311,13 @@
 }
 
 
+
+-(void)dealloc
+{
+    RELEASE(arrayResult);
+    RELEASE(arrayResultBook);
+    [super dealloc];
+}
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
 {
@@ -323,7 +335,13 @@
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     
-                    arrayResultBook = [[NSMutableArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]];
+                    [arrayResult removeAllObjects];
+                    if (!arrayResult)
+                    {
+                        arrayResult = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]];
                     [tbDataBank11 reloadData];
                     
                 }else{
@@ -343,7 +361,18 @@
                 if (!result) {
                  
                     NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"members"];
-                    arrayResult = [[NSMutableArray alloc]initWithArray:[dict1 allValues]];
+                    
+                    if (!arrayResult)
+                    {
+                        arrayResult = [[NSMutableArray alloc] init];
+                    }
+                    
+                    [arrayResult removeAllObjects];
+                    if (dict1.count)
+                    {
+                        [arrayResult addObjectsFromArray:[dict1 allValues]]; 
+                    }
+                   
                     [tbDataBank11 reloadData];
                 }
                 else{
@@ -385,6 +414,8 @@
                 NSString *strMSG = [dict objectForKey:@"message"];
                 
                 [PublicUtl showText:strMSG Gravity:iToastGravityBottom];
+                
+                [self getCircleDetail];
             }
             
         } else{

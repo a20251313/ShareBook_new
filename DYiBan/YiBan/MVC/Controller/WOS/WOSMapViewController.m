@@ -256,6 +256,7 @@
         
         ShareBookMyQuanCenterViewController *mapList = [[ShareBookMyQuanCenterViewController alloc]init];
         [mapList setTitle:@"附近的圈子"];
+        mapList.isMuyQuanzi = NO;
         [self.drNavigationController pushViewController:mapList animated:YES];
         RELEASE(mapList);
     }

@@ -261,7 +261,8 @@
         UIView *viewR = [self.view viewWithTag:RIGHTVIEWTAG];
         if (!viewR) {
             
-            NSArray *arrayType = [[NSArray alloc]initWithObjects:@"消息",@"图书",@"豆",@"圈",@"好友", nil];
+            //NSArray *arrayType = [[NSArray alloc]initWithObjects:@"消息",@"图书",@"豆",@"圈",@"好友", nil];
+            NSArray *arrayType = [[NSArray alloc]initWithObjects:@"消息",@"图书",@"圈",@"好友", nil];
             DYBDataBankTopRightCornerView *rightV = [[DYBDataBankTopRightCornerView alloc]initWithFrame:CGRectMake(320.0f - 95, self.headHeight, 90, 99) arrayResult:arrayType target:self];
             [rightV setBackgroundColor:[UIColor clearColor]];
             [rightV setTag:RIGHTVIEWTAG];
@@ -302,14 +303,14 @@
             }
                 
                 break;
-            case 3:
+            case 5:
             {
                 ShareDouViewController *dou = [[ShareDouViewController alloc]init];
                 [self.drNavigationController pushViewController:dou animated:YES];
                 RELEASE(dou);
             }
                 break;
-            case 4:
+            case 3:
             {
                 ShareBookMyQuanCenterViewController *quan = [[ShareBookMyQuanCenterViewController alloc] init];
                 quan.isMuyQuanzi = YES;
@@ -318,7 +319,7 @@
             
             }
                 break;
-            case 5:
+            case 4:
             {
                 ShareBookFriendListViewController *quan = [[ShareBookFriendListViewController alloc]init];
                 [self.drNavigationController pushViewController:quan animated:YES];

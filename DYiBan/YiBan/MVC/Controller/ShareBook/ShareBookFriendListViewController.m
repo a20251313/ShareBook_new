@@ -91,9 +91,16 @@
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
+        
+        
+
+
+
+        
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight ,320  , self.view.frame.size.height - self.headHeight  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
+        tbDataBank11.canEdit = YES;
        // [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         [tbDataBank11 setSeparatorColor:[UIColor clearColor]];
         RELEASE(tbDataBank11);
@@ -211,7 +218,7 @@
             cell = [[ShareUserInfoCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
             
             
-            UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-35)/2, 100, 35)];
+            /*UIButton *btnBorrow = [[UIButton alloc]initWithFrame:CGRectMake(200, ([ShareUserInfoCell ShareUserInfoCellHeight]-35)/2, 100, 35)];
             [btnBorrow setTag:102];
             [btnBorrow setImage:[UIImage imageNamed:@"bt02_click"] forState:UIControlStateHighlighted];
             [btnBorrow setImage:[UIImage imageNamed:@"bt02"] forState:UIControlStateNormal];
@@ -219,17 +226,17 @@
             [PublicUtl addlabel_title:@"删除好友" frame:btnBorrow.bounds view:btnBorrow textColor:[UIColor whiteColor]];
             [cell addSubview:btnBorrow];
             btnBorrow.tag = indexPath.row;
-            [btnBorrow release];
+            [btnBorrow release];*/
             
         }else
         {
-            for (UIButton  *btnAdd in cell.subviews)
+            /*for (UIButton  *btnAdd in cell.subviews)
             {
                 if ([btnAdd isKindOfClass:[UIButton class]])
                 {
                     btnAdd.tag = indexPath.row;
                 }
-            }
+            }*/
         }
         
             [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
@@ -259,6 +266,16 @@
     }else if ([signal is:[MagicUITableView TAbLEVIEWLODATA]]){
     }else if ([signal is:[MagicUITableView TAbLEVIERETOUCH]]){
         
+    }else if ([signal is:[MagicUITableView TABLEEDITEVENT]])
+    {
+        NSDictionary *dict = (NSDictionary *)[signal object];
+        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+        UITableViewCellEditingStyle editStyle = [[dict objectForKey:@"editingStyle"] intValue];
+        if (editStyle == UITableViewCellEditingStyleDelete)
+        {
+            [self deleteFriend:arrayResult[indexPath.row]];
+        }
+    
     }
     
     
@@ -336,7 +353,7 @@
                 }
             }
             
-        } else{
+        }  else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             
@@ -346,6 +363,7 @@
         }
     }
 }
+
 
 
 

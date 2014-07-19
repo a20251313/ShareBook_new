@@ -13,7 +13,7 @@
 #import "EGORefreshTableFooterView.h"
 #import "ShareUserInfoCell.h"
 
-@interface ShareUserListViewController ()
+@interface ShareUserListViewController ()<UISearchBarDelegate>
 
 {
     EGORefreshTableFooterView   *refreshView;
@@ -59,7 +59,7 @@
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
         //        [self.rightButton setHidden:YES];
-        [self.headview setTitle:@"用户列表"];
+        [self.headview setTitle:@"搜索"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
 //        [self.leftButton setHidden:YES];
@@ -73,24 +73,54 @@
         
         
         
-        UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
+        UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
+        [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [viewBG setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
-
-
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,self.headHeight , 320.0f , self.view.frame.size.height  ) isNeedUpdate:YES];
+        
+        
+        
+        
+        UISearchBar *searchView = [[UISearchBar alloc]initWithFrame:CGRectMake(0.0f,self.headHeight, 320, 44) ];
+        searchView.tag = 3000;
+        for (UIView *subview in [searchView subviews]) {
+            if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
+            {
+                [subview removeFromSuperview];
+            }else if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
+                [(UITextField *)subview setBackground:[UIImage imageNamed:@"bg_search"]];
+                
+            }else if ([subview isKindOfClass:[UIButton class]]){
+                
+                
+            }
+        }
+        
+        [searchView setPlaceholder:@"搜索用户名"];
+        [searchView setBackgroundColor:[UIColor colorWithRed:248/255.0f green:248/255.0f blue:248/255.0f alpha:1.0f]];
+        [searchView setUserInteractionEnabled:YES];
+        [self.view addSubview:searchView];
+        searchView.delegate = self;
+        RELEASE(searchView)
+        
+        
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight+50,320  , self.view.frame.size.height - self.headHeight-50) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
-        
-        //[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]
+        tbDataBank11.canEdit = YES;
+        [tbDataBank11 setBackgroundColor:[UIColor clearColor]];
+        [tbDataBank11 setBackgroundView:[[UIView new] autorelease]];
+        // [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         [tbDataBank11 setSeparatorColor:[UIColor clearColor]];
         RELEASE(tbDataBank11);
         
         
+        /*
+        
         MagicRequest    *request = [DYBHttpMethod shareBook_UserList:SHARED.userId sAlert:YES receive:self];
-        request.tag = 2;
+        request.tag = 2;*/
         
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
@@ -192,6 +222,32 @@
 }
 
 
+
+#pragma search
+
+-(void)doSearch:(NSString*)searchText
+{
+    
+    if ([searchText length] < 1)
+    {
+        [PublicUtl showText:@"请输入搜索条件" Gravity:iToastGravityBottom];
+        return;
+    }
+    
+    [self.view endEditing:YES];
+    
+    [PublicUtl addHUDviewinView:self.view];
+    MagicRequest    *request = [DYBHttpMethod book_user_search_user_id:searchText sAlert:YES receive:self];
+    request.tag = 300;
+    
+}
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    
+    [self doSearch:searchBar.text];
+}
+
+
 -(void)addFriend:(NSDictionary*)dicInfo
 {
     [PublicUtl addHUDviewinView:self.view];
@@ -213,8 +269,7 @@
     if ([request succeed])
     {
         
-        
-        
+
         //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 2) {
             [PublicUtl hideHUDViewInView:self.view];
@@ -257,7 +312,36 @@
                     
                 }
             }
-        }else{
+        }else if(request.tag == 300)
+        {
+            
+                [PublicUtl hideHUDViewInView:self.view];
+                
+                NSDictionary *dict = [request.responseString JSONValue];
+                
+                if (dict) {
+                    
+                    if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
+                        
+                        if (m_arrayLists == nil)
+                        {
+                            m_arrayLists = [[NSMutableArray alloc] init];
+                        }
+                        
+                        [m_arrayLists removeAllObjects];
+                        [m_arrayLists addObjectsFromArray:[[dict objectForKey:@"data"] objectForKey:@"user_list"]];
+                        [tbDataBank11 reloadData];
+                    }else{
+                        NSString *strMSG = [dict objectForKey:@"message"];
+                        
+                        [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                        
+                        
+                    }
+                }
+            
+        }
+            else{
             NSDictionary *dict = [request.responseString JSONValue];
             NSString *strMSG = [dict objectForKey:@"message"];
             

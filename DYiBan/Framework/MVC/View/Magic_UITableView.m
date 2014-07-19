@@ -19,6 +19,7 @@
 @synthesize viewType;
 @synthesize currentState;
 
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 
 #undef UITextAlignmentCenter
@@ -168,6 +169,7 @@
 
 
 @implementation MagicUITableView
+@synthesize canEdit;
 DEF_SIGNAL(TABLENUMROWINSEC)
 DEF_SIGNAL(TABLECELLFORROW)
 DEF_SIGNAL(TABLEDIDSELECT)
@@ -191,6 +193,7 @@ DEF_SIGNAL(TAbLEVIEWSCROLLUP)//table向上滑动
 DEF_SIGNAL(TAbLEVIEWSCROLLDOWN)//table向下滑动
 DEF_SIGNAL(TAbLEVIERELOADOVER)//reload完毕
 DEF_SIGNAL(TAbLEVIERETOUCH)//touch事件
+DEF_SIGNAL(TABLEEDITEVENT)//EDIT事件
 
 @synthesize footerView,headerView, tableViewType = _tableViewType,b_Dragging=_b_Dragging;
 @synthesize b_isreloadOver = _b_isreloadOver;
@@ -657,10 +660,15 @@ BOOL isScrollMoving;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NO;
+    return self.canEdit;
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:tableView, @"tableView", indexPath, @"indexPath", @(editingStyle),@"editingStyle",nil];
+    [self sendViewSignal:[MagicUITableView TABLEEDITEVENT] withObject:dict];
+    //NSString *str = (NSString *)[viewSignal returnValue];
+    
+    RELEASEDICTARRAYOBJ(dict);
 }
 @end

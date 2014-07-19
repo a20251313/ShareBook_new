@@ -109,6 +109,7 @@ AS_SIGNAL(TAbLEVIEWSCROLLUP)//table向上滑动
 AS_SIGNAL(TAbLEVIEWSCROLLDOWN)//table向下滑动
 AS_SIGNAL(TAbLEVIERELOADOVER)//reload完毕
 AS_SIGNAL(TAbLEVIERETOUCH)//touch事件
+AS_SIGNAL(TABLEEDITEVENT)//EDIT事件
 
 
 
@@ -117,6 +118,7 @@ AS_SIGNAL(TAbLEVIERETOUCH)//touch事件
 @property (nonatomic, assign)MagicUITableViewType tableViewType;
 @property (nonatomic, assign)BOOL b_isreloadOver;/*调用reload方法后是否reload完毕数据源*/
 @property (nonatomic, assign)BOOL b_Dragging;//是否正在被拖拽
+@property (nonatomic, assign)BOOL canEdit;;//是否正在被拖拽
 
 //默认没有上拉下拉
 - (id)initWithFrame:(CGRect)frame;

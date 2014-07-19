@@ -147,7 +147,7 @@
         RELEASE(labelTrip);
         
         
-        UILabel *labelBorrowMeyon= [[UILabel alloc]initWithFrame:CGRectMake(20.0f , CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
+        /*UILabel *labelBorrowMeyon= [[UILabel alloc]initWithFrame:CGRectMake(20.0f , CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         
         [labelBorrowMeyon setText:@"借阅押金："];
         [labelBorrowMeyon sizeToFit];
@@ -169,13 +169,13 @@
         [_slider3 setThumbImage:YDIMG(@"21X21") forState:UIControlStateHighlighted];
         [_slider3 setMinimumTrackImage:[YDIMG(@"boby") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];
         [_slider3 setMiddleTrackImage:[YDIMG(@"boby2") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];
-        [_slider3 setMaximumTrackImage:[YDIMG(@"boby2") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];
+        [_slider3 setMaximumTrackImage:[YDIMG(@"boby2") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];*/
         
 
         
         
         
-        UILabel *labelBackTime = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100.0f, 20.0f)];
+        UILabel *labelBackTime = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         
         [labelBackTime setText:@"还书时限："];
         [labelBackTime sizeToFit];
@@ -185,7 +185,7 @@
         
         
         
-        YDSlider *_slider4 = [[YDSlider alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelBorrowMeyon.frame) + CGRectGetWidth(labelBorrowMeyon.frame) + 5, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100, 20)];
+        YDSlider *_slider4 = [[YDSlider alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelBorrowStye.frame) + CGRectGetWidth(labelBorrowStye.frame) + 5, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100, 20)];
         
         [viewBG addSubview:_slider4];
         _slider4.tag = 1002;
@@ -201,16 +201,16 @@
         [_slider4 setMiddleTrackImage:[YDIMG(@"boby2") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];
         [_slider4 setMaximumTrackImage:[YDIMG(@"boby2") resizableImageWithCapInsets:UIEdgeInsetsMake(4, 3, 5, 4) resizingMode:UIImageResizingModeStretch]];
 
-        
+        /*
         UILabel *labelNumDou = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         [labelNumDou setBackgroundColor:[UIColor clearColor]];
         [labelNumDou setText:@"10乐享豆"];
         labelNumDou.tag = 1003;
         [viewBG addSubview:labelNumDou];
-        RELEASE(labelNumDou);
+        RELEASE(labelNumDou);*/
         
         
-        UILabel *labelNumTime = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowMeyon.frame) + CGRectGetMinY(labelBorrowMeyon.frame) + 20 , 100.0f, 20.0f)];
+        UILabel *labelNumTime = [[UILabel alloc]initWithFrame:CGRectMake(220.0f + 0, CGRectGetHeight(labelBorrowStye.frame) + CGRectGetMinY(labelBorrowStye.frame) + 20 , 100.0f, 20.0f)];
         [labelNumTime setBackgroundColor:[UIColor clearColor]];
         [labelNumTime setText:@"10天"];
           labelNumTime.tag = 1004;

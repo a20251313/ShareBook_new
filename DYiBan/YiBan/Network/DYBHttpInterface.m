@@ -2401,7 +2401,7 @@ address:(NSString *)address lat:(NSString *)lat lng:(NSString *)lng kind:(NSStri
 + (NSMutableDictionary *)shareBook_user_search_user_id:(NSString *)user_id{
     
     NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
-    [dict setValue:user_id forKey:@"user_id"];
+    [dict setValue:user_id forKey:@"username"];
     [dict setValue:@"user_search" forKey:INTERFACEDOACTION];
     return dict;
 }

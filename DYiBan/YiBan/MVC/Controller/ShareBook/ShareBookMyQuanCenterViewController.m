@@ -86,10 +86,12 @@
         
         if (_isMuyQuanzi) {
             [self.headview setTitle:@"我的圈子"];
-            [self.rightButton setHidden:YES];
+            [self setButtonImage:self.rightButton setImage:@"icon_map"];
+           // [self.rightButton setHidden:YES];
         }else{
             
-            [self setButtonImage:self.rightButton setImage:@"icon_map"];
+            [self.rightButton setHidden:YES];
+           // [self setButtonImage:self.rightButton setImage:@"icon_map"];
         }
         
         
@@ -98,7 +100,7 @@
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-        [self.rightButton setHidden:YES];
+
         
         [self.view setBackgroundColor:[UIColor blackColor]];
 
@@ -193,10 +195,10 @@
 -(void)getCircleList
 {
 
-    NSString    *type = @"1";
+    NSString    *type = @"2";
     if (self.isMuyQuanzi)
     {
-        type = @"2";
+        type = @"1";
     }
     MagicRequest *request = [DYBHttpMethod shareBook_circle_list:type page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] lat:SHARED.locationLat lng:SHARED.locationLng sAlert:YES receive:self];
         [request setTag:3];
