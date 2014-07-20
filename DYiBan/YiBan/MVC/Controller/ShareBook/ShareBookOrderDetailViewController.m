@@ -418,6 +418,7 @@
         return NSOrderedSame;
     }];
     [tbDataBank11 reloadData];
+    [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 

@@ -273,7 +273,7 @@ DEF_SIGNAL(FINISHSWIP)
     
     fypoint += 15+2;
     UILabel *labelowner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, 15)];
-    [labelowner setText:[ NSString stringWithFormat:@"借阅方式：%@",[dict objectForKey:strLentTime]]];
+    [labelowner setText:[ NSString stringWithFormat:@"借阅时间：%@",[dict objectForKey:strLentTime]]];
     [labelowner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelowner setBackgroundColor:[UIColor clearColor]];
     [labelowner setFont:[UIFont systemFontOfSize:12]];
