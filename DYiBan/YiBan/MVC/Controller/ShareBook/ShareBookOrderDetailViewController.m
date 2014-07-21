@@ -885,4 +885,17 @@
     return YES;
 }
 
+-(void)dealloc
+{
+    if (tbDataBank11)
+    {
+        [tbDataBank11 removeFromSuperview];
+        RELEASE(tbDataBank11);
+        tbDataBank11 = nil;
+    }
+    
+    RELEASE(m_dictOrdeDeatil);
+    RELEASE(arrayDate);
+    [super dealloc];
+}
 @end

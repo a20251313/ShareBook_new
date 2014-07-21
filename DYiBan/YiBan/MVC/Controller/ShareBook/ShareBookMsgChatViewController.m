@@ -20,11 +20,8 @@
 
 @interface ShareBookMsgChatViewController (){
 
-    UILabel *labelTime1;
+  
     DYBInputView *_phoneInputNameRSend;
-    
-    DYBInputView *_phoneInputNameR;
-    BOOL bKeyShow;
     DYBUITableView * tbDataBank11;
     NSMutableArray *arrayDate;
 }
@@ -90,6 +87,8 @@
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         
         [tbDataBank11 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        
+       // RELEASE(tbDataBank11);
         
       
         [self creatDownBar];
@@ -206,9 +205,9 @@
     [self.view addSubview:viewBG];
     RELEASE(viewBG);
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 200.0f, 30.0f)];
+    /*UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 200.0f, 30.0f)];
     [viewBG addSubview:textField];
-    RELEASE(textField);
+    RELEASE(textField);*/
     
     
     
@@ -271,7 +270,13 @@
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        ShareBookApplyCell *cell = [[ShareBookApplyCell alloc]init];
+        
+        
+        ShareBookApplyCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
+        if (cell == nil)
+        {
+            cell = [[ShareBookApplyCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        }
         [cell creatCell:[arrayDate objectAtIndex:indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
@@ -426,6 +431,13 @@
 
 -(void)dealloc
 {
+    
+    if (tbDataBank11)
+    {
+        [tbDataBank11 removeFromSuperview];
+        RELEASE(tbDataBank11);
+        tbDataBank11 = nil;
+    }
     RELEASE(arrayDate);
     self.userID = nil;
    // RELEASE(tbDataBank11);

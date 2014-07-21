@@ -66,25 +66,14 @@
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
-        //        [self.leftButton setHidden:YES];
-        
-        if (_bEnter) {
-            
-            [self.headview setTitle:@"附近的圈子"];
-            [self.rightButton setHidden:YES];
-            
-        }else{
-            
-           // [self setButtonImage:self.rightButton setImage:@"icon_map"];
-        }
-        
-        
         
             [self.rightButton setHidden:YES];
-        //选中cell的集合
         if (!m_selectSet)
         {
             m_selectSet = [[NSMutableSet alloc] init];
+            
+            
+         
         }
        
     }
@@ -102,16 +91,44 @@
         
         
         
+        UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
         UIImageView *viewBG = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height - 44)];
         [viewBG setImage:[UIImage imageNamed:@"bg"]];
         [viewBG setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:viewBG];
         RELEASE(viewBG);
         
+
+        
+        UIButton *btnAll = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,self.headHeight+10, 120.0f, 40.0f)];
+        [btnAll setImage:image1 forState:UIControlStateNormal];
+        //        [btnOK setBackgroundColor:[UIColor yellowColor]];
+        [btnAll addTarget:self action:@selector(doAllChoose:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnAll];
+        [self addlabel_title:@"全选" frame:btnAll.frame view:btnAll];
+        RELEASE(btnAll);
+        
+     
+        
+        
+        
+        UIButton *btnAllNot = [[UIButton alloc]initWithFrame:CGRectMake(180.0f,self.headHeight+10, 120.0f, 40.0f)];
+        [btnAllNot setImage:image1 forState:UIControlStateNormal];
+        //        [btnOK setBackgroundColor:[UIColor yellowColor]];
+        [btnAllNot addTarget:self action:@selector(doAllNotChoose:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnAllNot];
+        [self addlabel_title:@"全不选" frame:btnAllNot.frame view:btnAllNot];
+          RELEASE(btnAllNot);
+        
+        
+        
+        
+        
+        
         
         
     
-        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10,self.headHeight + 20 , 300.0f , self.view.frame.size.height -self.headHeight - 50 - 20 - 30  )];
+        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10,self.headHeight + 70 , 300.0f , self.view.frame.size.height -self.headHeight - 50 - 70 - 30  )];
         
         [viewBGTableView setBackgroundColor:[UIColor whiteColor]];
         [viewBGTableView.layer setBorderWidth:1];
@@ -122,7 +139,7 @@
         
 
     
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20,self.headHeight + 20, 280.0f , self.view.frame.size.height -self.headHeight - 50 - 20 - 30 ) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20,self.headHeight + 70, 280.0f , self.view.frame.size.height -self.headHeight - 50 - 70 - 30 ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -135,7 +152,7 @@
             
             offset = 20;
         }
-        UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
+       
  
         UIButton *btnFinish = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 50 - offset, 280.0f, 40.0f)];
         [btnFinish setTag:102];
@@ -161,6 +178,27 @@
     }
 }
 
+
+
+-(void)dealloc
+{
+    RELEASE(_arrayResult);
+    [super dealloc];
+}
+-(void)doAllChoose:(id)sender
+{
+    for (int i = 0;i < _arrayResult.count;i++)
+    {
+        [m_selectSet addObject:@(i)];
+    }
+    [tbDataBank11 reloadData];
+}
+
+-(void)doAllNotChoose:(id)sender
+{
+    [m_selectSet removeAllObjects];
+    [tbDataBank11 reloadData];
+}
 
 
 #pragma mark- 只接受HTTP信号
@@ -202,6 +240,11 @@
                     _arrayResult  = [[NSArray alloc]initWithArray:[[dict objectForKey:@"data"]objectForKey:@"list"]];;
 
                     
+                    
+                    for (int i = 0;i < _arrayResult.count;i++)
+                    {
+                        [m_selectSet addObject:@(i)];
+                    }
                     
                     [tbDataBank11 reloadData];
                 }

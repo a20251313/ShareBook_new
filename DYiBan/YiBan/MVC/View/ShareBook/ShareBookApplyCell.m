@@ -78,6 +78,17 @@
 
 -(void)creatCell:(NSDictionary *) dict{
 
+    
+    for (UIView  *view in self.contentView.subviews)
+    {
+        if (view != self.contentView)
+        {
+            [view removeFromSuperview];
+        }
+        
+    }
+    
+    
     NSString *userID = [dict objectForKey:@"user_id"];
     UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(0,5, 320, 21.0f)];
     [labelTime setBackgroundColor:[UIColor clearColor]];
@@ -88,17 +99,17 @@
 
     [labelTime setFont:[UIFont systemFontOfSize:13.0f]];
     [labelTime setTextAlignment:NSTextAlignmentCenter];
-    [self addSubview:labelTime];
+    [self.contentView addSubview:labelTime];
     [labelTime release];
     if ([userID isEqualToString:SHARED.userId]) {
         
         UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:NO];
-        [self addSubview:contentView];
+        [self.contentView addSubview:contentView];
 
     }else{
     
         UIView  *contentView  = [self getViewAccordContent:[dict objectForKey:@"content"] isLeft:YES];
-        [self addSubview:contentView];
+        [self.contentView addSubview:contentView];
     
     }
 

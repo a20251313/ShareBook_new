@@ -301,7 +301,7 @@
         
         
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(btnQuan.frame) + CGRectGetMinY(btnQuan.frame) + 20, 280.0f, 40.0f)];
+        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(btnQuan.frame) + CGRectGetMinY(btnQuan.frame) + 40, 280.0f, 40.0f)];
         [btnOK setTag:102];
         [btnOK setImage:image1 forState:UIControlStateNormal];
         [btnOK addTarget:self action:@selector(doMakeUpload:) forControlEvents:UIControlEventTouchUpInside];
@@ -344,7 +344,6 @@
 
     ShareBookChooseQuanCenterViewController *my = [[ShareBookChooseQuanCenterViewController alloc] init];
     my.makesure = self;
-    my.bEnter = NO;
     [self.drNavigationController pushViewController:my animated:YES];
     RELEASE(my);
 
