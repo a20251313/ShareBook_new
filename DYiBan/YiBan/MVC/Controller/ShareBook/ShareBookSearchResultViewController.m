@@ -113,6 +113,7 @@
         m_bHasNext = NO;
         m_iPageNum = 20;
         
+        [PublicUtl addHUDviewinView:self.view];
         MagicRequest *request = [DYBHttpMethod book_tag_list:self.dataModel.keyword kind:self.dataModel.kind tagID:self.dataModel.tagid circle_id:self.dataModel.cirleID loan_status:self.dataModel.loanstatus loan_way:self.dataModel.loanway page:[@(m_iCurrentPage) description] num:[@(m_iPageNum) description] sAlert:YES receive:self];
         [request setTag:2];
         
@@ -267,7 +268,7 @@ static NSString *cellName = @"cellName";
     {
         //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 2) {
-            
+            [PublicUtl hideHUDViewInView:self.view];
           
             NSDictionary *dict = [request.responseString JSONValue];
             

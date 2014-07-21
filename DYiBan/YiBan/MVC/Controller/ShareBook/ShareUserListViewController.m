@@ -165,7 +165,7 @@
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
-        
+        UIButton    *btnTotalAdd = nil;
         ShareUserInfoCell *cell = [tbDataBank11 dequeueReusableCellWithIdentifier:@"cell"];
         if (!cell)
         {
@@ -182,6 +182,8 @@
             btnBorrow.tag = indexPath.row;
             [btnBorrow release];
             
+            btnTotalAdd = btnBorrow;
+            
         }else
         {
             for (UIButton  *btnAdd in cell.subviews)
@@ -189,8 +191,20 @@
                 if ([btnAdd isKindOfClass:[UIButton class]])
                 {
                     btnAdd.tag = indexPath.row;
+                    btnTotalAdd = btnAdd;
                 }
             }
+        }
+        
+        
+        
+        NSDictionary    *dicInfo = m_arrayLists[indexPath.row];
+        if ([[dicInfo valueForKey:@"user_id"] isEqualToString:SHARED.userId])
+        {
+            btnTotalAdd.hidden = YES;
+        }else
+        {
+            btnTotalAdd.hidden = NO;
         }
 
         

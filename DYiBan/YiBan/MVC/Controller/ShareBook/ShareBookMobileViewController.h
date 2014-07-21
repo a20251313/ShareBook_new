@@ -9,5 +9,5 @@
 #import "DYBBaseViewController.h"
 
 @interface ShareBookMobileViewController : DYBBaseViewController
-
+@property(nonatomic)BOOL   isFromSettingView;
 @end

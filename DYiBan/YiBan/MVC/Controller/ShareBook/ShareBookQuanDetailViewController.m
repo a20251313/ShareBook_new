@@ -199,10 +199,11 @@
         }
         if (arrayResultBook.count == 0) {
             
+            [PublicUtl addHUDviewinView:self.view];
             MagicRequest *request = [DYBHttpMethod shareBook_circle_booklist_user_id:[_dictInfo objectForKey:@"circle_id"]  page:@"1" num:@"100" sAlert:YES receive:self ];
             [request setTag:2];
         }else {
-        
+            
            [tbDataBank11 reloadData];
         }
         
@@ -327,7 +328,7 @@
         //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 2) {
             
-            
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {
@@ -335,13 +336,13 @@
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     
-                    [arrayResult removeAllObjects];
-                    if (!arrayResult)
+                    [arrayResultBook removeAllObjects];
+                    if (!arrayResultBook)
                     {
-                        arrayResult = [[NSMutableArray alloc] init];
+                        arrayResultBook = [[NSMutableArray alloc] init];
                     }
                     
-                    [arrayResult addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]];
+                    [arrayResultBook addObjectsFromArray:[[dict objectForKey:@"data"]objectForKey:@"book_list"]];
                     [tbDataBank11 reloadData];
                     
                 }else{
@@ -384,28 +385,7 @@
                 }
             }
             
-        }else if(request.tag == 100){
-            
-            NSDictionary *dict = [request.responseString JSONValue];
-            
-            if (dict) {
-                BOOL result = [[dict objectForKey:@"result"] boolValue];
-                if (!result) {
-                    
-                    NSDictionary *dict1 = [[dict objectForKey:@"data"]objectForKey:@"members"];
-                    arrayResult = [[NSMutableArray alloc]initWithArray:[dict1 allValues]];
-                    [tbDataBank11 reloadData];
-                }
-                else{
-                    NSString *strMSG = [dict objectForKey:@"message"];
-                    
-                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
-                    
-                    
-                }
-            }
-            
-        } else if(request.tag == 200){
+        }else if(request.tag == 200){
             
             NSDictionary *dict = [request.responseString JSONValue];
             

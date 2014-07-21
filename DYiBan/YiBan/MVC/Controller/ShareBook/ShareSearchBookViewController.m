@@ -93,7 +93,7 @@
         
         ShareBookDownView *downView1 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(searchView.frame) + CGRectGetMinY(searchView.frame)+ 20, 200, 30)];
         //@"生活圈+好友"
-        NSArray *array1 = [NSArray arrayWithObjects:@"生活圈",@"好友", nil];
+        NSArray *array1 = [NSArray arrayWithObjects:@"生活圈",@"好友",@"全部", nil];
         downView1.arrayResult = array1;
         downView1.tag = 3001;
         [downView1 viewDidLoad];
@@ -127,7 +127,7 @@
         ShareBookDownView *downView3 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelType.frame) + CGRectGetMinY(labelType.frame)+ 20, 200, 30)];
         [self.view addSubview:downView3];
         
-        NSArray *array3 = [NSArray arrayWithObjects:@"不可借",@"可借阅",@"已借出", nil];
+        NSArray *array3 = [NSArray arrayWithObjects:@"不可借",@"可借阅",@"已借出",@"全部", nil];
         downView3.arrayResult = array3;
         downView3.tag = 3003;
         [downView3 viewDidLoad];
@@ -144,7 +144,7 @@
         
         
         //@"做客+旅行"
-        NSArray *array4 = [NSArray arrayWithObjects:@"做客",@"旅行",nil];
+        NSArray *array4 = [NSArray arrayWithObjects:@"做客",@"旅行",@"全部",nil];
         downView4.arrayResult = array4;
         [downView4 viewDidLoad];
         
@@ -189,7 +189,7 @@
         
         [self addlabel_title:@"开始查询" frame:btnOK.frame view:btnOK];
         
-        
+        [self setSearchKeyAccordDefault];
         DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(image.size.width/2, 44, 320.0f - 50, self.view.frame.size.height -44  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor blackColor]];
         //        [self.view addSubview:tbDataBank11];
@@ -228,19 +228,83 @@
 }
 
 
+-(void)setSearchKeyAccordDefault
+{
+    
+    
+    NSDictionary  *dicStore = nil;
+    dicStore = [[NSUserDefaults standardUserDefaults] objectForKey:@"USERSEARCHINFODIC"];
+    
+    if (dicStore)
+    {
+        UISearchBar *bar = (UISearchBar*)[self.view viewWithTag:3000];
+        bar.text = [dicStore valueForKey:@"keyword"];
+        ShareBookDownView  *view1 = (ShareBookDownView*)[self.view viewWithTag:3001];
+        [view1 setTextValue:[dicStore valueForKey:@"range"]];
+        
+        
+        ShareBookDownView  *view2 = (ShareBookDownView*)[self.view viewWithTag:3002];
+         [view2 setTextValue:[dicStore valueForKey:@"cate"]];
+        
+        
+        ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
+         [view3 setTextValue:[dicStore valueForKey:@"state"]];
+        
+        
+        ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
+         [view4 setTextValue:[dicStore valueForKey:@"way"]];
+    }
+
+
+
+}
+
+
 -(void)btnDefialModel:(id)seder{
 
     UIButton *btn = (UIButton *)seder;
     
+    NSUserDefaults  *stanDefault = [NSUserDefaults standardUserDefaults];
+    [stanDefault removeObjectForKey:@"USERSEARCHINFODIC"];
+    NSMutableDictionary *dicInfo = [NSMutableDictionary dictionary];
     if (btn.selected) {
-        
         [btn setSelected:NO];
     }else{
         
+        
+        
+        UISearchBar *bar = (UISearchBar*)[self.view viewWithTag:3000];
+        
+        ShareBookDownView  *view1 = (ShareBookDownView*)[self.view viewWithTag:3001];
+        NSString    *textrange = [view1 getTextValue];
+        
+        ShareBookDownView  *view2 = (ShareBookDownView*)[self.view viewWithTag:3002];
+        NSString    *textCate = [view2 getTextValue];
+        
+        
+        
+        
+        ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
+        NSString    *textState = [view3 getTextValue];
+        
+        ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
+        NSString    *textway = [view4 getTextValue];
+        
+        
+        [dicInfo setObject:textrange forKey:@"range"];
+        [dicInfo setObject:textState forKey:@"state"];
+        [dicInfo setObject:textCate forKey:@"cate"];
+        [dicInfo setObject:textway forKey:@"way"];
+        [dicInfo setObject:bar.text forKey:@"keyword"];
+        
+        
         [btn setSelected:YES];
+        
+        [stanDefault setObject:dicInfo forKey:@"USERSEARCHINFODIC"];
     
     }
 
+    [stanDefault synchronize];
 
 }
 
@@ -311,6 +375,9 @@
         }else if ([textrange isEqualToString:@"好友"])
         {
             self.dataModel.kind = @"2";
+        }else if ([textrange isEqualToString:@"全部"])
+        {
+            self.dataModel.kind = nil;
         }
         
         if ([textState isEqualToString:@"可借阅"])
@@ -322,6 +389,9 @@
         }else if ([textState isEqualToString:@"已借出"])
         {
             self.dataModel.loanstatus = @"2";
+        }else if ([textState isEqualToString:@"全部"])
+        {
+            self.dataModel.loanstatus = nil;
         }
         
         self.dataModel.tagid = [view2 getChooseIndexValue];
@@ -332,6 +402,9 @@
         }else if ([textway isEqualToString:@"旅行"])
         {
             self.dataModel.loanway = @"2";
+        }else if ([textway isEqualToString:@"全部"])
+        {
+            self.dataModel.loanway = nil;
         }
         
         

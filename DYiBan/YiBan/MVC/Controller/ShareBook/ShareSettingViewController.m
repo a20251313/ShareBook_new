@@ -12,6 +12,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "ShareBookEditPWViewController.h"
+#import "ShareBookMobileViewController.h"
 
 @interface ShareSettingViewController (){
 
@@ -73,7 +74,7 @@
         
         //arraySouce = [[NSMutableArray alloc]initWithObjects:@"设置访问权限",@"消息推送",@"地址管理",@"设置自己的图书LOGO", nil];
         
-          arraySouce = [[NSMutableArray alloc]initWithObjects:@"修改密码",@"地址管理", nil];
+          arraySouce = [[NSMutableArray alloc]initWithObjects:@"修改密码",@"地址管理",@"绑定手机", nil];
         
         
         //UIImage *image = [UIImage imageNamed:@"menu_inactive"];
@@ -81,7 +82,7 @@
         
         
         
-        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10, self.headHeight + 20, 300.0f, 50 *2 )];
+        UIView *viewBGTableView = [[UIView alloc]initWithFrame:CGRectMake(10, self.headHeight + 20, 300.0f, 50 *3 )];
                                    
         [viewBGTableView setBackgroundColor:[UIColor whiteColor]];
         [viewBGTableView.layer setBorderWidth:1];
@@ -94,7 +95,7 @@
         
         
         
-        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20, self.headHeight + 20, 280.0f, 50 * 2  ) isNeedUpdate:YES];
+        DYBUITableView * tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(20, self.headHeight + 20, 280.0f, 50 * 3  ) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:tbDataBank11];
         [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
@@ -198,7 +199,7 @@ static NSString *cellName = @"cellName";
         [cell setBackgroundColor:[UIColor clearColor]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        if (indexPath.row == 0 || indexPath.row == 1) {
+        if (1) {
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
         
@@ -220,6 +221,15 @@ static NSString *cellName = @"cellName";
             case 0:
             {
                 ShareBookEditPWViewController *aa = [[ShareBookEditPWViewController alloc]init];
+                [self.drNavigationController pushViewController:aa animated:YES];
+                RELEASE(aa);
+                
+            }
+                break;
+            case 2:
+            {
+                ShareBookMobileViewController *aa = [[ShareBookMobileViewController alloc]init];
+                aa.isFromSettingView = YES;
                 [self.drNavigationController pushViewController:aa animated:YES];
                 RELEASE(aa);
                 

@@ -106,6 +106,8 @@
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
+        
+        [PublicUtl addHUDviewinView:self.view];
         MagicRequest *request =   [DYBHttpMethod shareBook_address_list_user_id:SHARED.userId sAlert:YES receive:self];
         [request setTag:2];
         
@@ -296,10 +298,12 @@
     
     if ([request succeed])
     {
+        
+    
         //        JsonResponse *response = (JsonResponse *)receiveObj;
         if (request.tag == 2) {
             
-            
+            [PublicUtl hideHUDViewInView:self.view];
             NSDictionary *dict = [request.responseString JSONValue];
             
             if (dict) {

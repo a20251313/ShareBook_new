@@ -39,6 +39,18 @@
 }
 
 
+-(void)setTextValue:(NSString*)text
+{
+    _inputTextField.text = text;
+    for (NSString *tempText in self.arrayResult)
+    {
+        if ([tempText isEqualToString:text])
+        {
+            m_iChooseIndex = [self.arrayResult indexOfObject:tempText];
+        }
+    }
+}
+
 - (void)viewDidLoad
 {
     

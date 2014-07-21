@@ -126,25 +126,39 @@
 
         
         
-        
-        UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
-        [btnOK1 setTag:102];
-        [btnOK1 setImage:image1 forState:UIControlStateNormal];
-        //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK1 addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btnOK1];
-        RELEASE(btnOK1);
-        [self addlabel_title:@"提交验证码" frame:btnOK1.frame view:btnOK1];
-        
-        UIButton *btnOK2 = [[UIButton alloc]initWithFrame:CGRectMake(180.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
-        [btnOK2 setTag:103];
-        [btnOK2 setImage:image1 forState:UIControlStateNormal];
-        [btnOK2 addTarget:self action:@selector(doIngore:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btnOK2];
-        RELEASE(btnOK2);
-        
-        [self addlabel_title:@"略过" frame:btnOK2.frame view:btnOK2];
+        if (self.isFromSettingView)
+        {
+            UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
+            UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 280.0f, 40.0f)];
+            [btnOK1 setTag:102];
+            [btnOK1 setImage:image1 forState:UIControlStateNormal];
+            //        [btnOK setBackgroundColor:[UIColor yellowColor]];
+            [btnOK1 addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:btnOK1];
+            RELEASE(btnOK1);
+            [self addlabel_title:@"提交验证码" frame:btnOK1.frame view:btnOK1];
+        }else
+        {
+            UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
+            UIButton *btnOK1 = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
+            [btnOK1 setTag:102];
+            [btnOK1 setImage:image1 forState:UIControlStateNormal];
+            //        [btnOK setBackgroundColor:[UIColor yellowColor]];
+            [btnOK1 addTarget:self action:@selector(doCommitCode:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:btnOK1];
+            RELEASE(btnOK1);
+            [self addlabel_title:@"提交验证码" frame:btnOK1.frame view:btnOK1];
+            
+            UIButton *btnOK2 = [[UIButton alloc]initWithFrame:CGRectMake(180.0f, CGRectGetHeight(_phoneInputAuthCode.frame) + CGRectGetMinY(_phoneInputAuthCode.frame) + 50, 120.0f, 40.0f)];
+            [btnOK2 setTag:103];
+            [btnOK2 setImage:image1 forState:UIControlStateNormal];
+            [btnOK2 addTarget:self action:@selector(doIngore:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:btnOK2];
+            RELEASE(btnOK2);
+            
+            [self addlabel_title:@"略过" frame:btnOK2.frame view:btnOK2];
+        }
+      
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         

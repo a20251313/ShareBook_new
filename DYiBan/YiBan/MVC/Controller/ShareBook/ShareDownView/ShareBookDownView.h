@@ -15,4 +15,5 @@
 - (void)viewDidLoad;
 - (NSString*)getTextValue;
 - (NSString*)getChooseIndexValue;
+-(void)setTextValue:(NSString*)text;
 @end

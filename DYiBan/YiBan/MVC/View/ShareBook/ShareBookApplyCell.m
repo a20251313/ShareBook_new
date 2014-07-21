@@ -32,7 +32,7 @@
     NSDateFormatter *formater = [[NSDateFormatter alloc] init];
     [formater setTimeZone:[NSTimeZone localTimeZone]];
     [formater setLocale:[NSLocale currentLocale]];
-    [formater setDateFormat:@"YYYY-MM-dd HH:mm:SS"];
+    [formater setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     NSString    *strDate = [formater stringFromDate:date];
     [formater release];
     return strDate;

@@ -348,7 +348,7 @@
         
         NSDictionary *dict44 = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",index, @"user_id",nil];
         
-        [arrayDate addObject:dict44];
+        [self needAddInfoMsg:dict44];
     }
     
     UIView  *bgbtnView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(labelAddress.frame) + CGRectGetHeight(labelAddress.frame) + 0, 320, 50)];
@@ -383,6 +383,27 @@
     
 }
 
+
+-(void)needAddInfoMsg:(NSDictionary*)dicInfo
+{
+    
+    BOOL  add = YES;
+    long long time1 = [[dicInfo valueForKey:@"time"] longLongValue];
+    for (NSDictionary  *dicTemp in arrayDate)
+    {
+        if (time1 == [[dicTemp valueForKey:@"time"] longLongValue])
+        {
+            add = NO;
+            break;
+        }
+    }
+    
+    if (add)
+    {
+        [arrayDate addObject:dicInfo];
+    }
+    
+}
 -(void)doAddMessage:(NSNotification *)sender{
 
     
@@ -391,8 +412,8 @@
     NSString *date = [self stringFromDate:[NSDate date]];
     NSString *userID = [dict valueForKey:@"ui"];
     NSDictionary *dictt = [[NSDictionary alloc]initWithObjectsAndKeys:centent,@"content",date,@"time",userID,@"user_id", nil];
-    [arrayDate addObject:dictt];
-    [self resortByTime];
+   // [arrayDate addObject:dictt];
+    [self needAddInfoMsg:dictt];
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -441,7 +462,7 @@
     
     NSTimeInterval  timerInt = [date timeIntervalSince1970];
     
-    return [NSString stringWithFormat:@"%f",timerInt];
+    return [NSString stringWithFormat:@"%0.0f",timerInt];
     
 }
 
@@ -625,7 +646,7 @@
                     NSString *userID = SHARED.userId;
                     
                     NSDictionary *dictTempInfo = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",userID, @"user_id",nil];
-                    [arrayDate  addObject:dictTempInfo];
+                    [self needAddInfoMsg:dictTempInfo];
                     [self resortByTime];
                     [_phoneInputNameRSend.nameField setText:@""];
 
