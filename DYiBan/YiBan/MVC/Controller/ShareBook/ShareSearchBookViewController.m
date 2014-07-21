@@ -93,7 +93,7 @@
         
         ShareBookDownView *downView1 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(searchView.frame) + CGRectGetMinY(searchView.frame)+ 20, 200, 30)];
         //@"生活圈+好友"
-        NSArray *array1 = [NSArray arrayWithObjects:@"生活圈",@"好友",@"全部", nil];
+        NSArray *array1 = [NSArray arrayWithObjects:@"全部",@"生活圈",@"好友", nil];
         downView1.arrayResult = array1;
         downView1.tag = 3001;
         [downView1 viewDidLoad];
@@ -127,7 +127,7 @@
         ShareBookDownView *downView3 = [[ShareBookDownView alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelRange.frame) + CGRectGetMinX(labelRange.frame), CGRectGetHeight(labelType.frame) + CGRectGetMinY(labelType.frame)+ 20, 200, 30)];
         [self.view addSubview:downView3];
         
-        NSArray *array3 = [NSArray arrayWithObjects:@"不可借",@"可借阅",@"已借出",@"全部", nil];
+        NSArray *array3 = [NSArray arrayWithObjects:@"全部",@"不可借",@"可借阅",@"已借出", nil];
         downView3.arrayResult = array3;
         downView3.tag = 3003;
         [downView3 viewDidLoad];
@@ -144,7 +144,7 @@
         
         
         //@"做客+旅行"
-        NSArray *array4 = [NSArray arrayWithObjects:@"做客",@"旅行",@"全部",nil];
+        NSArray *array4 = [NSArray arrayWithObjects:@"全部",@"做客",@"旅行",nil];
         downView4.arrayResult = array4;
         [downView4 viewDidLoad];
         
@@ -253,6 +253,25 @@
         
         ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
          [view4 setTextValue:[dicStore valueForKey:@"way"]];
+    }else
+    {
+        UISearchBar *bar = (UISearchBar*)[self.view viewWithTag:3000];
+        bar.text = [dicStore valueForKey:@"keyword"];
+        ShareBookDownView  *view1 = (ShareBookDownView*)[self.view viewWithTag:3001];
+        [view1 setTextValue:@"全部"];
+        
+        
+        ShareBookDownView  *view2 = (ShareBookDownView*)[self.view viewWithTag:3002];
+        [view2 setTextValue:@"全部"];
+        
+        
+        ShareBookDownView  *view3 = (ShareBookDownView*)[self.view viewWithTag:3003];
+        [view3 setTextValue:@"全部"];
+        
+        
+        ShareBookDownView  *view4 = (ShareBookDownView*)[self.view viewWithTag:3004];
+        [view4 setTextValue:@"全部"];
+        
     }
 
 

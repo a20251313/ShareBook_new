@@ -277,12 +277,12 @@
 
         
         
-        UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelAutoQuan.frame) + CGRectGetMinY(labelAutoQuan.frame) + 20  , 180.0f, 20.0f)];
+       /* UILabel *labelAutoLogin = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(labelAutoQuan.frame) + CGRectGetMinY(labelAutoQuan.frame) + 20  , 180.0f, 20.0f)];
         [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
         [labelAutoLogin setText:@"是否以秘钥方式上传："];
         [labelAutoLogin setBackgroundColor:[UIColor clearColor]];
         [viewBG addSubview:labelAutoLogin];
-        RELEASE(labelAutoLogin);
+        RELEASE(labelAutoLogin);*/
         
         m_iperiod = 10;
         m_ideposit = 10;
@@ -301,7 +301,7 @@
         
         
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(labelAutoLogin.frame) + CGRectGetMinY(labelAutoLogin.frame) + 20, 280.0f, 40.0f)];
+        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(btnQuan.frame) + CGRectGetMinY(btnQuan.frame) + 20, 280.0f, 40.0f)];
         [btnOK setTag:102];
         [btnOK setImage:image1 forState:UIControlStateNormal];
         [btnOK addTarget:self action:@selector(doMakeUpload:) forControlEvents:UIControlEventTouchUpInside];

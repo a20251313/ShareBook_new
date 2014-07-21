@@ -13,6 +13,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "UIImageView+WebCache.h"
+#import "ShareBookMsgChatViewController.h"
 
 
 
@@ -138,12 +139,26 @@
         RELEASE(btnRight);
         [self addlabel_title:@"上架图书" frame:btnRight.frame view:btnRight];
         
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight-60) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight-60-90) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         tbDataBank11.separatorColor = [UIColor clearColor];
        // [tbDataBank11 setSeparatorColor:[UIColor colorWithRed:78.0f/255 green:78.0f/255 blue:78.0f/255 alpha:1.0f]];
         RELEASE(tbDataBank11);
+        
+        
+        
+        UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
+        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f,CGRectGetHeight(tbDataBank11.frame) + CGRectGetMinY(tbDataBank11.frame) + 5, 280.0f, 40.0f)];
+        [btnOK setTag:102];
+        [btnOK setImage:image1 forState:UIControlStateNormal];
+        [btnOK addTarget:self action:@selector(doSendMsg:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnOK];
+        RELEASE(btnOK);
+        
+        [self addlabel_title:@"发私信" frame:btnOK.frame view:btnOK];
+        
+        
         
         //        [self creatDownBar];
         
@@ -158,6 +173,16 @@
 }
 
 
+
+-(void)doSendMsg:(id)sender
+{
+    
+    ShareBookMsgChatViewController *msgConteoller = [[ShareBookMsgChatViewController alloc] init];
+    msgConteoller.dictInfo = self.dictInfo;
+    [self.drNavigationController pushViewController:msgConteoller animated:YES];
+    RELEASE(msgConteoller);
+    
+}
 -(void)requestHistoryBooks
 {
     m_bIsLoading = YES;

@@ -109,10 +109,15 @@
 {
     if ([self.dictInfo objectForKey:@"contact_id"])
     {
-       MagicRequest *request = [DYBHttpMethod message_chat_sixin:1 pageNum:2000 type:@"2" userid:[dictInfo valueForKey:@"contact_id"] maxid:@"0" last_id:@"0" isAlert:YES receive:self];
-        request.tag = 1;
-        
+        self.userID = [self.dictInfo valueForKey:@"contact_id"];   
+    }else
+    {
+        self.userID = [self.dictInfo valueForKey:@"user_id"];
     }
+    
+    
+    MagicRequest *request = [DYBHttpMethod message_chat_sixin:1 pageNum:2000 type:@"2" userid:self.userID maxid:@"0" last_id:@"0" isAlert:YES receive:self];
+    request.tag = 1;
 }
 
 -(void)doAddMessage:(NSNotification *)sender{
@@ -142,6 +147,8 @@
         return NSOrderedSame;
     }];
      [tbDataBank11 reloadData];
+    
+    [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -226,7 +233,7 @@
 -(void)doSend{
     
     
-    MagicRequest *request = [DYBHttpMethod message_send_userid:[dictInfo objectForKey:@"contact_id"] content:_phoneInputNameRSend.nameField.text type:@"1" mid:@"0" orderid:@"0" sAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod message_send_userid:self.userID content:_phoneInputNameRSend.nameField.text type:@"1" mid:@"0" orderid:@"0" sAlert:YES receive:self];
     [request setTag:100];
     
     [_phoneInputNameRSend.nameField resignFirstResponder];
@@ -420,6 +427,7 @@
 -(void)dealloc
 {
     RELEASE(arrayDate);
+    self.userID = nil;
    // RELEASE(tbDataBank11);
     self.dictInfo = nil;
     [super dealloc];

@@ -10,4 +10,5 @@
 
 @interface ShareBookMsgChatViewController : DYBBaseViewController<UITextFieldDelegate>
 @property (nonatomic,retain)NSDictionary *dictInfo;
+@property (nonatomic,retain)NSString  *userID;
 @end
