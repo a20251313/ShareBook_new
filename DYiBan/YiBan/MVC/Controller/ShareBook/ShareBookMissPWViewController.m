@@ -241,7 +241,7 @@
         return;
     }
     [PublicUtl addHUDviewinView:self.view];
-    MagicRequest *request = [DYBHttpMethod security_authcode:_phoneInput.nameField.text type:@"1" isAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod security_authcode:_phoneInput.nameField.text type:@"2" isAlert:YES receive:self];
     [request setTag:2];
 }
 
@@ -333,6 +333,9 @@
             
             if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                 
+                [self.view endEditing:YES];
+                [PublicUtl showText:@"密码重置成功，请重新登录！" Gravity:iToastGravityCenter];
+                [self.drNavigationController popViewControllerAnimated:YES];
             }else{
                 NSString *strMSG = [dict objectForKey:@"message"];
                 

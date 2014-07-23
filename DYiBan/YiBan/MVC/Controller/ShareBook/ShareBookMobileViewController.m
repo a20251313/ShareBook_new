@@ -305,7 +305,15 @@
               if ([[dict objectForKey:@"response"] isEqualToString:@"100"])
               {
                  // [self stoTimer];
-                  [self.drNavigationController popToRootViewControllerAnimated:YES];
+                  
+                  if (self.isFromSettingView)
+                  {
+                      [self.drNavigationController popViewControllerAnimated:YES];
+                  }else
+                  {
+                      [self.drNavigationController popToRootViewControllerAnimated:YES]; 
+                  }
+           
               }else
               {
                   NSString *strMSG = [dict objectForKey:@"message"];

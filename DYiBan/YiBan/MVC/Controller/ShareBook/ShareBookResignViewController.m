@@ -299,7 +299,7 @@
                 if ([[dict objectForKey:@"response"] isEqualToString:@"100"]) {
                     
                     SHARED.userId = [[dict valueForKey:@"data"] objectForKey:@"userid"];
-                    SHARED.sessionID = [[dict valueForKey:@"data"] objectForKey:@"sessID"];
+                    SHARED.sessionID = [dict objectForKey:@"sessID"];
                     ShareBookMobileViewController *mobile = [[ShareBookMobileViewController alloc]init];
                     [self.drNavigationController pushViewController:mobile animated:YES];
                     RELEASE(mobile);
