@@ -955,7 +955,7 @@
                     
                     fromUserID = [[[m_dictOrdeDeatil objectForKey:@"order"]objectForKey:@"from_userid"] intValue];
                     
-                    if ([[m_dictOrdeDeatil objectForKey:@"order"] objectForKey:@"order_status"])
+                    if ([[[m_dictOrdeDeatil objectForKey:@"order"] objectForKey:@"order_status"] intValue] == 0)
                     {
                         [self creatApplyView:m_dictOrdeDeatil];
                     }else

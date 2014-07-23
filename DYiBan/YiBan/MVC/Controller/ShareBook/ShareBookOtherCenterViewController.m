@@ -286,7 +286,7 @@
         [signal setReturnValue:s];
         
     }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
-        int high = (bShowBook == YES ? [ShareBookCell ShareBookCellHeight] : 90);
+        int high = [ShareBookCell ShareBookCellHeight];
         NSNumber *s = [NSNumber numberWithInteger:high];
         [signal setReturnValue:s];
         
@@ -311,17 +311,13 @@
             [signal setReturnValue:cell];
         }else{
             
-  
-            //        UITableView *tableView = [dict objectForKey:@"tableView"];
-            
+              
             
             ShareBookCell *cell = [[ShareBookCell alloc]init];
             cell.tb  = tbDataBank11;
             cell.cellType = ShareBookCellTypeOpearate;
             cell.indexPath = indexPath;
             [cell creatCell:arrayHisBooks[indexPath.row]];
-            //        NSDictionary *dictInfoFood = nil;
-            //        [cell creatCell:dictInfoFood];
             cell.indexPath = indexPath;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [signal setReturnValue:cell];
