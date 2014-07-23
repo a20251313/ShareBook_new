@@ -98,11 +98,11 @@
         
         
         UIImage *image1 = [UIImage imageNamed:@"bt_click1"];
-        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 50, 280.0f, 40.0f)];
+        UIButton *btnOK = [[UIButton alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(self.view.frame) - 100, 280.0f, 40.0f)];
         [btnOK setTag:102];
         [btnOK setImage:image1 forState:UIControlStateNormal];
         //        [btnOK setBackgroundColor:[UIColor yellowColor]];
-        [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
+     //   [btnOK addTarget:self action:@selector(doChoose) forControlEvents:UIControlEventTouchUpInside];
         
         
         MagicRequest *request =   [DYBHttpMethod shareBook_address_list_user_id:SHARED.userId sAlert:YES receive:self];
@@ -122,8 +122,6 @@
 
 
 #pragma mark- 只接受UITableView信号
-static NSString *cellName = @"cellName";
-
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
 {
     
@@ -199,7 +197,7 @@ static NSString *cellName = @"cellName";
     }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
         NSDictionary *dict = (NSDictionary *)[signal object];
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-        [self.applyController setAddress:m_arrayAddress[indexPath.row]];
+        [self.applyController  performSelector:@selector(setAddress:) withObject:m_arrayAddress[indexPath.row]];
         [self.drNavigationController popViewControllerAnimated:YES];
         
         

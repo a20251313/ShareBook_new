@@ -48,6 +48,9 @@
 
 #define BUTTONWIDTH  290 //按钮长度
 #define BUTTONHEIGHT  51 //按钮高度
+
+#define TIMEVIEWTAG          112332
+#define TIMEVIEWTAG2         112334
 //#define YBLogInfo 
 #import "JsonResponse.h"
 

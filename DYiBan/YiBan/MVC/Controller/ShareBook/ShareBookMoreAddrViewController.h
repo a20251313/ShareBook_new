@@ -9,6 +9,6 @@
 #import "DYBBaseViewController.h"
 #import "ShareBookApplyViewController.h"
 @interface ShareBookMoreAddrViewController : DYBBaseViewController
-@property(nonatomic,retain)ShareBookApplyViewController *applyController;
+@property(nonatomic,retain)UIViewController *applyController;
 
 @end

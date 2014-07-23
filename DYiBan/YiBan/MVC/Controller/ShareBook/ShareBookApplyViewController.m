@@ -19,8 +19,6 @@
 #import "iToast.h"
 
 
-#define TIMEVIEWTAG          112332
-#define TIMEVIEWTAG2         112334
 @interface ShareBookApplyViewController (){
 
     UILabel *labelTime1;

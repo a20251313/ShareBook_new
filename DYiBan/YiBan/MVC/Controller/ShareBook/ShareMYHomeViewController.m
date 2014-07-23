@@ -197,6 +197,7 @@
             NSString    *orderId = [arrayResult[indexPath.row] objectForKey:@"order_id"];
             apple.orderID = orderId;
             [self.drNavigationController pushViewController:apple animated:YES];
+            RELEASE(apple);
             
         }else if (kind == 3)
         {
