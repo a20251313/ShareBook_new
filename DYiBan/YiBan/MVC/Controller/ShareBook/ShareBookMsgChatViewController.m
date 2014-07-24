@@ -61,7 +61,7 @@
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
         //        [self.rightButton setHidden:YES];
-        [self.headview setTitle:@"对话"];
+        [self.headview setTitle:@"私信"];
         [self setButtonImage:self.leftButton setImage:@"icon_retreat"];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:22.0f/255 green:29.0f/255 blue:36.0f/255 alpha:1.0f]];
@@ -79,7 +79,7 @@
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         };
         
-        [self requestMessageChatList];
+      
         
         tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0, self.headHeight+10, 320.0f, self.view.frame.size.height-50-self.headHeight) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
@@ -90,8 +90,8 @@
         
        // RELEASE(tbDataBank11);
         
-      
         [self creatDownBar];
+        [self requestMessageChatList];
         
     }else if ([signal is:[MagicViewController DID_APPEAR]]) {
         
@@ -115,7 +115,7 @@
     }
     
     
-    MagicRequest *request = [DYBHttpMethod message_chat_sixin:1 pageNum:2000 type:@"2" userid:self.userID maxid:@"0" last_id:@"0" isAlert:YES receive:self];
+    MagicRequest *request = [DYBHttpMethod message_chat_sixin:1 pageNum:2000 type:@"1" userid:self.userID maxid:@"0" last_id:@"0" isAlert:YES receive:self];
     request.tag = 1;
 }
 
@@ -147,7 +147,11 @@
     }];
      [tbDataBank11 reloadData];
     
-    [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    if (arrayDate.count)
+    {
+        [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+
 }
 
 +(NSDate*) convertDateFromString:(NSString*)uiDate
@@ -440,8 +444,9 @@
     }
     RELEASE(arrayDate);
     self.userID = nil;
-   // RELEASE(tbDataBank11);
     self.dictInfo = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 

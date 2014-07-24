@@ -177,10 +177,16 @@
 -(void)doSendMsg:(id)sender
 {
     
+    
+    NSLog(@"doSendMsg before");
     ShareBookMsgChatViewController *msgConteoller = [[ShareBookMsgChatViewController alloc] init];
     msgConteoller.dictInfo = self.dictInfo;
+    
+     NSLog(@"doSendMsg mid");
     [self.drNavigationController pushViewController:msgConteoller animated:YES];
     RELEASE(msgConteoller);
+    
+     NSLog(@"doSendMsg after");
     
 }
 -(void)requestHistoryBooks

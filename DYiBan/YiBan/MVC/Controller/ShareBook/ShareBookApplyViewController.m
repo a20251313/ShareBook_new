@@ -641,7 +641,7 @@
 }
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-
+   
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     UIView *viewBg = [self.view viewWithTag:201];
@@ -808,6 +808,7 @@
 {
     RELEASE(arrayDate);
     self.dicAddress = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
          

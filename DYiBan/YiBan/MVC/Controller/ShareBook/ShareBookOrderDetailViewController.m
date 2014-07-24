@@ -83,7 +83,11 @@
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
 
         
-        arrayDate = [[NSMutableArray alloc]init];
+        if (!arrayDate)
+        {
+            arrayDate = [[NSMutableArray alloc]init];
+        }
+       
         [self.view setBackgroundColor:[MagicCommentMethod colorWithHex:@"f0f0f0"]];
         [self requestOrderDetails];
         
@@ -367,7 +371,7 @@
     [cancel release];
     [right release];
     [done release];
-    datePicker = [[ UIDatePicker alloc] initWithFrame:CGRectMake(0.0,CGRectGetHeight(self.view.frame) - 216 ,0.0,0.0)];
+    datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0,CGRectGetHeight(self.view.frame) - 216 ,0.0,0.0)];
     
     datePicker.datePickerMode  = UIDatePickerModeDateAndTime;
     datePicker.minuteInterval = 5;
@@ -487,6 +491,7 @@
         
         NSDictionary *dict44 = [[NSDictionary alloc]initWithObjectsAndKeys:strDate,@"time",content,@"content",index, @"user_id",nil];
         [arrayDate addObject:dict44];
+        [dict44 release];
     }
     
     
@@ -718,7 +723,12 @@
         return NSOrderedSame;
     }];
     [tbDataBank11 reloadData];
-    [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    
+    if (arrayDate.count)
+    {
+        [tbDataBank11 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:arrayDate.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+   
 }
 
 
@@ -867,7 +877,7 @@
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
    // static CGFloat normalKeyboardHeight = 216.0f;
-    
+
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 
@@ -888,6 +898,7 @@
     }else if ([signal isKindOf:[MagicUITextField TEXTFIELDSHOULDRETURN]]){
 
             MagicUITextField *filed = (MagicUITextField *)[signal source];
+        
             [filed resignFirstResponder];
             UIView *viewBg = [self.view viewWithTag:201];
         
@@ -1207,12 +1218,14 @@
     if (tbDataBank11)
     {
         [tbDataBank11 removeFromSuperview];
-        RELEASE(tbDataBank11);
-        tbDataBank11 = nil;
     }
     
     RELEASE(m_dictOrdeDeatil);
-    RELEASE(arrayDate);
+    if (arrayDate)
+    {
+        RELEASE(arrayDate);
+    }
+     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 @end

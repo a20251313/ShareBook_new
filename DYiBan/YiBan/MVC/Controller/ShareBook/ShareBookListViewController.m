@@ -151,6 +151,7 @@
         ShareBookListViewController *controller = [[ShareBookListViewController alloc] init];
         controller.type = ShareBookListTypeJieYueHis;
         [self.drNavigationController pushViewController:controller animated:YES];
+        RELEASE(controller);
         
     }else if ([signal is:[ShareBookCellBtnCenterView CLICKDROP]])
     {
