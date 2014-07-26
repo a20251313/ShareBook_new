@@ -80,6 +80,7 @@
         [searchView setPlaceholder:@"搜索书名"];
         [searchView setBackgroundColor:[UIColor colorWithRed:248/255.0f green:248/255.0f blue:248/255.0f alpha:1.0f]];
         [searchView setUserInteractionEnabled:YES];
+        searchView.showsCancelButton = YES;
         [self.view addSubview:searchView];
         searchView.delegate = self;
         RELEASE(searchView)
@@ -444,6 +445,12 @@
 {
     [self.view endEditing:YES];
     [self doSearch];
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    [searchBar resignFirstResponder];
 }
 
 

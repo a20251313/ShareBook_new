@@ -14,6 +14,7 @@
 #import "JSON.h"
 #import "ShareUserListViewController.h"
 #import "ShareUserInfoCell.h"
+#import "PublicUtl.h"
 
 @interface ShareBookFriendListViewController (){
 

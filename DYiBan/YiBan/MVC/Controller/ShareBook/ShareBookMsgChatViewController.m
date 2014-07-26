@@ -198,7 +198,7 @@
     int offset = 0;
     if (!IOS7_OR_LATER) {
         
-        offset = 20;
+        offset = 0;
     }
     
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];

@@ -199,21 +199,23 @@
     NSString    *strStatus = [self.dictInfo valueForKey:@"loan_status"];
     NSString    *strUserID = [self.dictInfo valueForKey:@"user_id"];
   
-    if (![strStatus isEqualToString:@"可借阅"] || [strUserID isEqualToString:SHARED.userId])
-    {
-        [tbDataBank11 setFrame:CGRectMake(0, 5.0f + self.headHeight + 160 + 40, 320.0f, self.view.frame.size.height-200-self.headHeight)];
-        return;
-    }
-    
     int offset = 0;
     if (!IOS7_OR_LATER) {
         
-        offset = 20;
+        offset = 66;
     }
+    
+    if (![strStatus isEqualToString:@"可借阅"] || [strUserID isEqualToString:SHARED.userId])
+    {
+        [tbDataBank11 setFrame:CGRectMake(0, 5.0f + self.headHeight + 160 + 40, 320.0f, self.view.frame.size.height-200-self.headHeight-offset)];
+        return;
+    }
+    
+  
     
     UIImage *image = [UIImage imageNamed:@"down_options_bg"];
 
-    UIImageView *viewBar = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height -  image.size.height/2 - offset, 320.0f, image.size.height/2)];
+    UIImageView *viewBar = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height -  image.size.height/2, 320.0f, image.size.height/2)];
     [viewBar setImage:[UIImage imageNamed:@"down_options_bg"]];
     [viewBar setUserInteractionEnabled:YES];
     [viewBar setBackgroundColor:[UIColor clearColor]];

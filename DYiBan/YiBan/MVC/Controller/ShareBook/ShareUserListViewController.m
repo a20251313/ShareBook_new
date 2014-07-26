@@ -12,6 +12,7 @@
 #import "JSON.h"
 #import "EGORefreshTableFooterView.h"
 #import "ShareUserInfoCell.h"
+#import "PublicUtl.h"
 
 @interface ShareUserListViewController ()<UISearchBarDelegate>
 

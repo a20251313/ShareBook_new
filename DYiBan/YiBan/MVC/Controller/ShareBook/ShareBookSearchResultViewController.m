@@ -15,6 +15,7 @@
 
 #import "JSONKit.h"
 #import "JSON.h"
+#import "PublicUtl.h"
 
 
 @implementation searchDataModel

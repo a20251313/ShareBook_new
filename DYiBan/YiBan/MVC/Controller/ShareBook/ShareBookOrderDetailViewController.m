@@ -17,6 +17,7 @@
 #import "JSON.h"
 #import "UIImageView+WebCache.h"
 #import "ShareBookOrderCommentController.h"
+#import "iToast.h"
 
 @interface ShareBookOrderDetailViewController (){
     DYBInputView *_phoneInputNameRSend;
@@ -429,6 +430,7 @@
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + 0, 200, 20)];
     [labelName setText:[dicttt objectForKey:@"title"]];
     [viewBG addSubview:labelName];
+    [labelName setBackgroundColor:[UIColor clearColor]];
     [labelName release];
     
     UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 15)];
@@ -437,6 +439,7 @@
     
     [labelAuther setFont:[UIFont systemFontOfSize:12]];
     [viewBG addSubview:labelAuther];
+    [labelAuther setBackgroundColor:[UIColor clearColor]];
     [labelAuther release];
     
     UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 15)];
@@ -452,6 +455,7 @@
     [labelState setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelState setText:[NSString stringWithFormat:@"订单状态:待确认"]];
     [viewBG addSubview:labelState];
+    [labelState setBackgroundColor:[UIColor clearColor]];
     [labelState setFont:[UIFont systemFontOfSize:12]];
     [labelState release];
     
@@ -460,6 +464,7 @@
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
     [viewBG addSubview:labelTime];
+    [labelTime setBackgroundColor:[UIColor clearColor]];
     [labelTime setFont:[UIFont systemFontOfSize:12]];
     [labelTime release];
     
@@ -469,6 +474,7 @@
     [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime1 setText:[self getDateFormatFormTimeinter:[self stringFromDate:[NSDate date]]]];
     [viewBG addSubview:labelTime1];
+    [labelTime1 setBackgroundColor:[UIColor clearColor]];
     [labelTime1 setFont:[UIFont systemFontOfSize:12]];
     [labelTime1 release];
     
@@ -580,13 +586,14 @@
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + 0, 200, 20)];
     [labelName setText:[dicttt objectForKey:@"title"]];
+    [labelName setBackgroundColor:[UIColor clearColor]];
     [viewBG addSubview:labelName];
     [labelName release];
     
     UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 15)];
     [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicttt objectForKey:@"author"]]];
     [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    
+    [labelAuther setBackgroundColor:[UIColor clearColor]];
     [labelAuther setFont:[UIFont systemFontOfSize:12]];
     [viewBG addSubview:labelAuther];
     [labelAuther release];
@@ -595,6 +602,7 @@
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelPublic setText:[NSString stringWithFormat:@"出版社:%@",[dicttt valueForKey:@"publisher"]]];
     [viewBG addSubview:labelPublic];
+    [labelPublic setBackgroundColor:[UIColor clearColor]];
     [labelPublic setFont:[UIFont systemFontOfSize:12]];
     [labelPublic release];
     
@@ -603,6 +611,7 @@
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime setText:[NSString stringWithFormat:@"借阅时间:%@",[self getDateFormatFormTimeinter:[dicttt objectForKey:@"time"]]]];
     [viewBG addSubview:labelTime];
+    [labelTime setBackgroundColor:[UIColor clearColor]];
     [labelTime setFont:[UIFont systemFontOfSize:12]];
     [labelTime release];
     
@@ -616,6 +625,7 @@
     [labelAddress setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelAddress setText:[NSString stringWithFormat:@"地址:%@",strAdd]];
     [viewBG addSubview:labelAddress];
+    [labelAddress setBackgroundColor:[UIColor clearColor]];
     [labelAddress setFont:[UIFont systemFontOfSize:12]];
     [labelAddress sizeToFit];
     [labelAddress release];
@@ -761,7 +771,7 @@
     int offset = 0;
     if (!IOS7_OR_LATER) {
         
-        offset = 20;
+        offset = 0;
     }
     
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];

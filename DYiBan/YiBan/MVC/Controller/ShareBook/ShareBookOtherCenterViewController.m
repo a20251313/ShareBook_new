@@ -139,7 +139,7 @@
         RELEASE(btnRight);
         [self addlabel_title:@"上架图书" frame:btnRight.frame view:btnRight];
         
-        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight-60-90) isNeedUpdate:YES];
+        tbDataBank11 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0,40 + self.headHeight + 100 ,320  , self.view.frame.size.height - 40 - self.headHeight-60-90-(IOS7_OR_LATER?0:22)) isNeedUpdate:YES];
         [tbDataBank11 setBackgroundColor:[UIColor whiteColor]];
         [self.view addSubview:tbDataBank11];
         tbDataBank11.separatorColor = [UIColor clearColor];

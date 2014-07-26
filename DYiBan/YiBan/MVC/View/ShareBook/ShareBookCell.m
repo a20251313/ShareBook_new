@@ -222,7 +222,7 @@ DEF_SIGNAL(FINISHSWIP)
     NSDictionary    *dicInfo = [dict objectForKey:@"book"];
     NSString    *strImageKey = @"book_image";
     NSString    *strauthorKey = @"book_author";
-    NSString    *strPublisherKey = @"publisher";
+   // NSString    *strPublisherKey = @"publisher";
    // NSString    *strLentWay = @"loan_way";
     NSString    *strNameKey = @"book_name";
     NSString    *strLentTime = @"loan_time";
@@ -275,7 +275,15 @@ DEF_SIGNAL(FINISHSWIP)
     
     //fypoint += fheight+2;
     UILabel *labelowner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 2,fypoint, 200, fheight)];
-    [labelowner setText:[ NSString stringWithFormat:@"借阅时间：%@",[dict objectForKey:strLentTime]]];
+    
+    if ([[dict objectForKey:strLentTime] isEqualToString:@"0000-00-00 00:00:00"])
+    {
+        [labelowner setText:[ NSString stringWithFormat:@"借阅时间：%@",@"未确认时间"]];
+    }else
+    {
+        [labelowner setText:[ NSString stringWithFormat:@"借阅时间：%@",[dict objectForKey:strLentTime]]];
+    }
+    
     [labelowner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelowner setBackgroundColor:[UIColor clearColor]];
     [labelowner setFont:[UIFont systemFontOfSize:12]];
@@ -298,8 +306,14 @@ DEF_SIGNAL(FINISHSWIP)
     [labelModel setBackgroundColor:[UIColor clearColor]];
     
    
-
-    [labelModel setText:[NSString stringWithFormat:@"地址:%@",[dict valueForKey:strAddress]]];
+    if ([[dict valueForKey:strAddress] length])
+    {
+          [labelModel setText:[NSString stringWithFormat:@"地址:%@",[dict valueForKey:strAddress]]];
+    }else
+    {
+          [labelModel setText:[NSString stringWithFormat:@"地址:%@",@"未确认地址"]];
+    }
+  
     [swipView addSubview:labelModel];
     [labelModel setFont:[UIFont systemFontOfSize:12]];
     [labelModel sizeToFit];

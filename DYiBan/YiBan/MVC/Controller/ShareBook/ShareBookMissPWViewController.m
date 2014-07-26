@@ -128,13 +128,14 @@
         
         UIButton *btnGetCode = [[UIButton alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 0 +INPUTHEIGHT  + 40, 130.0f, 40.0f)];
         [btnGetCode setBackgroundColor:[UIColor clearColor]];
-        [btnGetCode setTitle:@"获得验证码" forState:UIControlStateNormal];
+        [btnGetCode setTitle:@"获取验证码" forState:UIControlStateNormal];
+        [btnGetCode setBackgroundImage:[UIImage imageNamed:@"bt_click1"] forState:UIControlStateNormal];
         [btnGetCode addTarget:self action:@selector(doGetCode) forControlEvents:UIControlEventTouchUpInside];
         [viewLogin addSubview:btnGetCode];
         RELEASE(btnGetCode);
         
         UILabel *labelText = [[UILabel alloc]initWithFrame:CGRectMake(150.0f,  0 +INPUTHEIGHT  + 40, 160.0f, 40.0f)];
-        [labelText setText:@"通过手机获得验证码每天上线3次"];
+        [labelText setText:@"通过手机获得验证码每天上限3次"];
         [labelText setFont:[UIFont systemFontOfSize:14]];
         [labelText setBackgroundColor:[UIColor clearColor]];
         labelText.lineBreakMode = NSLineBreakByWordWrapping;

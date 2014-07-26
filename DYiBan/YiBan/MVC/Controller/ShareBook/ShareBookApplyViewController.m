@@ -19,6 +19,7 @@
 #import "iToast.h"
 
 
+
 @interface ShareBookApplyViewController (){
 
     UILabel *labelTime1;
@@ -36,6 +37,7 @@
     int      order_status;
     int      fromUserID;
     int      toUserID;
+    BOOL     isFirstResponder;
 }
 
 @end
@@ -207,12 +209,13 @@
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, 5.0f + 0, 200, 20)];
     [labelName setText:[dicttt objectForKey:@"title"]];
     [viewBG addSubview:labelName];
+    [labelName setBackgroundColor:[UIColor clearColor]];
     [labelName release];
     
     UILabel *labelAuther = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelName.frame) + CGRectGetHeight(labelName.frame) + 0, 200, 15)];
     [labelAuther setText:[ NSString stringWithFormat:@"作者：%@",[dicttt objectForKey:@"author"]]];
     [labelAuther setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
-    
+    [labelAuther setBackgroundColor:[UIColor clearColor]];
     [labelAuther setFont:[UIFont systemFontOfSize:12]];
     [viewBG addSubview:labelAuther];
     [labelAuther release];
@@ -221,6 +224,7 @@
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelPublic setText:[NSString stringWithFormat:@"出版社:%@",[dicttt valueForKey:@"publisher"]]];
     [viewBG addSubview:labelPublic];
+    [labelPublic setBackgroundColor:[UIColor clearColor]];
     [labelPublic setFont:[UIFont systemFontOfSize:12]];
     [labelPublic release];
     
@@ -230,6 +234,7 @@
     [labelState setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelState setText:[NSString stringWithFormat:@"订单状态:待确认"]];
     [viewBG addSubview:labelState];
+    [labelState setBackgroundColor:[UIColor clearColor]];
     [labelState setFont:[UIFont systemFontOfSize:12]];
     [labelState release];
     
@@ -238,6 +243,7 @@
     [labelTime setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime setText:[NSString stringWithFormat:@"借阅时间:"]];
     [viewBG addSubview:labelTime];
+    [labelTime setBackgroundColor:[UIColor clearColor]];
     [labelTime setFont:[UIFont systemFontOfSize:12]];
     [labelTime release];
     
@@ -246,6 +252,7 @@
     labelTime1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(labelTime.frame) + CGRectGetMinX(labelTime.frame) -140, CGRectGetMinY(labelState.frame) + CGRectGetHeight(labelState.frame) -2, 200, 20)];
     [labelTime1 setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelTime1 setText:[self stringFromDate:[NSDate date]]];
+    [labelTime1 setBackgroundColor:[UIColor clearColor]];
     [viewBG addSubview:labelTime1];
     [labelTime1 setFont:[UIFont systemFontOfSize:12]];
     [labelTime1 release];
@@ -274,7 +281,7 @@
     
     _phoneInputNameR = [[DYBInputView alloc]initWithFrame:CGRectMake( 5, CGRectGetMinY(labelTime1.frame) + CGRectGetHeight(labelTime1.frame) + 10 , 250, 40) placeText:@"请选择您的地址" textType:0];
     [_phoneInputNameR.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-    [_phoneInputNameR.nameField setDelegate:self];
+   // [_phoneInputNameR.nameField setDelegate:self];
     [_phoneInputNameR.nameField setTextColor:[UIColor blackColor]];
     [_phoneInputNameR setBackgroundColor:[UIColor clearColor]];
     [viewBG addSubview:_phoneInputNameR];
@@ -520,7 +527,7 @@
     int offset = 0;
     if (!IOS7_OR_LATER) {
         
-        offset = 20;
+        offset = 0;
     }
     
     UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
@@ -539,7 +546,6 @@
     
     _phoneInputNameRSend = [[DYBInputView alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 250.0f, 30.0f) placeText:@"输入内容" textType:0];
     [_phoneInputNameRSend.layer AddborderByIsMasksToBounds:YES cornerRadius:4 borderWidth:1 borderColor:[[UIColor blackColor] CGColor]];
-    [_phoneInputNameRSend.nameField setDelegate:self];
     [_phoneInputNameRSend.nameField setTextColor:[UIColor blackColor]];
     [_phoneInputNameRSend setBackgroundColor:[UIColor clearColor]];
     [viewBG addSubview:_phoneInputNameRSend];
@@ -641,7 +647,10 @@
 }
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
-   
+    if (!isFirstResponder)
+    {
+        return;
+    }
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     UIView *viewBg = [self.view viewWithTag:201];
@@ -652,31 +661,54 @@
 
 }
 
--(void)handleViewSignal_MagicUITextField:(MagicViewSignal *)signal{
-    if ([signal isKindOf:[MagicUITextField TEXTFIELDDIDBEGINEDITING]]) {
-        
 
+- (void)handleViewSignal_MagicUITextField:(MagicViewSignal *)signal
+{
+     MagicUITextField *textField = [signal source];
+    
+    if (textField == _phoneInputNameRSend.nameField)
+    {
+        isFirstResponder = YES;
+    }else
+    {
+        isFirstResponder = NO;
+    }
+    if ([signal.source isKindOfClass:[MagicUITextField class]])//完成编辑
+    {
+       
         
-    }else if ([signal isKindOf:[MagicUITextField TEXTFIELDDIDENDEDITING]]){
-        
-
-        
-    }else if ([signal isKindOf:[MagicUITextField TEXTFIELDSHOULDRETURN]]){
-        
-        MagicUITextField *filed = (MagicUITextField *)[signal source];
-        [filed resignFirstResponder];
-        
-        UIView *viewBg = [self.view viewWithTag:201];
-        UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
+        if ([signal is:[MagicUITextField TEXTFIELDDIDENDEDITING]])
+        {
+        }else if ([signal is:[MagicUITextField TEXTFIELD]])
+        {
+            
+        }else if ([signal is:[MagicUITextField TEXTFIELDSHOULDRETURN]])
+        {
+            [textField resignFirstResponder];
+            
+            UIView *viewBg = [self.view viewWithTag:201];
+            UIImage *imageBG = [UIImage imageNamed:@"down_options_bg"];
             [viewBg setFrame:CGRectMake(0.0f, self.view.frame.size.height - imageBG.size.height/2, 320.0f, imageBG.size.height/2)];
-      
-
+        }
+        else if ([signal is:[MagicUITextField TEXTFIELDSHOULDCLEAR]])
+        {
+            
+        }else if ([signal is:[MagicUITextField TEXTFIELDDIDBEGINEDITING]]) //开始编辑
+        {
+            
+            
+            
+            
+        }
         
     }
     
     
-    
 }
+
+
+
+
 
 
 #pragma mark- 只接受HTTP信号

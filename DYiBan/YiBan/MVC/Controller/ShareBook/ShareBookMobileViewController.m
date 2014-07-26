@@ -10,6 +10,7 @@
 #import "DYBInputView.h"
 #import "CALayer+Custom.h"
 #import "JSON.h"
+#import "PublicUtl.h"
 
 #define TIMETOGETAUTHCODE       30
 
@@ -332,6 +333,33 @@
             
         }
     }
+}
+
+
+#pragma mark- UITextField
+- (void)handleViewSignal_MagicUITextField:(MagicViewSignal *)signal
+{
+    if ([signal.source isKindOfClass:[MagicUITextField class]])
+    {
+        MagicUITextField *textField = [signal source];
+        
+        if ([signal is:[MagicUITextField TEXTFIELDDIDENDEDITING]])
+        {
+            [self animateTextField:[textField superview] up:NO getContrl:self];
+        }else if ([signal is:[MagicUITextField TEXTFIELD]])
+        {
+            
+        }else if ([signal is:[MagicUITextField TEXTFIELDSHOULDRETURN]])
+        {
+            [textField resignFirstResponder];
+            
+        }
+        else if ([signal is:[MagicUITextField TEXTFIELDSHOULDCLEAR]])
+        {
+        }
+    }
+    
+    
 }
 
 -(void)dealloc
