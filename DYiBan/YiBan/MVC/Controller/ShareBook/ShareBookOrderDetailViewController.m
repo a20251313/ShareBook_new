@@ -572,7 +572,7 @@
     
     
     UIImage *imageIcon = [UIImage imageNamed:@"defualt_book"];
-    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f , imageIcon.size.width/2, imageIcon.size.height/2)];
+    UIImageView *imageBook = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 10.0f , imageIcon.size.width/2, imageIcon.size.height/2)];
     [imageBook setBackgroundColor:[UIColor clearColor]];
     [imageBook setImage:[UIImage imageNamed:@"defualt_book"]];
     
@@ -598,7 +598,16 @@
     [viewBG addSubview:labelAuther];
     [labelAuther release];
     
-    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 15)];
+    
+    UILabel *labelOwner = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelAuther.frame) + CGRectGetHeight(labelAuther.frame) + 0, 200, 15)];
+    [labelOwner setText:[ NSString stringWithFormat:@"书主：%@",[dicttt objectForKey:@"username"]]];
+    [labelOwner setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
+    [labelOwner setBackgroundColor:[UIColor clearColor]];
+    [labelOwner setFont:[UIFont systemFontOfSize:12]];
+    [viewBG addSubview:labelOwner];
+    [labelOwner release];
+    
+    UILabel *labelPublic = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageBook.frame) + CGRectGetMinX(imageBook.frame) + 5, CGRectGetMinY(labelOwner.frame) + CGRectGetHeight(labelOwner.frame) + 0, 200, 15)];
     [labelPublic setTextColor:[UIColor colorWithRed:82.0f/255 green:82.0f/255 blue:82.0f/255 alpha:1.0f]];
     [labelPublic setText:[NSString stringWithFormat:@"出版社:%@",[dicttt valueForKey:@"publisher"]]];
     [viewBG addSubview:labelPublic];
