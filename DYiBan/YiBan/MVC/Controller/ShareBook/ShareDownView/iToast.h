@@ -6,8 +6,12 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef iToastSettings__h
+#define iToastSettings__h
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 
 typedef enum iToastGravity {
 	iToastGravityTop = 1000001,
@@ -85,3 +89,5 @@ typedef enum iToastType {
 + (iToastSettings *) getSharedSettings;
 						  
 @end
+
+#endif
