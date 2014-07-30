@@ -626,7 +626,7 @@
         
         if (self.type != 0)
         {
-            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 40, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 78, 100, 30) status:[dicdata objectForKey:@"order_status"] fromuserID:[dicdata valueForKey:@"from_userid"]];
             if (btnOper)
             {
                 [cell addSubview:btnOper];
@@ -634,7 +634,7 @@
             }
         }else
         {
-            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 40, 100, 30) status:@"100" fromuserID:@"11"];
+            UIButton   *btnOper = [self getBtnWithFrame:CGRectMake(215, 78, 100, 30) status:@"100" fromuserID:@"11"];
             if (btnOper)
             {
                 [cell addSubview:btnOper];

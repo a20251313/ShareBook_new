@@ -25,6 +25,8 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 
 #import "ShareBookApplyViewController.h"
+#import "ShareBookOrderDetailViewController.h"
+#import "ShareBookMsgChatViewController.h"
 #define IOS7_OR_LATER    ( [[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending )
 @implementation AppDelegate
 {
@@ -181,17 +183,20 @@
             {//有私信
                 
                 NSString *mi = [userInfo objectForKey:@"mi"];
-                ShareBookApplyViewController * apply = [[ShareBookApplyViewController alloc]init];
+                ShareBookOrderDetailViewController * apply = [[ShareBookOrderDetailViewController alloc]init];
                 apply.orderID = mi;
                 [self.navi pushViewController:apply animated:YES];
+                RELEASE(apply);
                 
 //                MagicRequest *request = [DYBHttpMethod user_detail:[apsDict objectForKey:@"ui"] isAlert:YES receive:self];
 //                [request setTag:2];
-            }else if([mtType isEqualToString:@"5"] )
-            {//评价
-                DYBCommentMeViewController *vc = [[DYBCommentMeViewController alloc] init];
-                [_navi pushViewController:vc animated:YES];
-                RELEASE(vc);
+            }else if([mtType isEqualToString:@"1"] )
+            {
+                NSString *mi = [userInfo objectForKey:@"ui"];
+                ShareBookMsgChatViewController * apply = [[ShareBookMsgChatViewController alloc]init];
+                apply.userID = mi;
+                [self.navi pushViewController:apply animated:YES];
+                RELEASE(apply);
             }else if ([mtType isEqualToString:@"6"])
             {//@我
                 DYBMentionedMeViewController *vc = [[DYBMentionedMeViewController alloc] init];

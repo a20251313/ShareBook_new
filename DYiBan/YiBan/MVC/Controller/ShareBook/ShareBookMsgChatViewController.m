@@ -106,13 +106,18 @@
 
 -(void)requestMessageChatList
 {
-    if ([self.dictInfo objectForKey:@"contact_id"])
+    
+    if (self.userID == nil)
     {
-        self.userID = [self.dictInfo valueForKey:@"contact_id"];   
-    }else
-    {
-        self.userID = [self.dictInfo valueForKey:@"user_id"];
+        if ([self.dictInfo objectForKey:@"contact_id"])
+        {
+            self.userID = [self.dictInfo valueForKey:@"contact_id"];
+        }else
+        {
+            self.userID = [self.dictInfo valueForKey:@"user_id"];
+        }
     }
+ 
     
     
     MagicRequest *request = [DYBHttpMethod message_chat_sixin:1 pageNum:2000 type:@"1" userid:self.userID maxid:@"0" last_id:@"0" isAlert:YES receive:self];
@@ -209,9 +214,7 @@
     [self.view addSubview:viewBG];
     RELEASE(viewBG);
     
-    /*UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 200.0f, 30.0f)];
-    [viewBG addSubview:textField];
-    RELEASE(textField);*/
+
     
     
     
