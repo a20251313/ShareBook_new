@@ -107,8 +107,6 @@
 		18DE075018D5F5CB00EEAEDF /* KeyboardTopShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18DE074218D5F5CB00EEAEDF /* KeyboardTopShadow@2x.png */; };
 		18DE075118D5F5CB00EEAEDF /* Snapshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 18DE074318D5F5CB00EEAEDF /* Snapshot.png */; };
 		18DE075518D5F5F400EEAEDF /* ZenKeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DE075418D5F5F400EEAEDF /* ZenKeyboardView.m */; };
-		18DE075818D71DD300EEAEDF /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18DE075618D71DD300EEAEDF /* icon@2x.png */; };
-		18DE075918D71DD300EEAEDF /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 18DE075718D71DD300EEAEDF /* icon.png */; };
 		18DE075C18D7289600EEAEDF /* ShareBookZhuan.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DE075B18D7289600EEAEDF /* ShareBookZhuan.m */; };
 		2878B115190E32E100C5B5B1 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2878B114190E32E100C5B5B1 /* libPushSDK.a */; };
 		2878B117190E338300C5B5B1 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2878B116190E338300C5B5B1 /* PushConfig.plist */; };
@@ -120,6 +118,9 @@
 		8F45B377196B946F00DD6747 /* ShareBookMsgChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F45B376196B946F00DD6747 /* ShareBookMsgChatViewController.m */; };
 		8F66EE87196BDE2C00C7B8D3 /* PublicUtl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F66EE86196BDE2C00C7B8D3 /* PublicUtl.m */; };
 		8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F83503C195417C800CA6812 /* btn_makereceive.png */; };
+		8F89F0DD1990CC1B0043B965 /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F89F0DA1990CC1B0043B965 /* icon57.png */; };
+		8F89F0DE1990CC1B0043B965 /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F89F0DB1990CC1B0043B965 /* icon114.png */; };
+		8F89F0DF1990CC1B0043B965 /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F89F0DC1990CC1B0043B965 /* icon120.png */; };
 		8FABC471196BB6D200D90E12 /* ShareBookOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FABC470196BB6D200D90E12 /* ShareBookOrderDetailViewController.m */; };
 		8FB557AB195164F300ADB016 /* JFSegmentControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB557AA195164F300ADB016 /* JFSegmentControlView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8FBF7F4019690BD20080656F /* EGORefreshTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF7F3C19690BD20080656F /* EGORefreshTableFooterView.m */; };
@@ -847,8 +848,6 @@
 		18DE074318D5F5CB00EEAEDF /* Snapshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Snapshot.png; sourceTree = "<group>"; };
 		18DE075318D5F5F400EEAEDF /* ZenKeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZenKeyboardView.h; sourceTree = "<group>"; };
 		18DE075418D5F5F400EEAEDF /* ZenKeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZenKeyboardView.m; sourceTree = "<group>"; };
-		18DE075618D71DD300EEAEDF /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = SOURCE_ROOT; };
-		18DE075718D71DD300EEAEDF /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = SOURCE_ROOT; };
 		18DE075A18D7289600EEAEDF /* ShareBookZhuan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookZhuan.h; sourceTree = "<group>"; };
 		18DE075B18D7289600EEAEDF /* ShareBookZhuan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookZhuan.m; sourceTree = "<group>"; };
 		2878B113190E32E100C5B5B1 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
@@ -869,6 +868,9 @@
 		8F66EE85196BDE2C00C7B8D3 /* PublicUtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicUtl.h; sourceTree = "<group>"; };
 		8F66EE86196BDE2C00C7B8D3 /* PublicUtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicUtl.m; sourceTree = "<group>"; };
 		8F83503C195417C800CA6812 /* btn_makereceive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_makereceive.png; sourceTree = "<group>"; };
+		8F89F0DA1990CC1B0043B965 /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
+		8F89F0DB1990CC1B0043B965 /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
+		8F89F0DC1990CC1B0043B965 /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon120.png; sourceTree = "<group>"; };
 		8FABC46F196BB6D200D90E12 /* ShareBookOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareBookOrderDetailViewController.h; sourceTree = "<group>"; };
 		8FABC470196BB6D200D90E12 /* ShareBookOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareBookOrderDetailViewController.m; sourceTree = "<group>"; };
 		8FB557A9195164F300ADB016 /* JFSegmentControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFSegmentControlView.h; sourceTree = "<group>"; };
@@ -4093,10 +4095,11 @@
 				2878B116190E338300C5B5B1 /* PushConfig.plist */,
 				1872EA1218F5A18100EF3BF4 /* TencentOpenApi_IOS_Bundle.bundle */,
 				1872EA1318F5A18100EF3BF4 /* TencentOpenAPI.framework */,
-				18DE075618D71DD300EEAEDF /* icon@2x.png */,
-				18DE075718D71DD300EEAEDF /* icon.png */,
 				B58CB4601829CF7F00F73D66 /* Default-568h */,
 				B58CB4621829CF7F00F73D66 /* Default.png */,
+				8F89F0DA1990CC1B0043B965 /* icon57.png */,
+				8F89F0DB1990CC1B0043B965 /* icon114.png */,
+				8F89F0DC1990CC1B0043B965 /* icon120.png */,
 				B58CB4631829CF7F00F73D66 /* Default@2.png */,
 				B58CAA481829CF6700F73D66 /* area.plist */,
 				B58CAA491829CF6700F73D66 /* DYBConfigDef.h */,
@@ -4182,7 +4185,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				18DE074D18D5F5CB00EEAEDF /* KeyboardNumericEntryViewGridLinesTextured.png in Resources */,
-				18DE075818D71DD300EEAEDF /* icon@2x.png in Resources */,
 				18DE074818D5F5CB00EEAEDF /* KeyboardNumericEntryKeyBackspaceGlyphTextured@2x.png in Resources */,
 				B5D5AE9718BC365F005E4732 /* 用户信息(上架图书）.jpg in Resources */,
 				C942206317A89E430054E5BC /* InfoPlist.strings in Resources */,
@@ -4226,6 +4228,7 @@
 				B58CB0EC1829CF6A00F73D66 /* gif5.png in Resources */,
 				B58CB0ED1829CF6A00F73D66 /* gif6.png in Resources */,
 				B5CE2ADD18B4A03D008E4E44 /* discussbg_02.png in Resources */,
+				8F89F0DD1990CC1B0043B965 /* icon57.png in Resources */,
 				1893FA1318A87EC400DF758C /* bt_bg_02.png in Resources */,
 				B58CB0EE1829CF6A00F73D66 /* gif7.png in Resources */,
 				B58CB0EF1829CF6A00F73D66 /* gif8.png in Resources */,
@@ -4271,6 +4274,7 @@
 				B50D962018CEDDCA00619B21 /* player-progress-point@2x.png in Resources */,
 				B5CE2AD918B49780008E4E44 /* bt022.png in Resources */,
 				B5D5AE8C18BC365F005E4732 /* bg_good.png in Resources */,
+				8F89F0DF1990CC1B0043B965 /* icon120.png in Resources */,
 				B50D962118CEDDCA00619B21 /* player-progress@2x.png in Resources */,
 				1893FA1F18A87EC400DF758C /* icon_circle.png in Resources */,
 				18DE074F18D5F5CB00EEAEDF /* KeyboardTopShadow.png in Resources */,
@@ -4342,13 +4346,13 @@
 				1893FA2018A87EC400DF758C /* icon_circle_2.png in Resources */,
 				B50D962F18CF134000619B21 /* icon+.png in Resources */,
 				B5CE2AE418B4B635008E4E44 /* bt_click 2.png in Resources */,
+				8F89F0DE1990CC1B0043B965 /* icon114.png in Resources */,
 				B50D960F18CEB3CF00619B21 /* qrcode_bg.png in Resources */,
 				1893FA4D18A87EC400DF758C /* bt.png in Resources */,
 				18DE074718D5F5CB00EEAEDF /* KeyboardNumericEntryKeyBackspaceGlyphTextured.png in Resources */,
 				8F83503D195417C800CA6812 /* btn_makereceive.png in Resources */,
 				B50E71A218C8210200A68FB7 /* icon_list.png in Resources */,
 				B50D963118CF16AA00619B21 /* icon+(1).png in Resources */,
-				18DE075918D71DD300EEAEDF /* icon.png in Resources */,
 				B50E71A718C827DD00A68FB7 /* icon_up.png in Resources */,
 				B50E71A518C8210200A68FB7 /* icon_pin2.png in Resources */,
 				B5122BD718AB610D006ECE62 /* bt1.png in Resources */,
